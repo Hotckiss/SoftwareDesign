@@ -29,6 +29,8 @@ public final class CommandsFactoryImpl implements CommandsFactory {
                 return new PwdCommand(arguments);
             case "cat":
                 return new CatCommand(arguments);
+            case "grep":
+                return new GrepCommand(arguments);
             case "exit":
                 return new ExitCommand(arguments);
             default:
