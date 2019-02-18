@@ -1,11 +1,13 @@
 package kirilenko.cli.interpreter.tokenizer;
 
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.exceptions.ParseException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 
 /**
  * Implementation of Tokenizer for simple CLI
@@ -14,22 +16,12 @@ public final class TokenizerImpl implements Tokenizer {
     /**
      * CLI names allowed characters
      */
-    public static final Set<Character> NAME_CHARACTERS = new HashSet<>();
+    public static final Predicate<Character> isNameCharacter = (character -> Character.isLetterOrDigit(character) || "-:_/.".indexOf(character) != -1);
 
     /**
      * CLI names finish characters
      */
-    public static final Set<Character> WORD_BREAK_CHARACTERS = new HashSet<>();
-
-    private final Logger logger = Logger.getLogger(TokenizerImpl.class.getName());
-
-    static {
-        for (Character ch : "abcdefghijklmnopqrstuvwxyzABCDEFJHIJKLMNOPQRSTUVWXYZ0123456789-_:/.".toCharArray()) {
-            NAME_CHARACTERS.add(ch);
-        }
-
-        WORD_BREAK_CHARACTERS.addAll(Arrays.asList(' ', '"', '\n', '\''));
-    }
+    public static final Predicate<Character> isNotWordBreak = (character -> !Arrays.asList(' ', '"', '\n', '\'').contains(character));
 
     /**
      * {@inheritDoc}
@@ -42,17 +34,17 @@ public final class TokenizerImpl implements Tokenizer {
         try {
             if (removeQuotedCharacters) {
                 queue.remove();
-                logger.info("TokenizerImpl: front quote removed successfully");
+                CLILogger.INSTANCE.log_info("TokenizerImpl: front quote removed successfully");
             }
             while (!queue.isEmpty() && isAllowed.test(queue.element())) {
                 builder.append(queue.poll());
             }
             if (removeQuotedCharacters) {
                 queue.remove();
-                logger.info("TokenizerImpl: back quote removed successfully");
+                CLILogger.INSTANCE.log_info("TokenizerImpl: back quote removed successfully");
             }
         } catch (NoSuchElementException e) {
-            logger.warning("TokenizerImpl: unexpected end of statement");
+            CLILogger.INSTANCE.log_error("TokenizerImpl: unexpected end of statement");
             throw new ParseException("Unexpected end of statement");
         }
 

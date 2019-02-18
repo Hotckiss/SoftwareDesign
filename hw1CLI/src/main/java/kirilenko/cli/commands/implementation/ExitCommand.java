@@ -1,9 +1,8 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

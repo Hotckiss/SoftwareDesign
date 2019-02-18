@@ -1,9 +1,10 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,10 @@ public class EchoCommand extends AbstractCommand {
      */
     @Override
     public CommandResult execute(List<String> input) {
-        return new CommandResult(new ArrayList<>(arguments));
+        if (arguments.isEmpty()) {
+            return new CommandResult(Collections.emptyList());
+        }
+
+        return new CommandResult(new ArrayList<>(Collections.singletonList(String.join(" ", arguments))));
     }
 }

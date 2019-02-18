@@ -55,6 +55,6 @@ public class WcCommandTest {
         assertEquals(3, result.size());
         assertEquals("2", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals(String.valueOf(t1.length() + t2.length() + 1), result.get(2));
+        assertEquals(String.valueOf(t1.getBytes().length + t2.getBytes().length), result.get(2));
     }
 }

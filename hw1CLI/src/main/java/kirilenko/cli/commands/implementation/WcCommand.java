@@ -1,14 +1,18 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.utils.FileIO;
-import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.FileIO;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Command to count lines, words and bytes in input
@@ -22,7 +26,6 @@ public class WcCommand extends AbstractCommand {
     public WcCommand(List<String> arguments) {
         super(arguments);
     }
-    private final Logger logger = Logger.getLogger(WcCommand.class.getName());
 
     /**
      * Runs counting lines, words and bytes
@@ -30,15 +33,21 @@ public class WcCommand extends AbstractCommand {
      * @return command result with three values of counters
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input) throws CliException {
         List<String> lines = input;
+        long fileSize;
+
         if (!arguments.isEmpty()) {
-            try (InputStream file = new FileInputStream(arguments.get(0))) {
+            File inputFile = new File(arguments.get(0));
+            try (InputStream file = new FileInputStream(inputFile)) {
+                fileSize = inputFile.length();
                 lines = FileIO.readLines(file);
             } catch (IOException e) {
-                logger.warning("Wc: unable to read target file");
-                return CommandResult.ABORT;
+                CLILogger.INSTANCE.log_error("Wc: unable to read target file");
+                throw new CliException("Wc: unable to read target file");
             }
+        } else {
+            fileSize = lines.stream().mapToLong(line -> line.getBytes().length).sum();
         }
 
         // split of empty string is non-empty
@@ -49,9 +58,9 @@ public class WcCommand extends AbstractCommand {
         List<String> result = new ArrayList<>();
         // guarantees to interpret any line break character as single byte, easy to test.
         String joinedLinesString = String.join(" ", lines);
-        result.add((Integer.valueOf(lines.size())).toString());
-        result.add((Integer.valueOf(joinedLinesString.trim().split("\\s+").length)).toString());
-        result.add((Integer.valueOf(joinedLinesString.getBytes().length)).toString());
+        result.add(Integer.toString(lines.size()));
+        result.add(Integer.toString(joinedLinesString.trim().split("\\s+").length));
+        result.add(Long.toString(fileSize));
 
         return new CommandResult(result);
     }

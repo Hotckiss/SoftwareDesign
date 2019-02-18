@@ -1,14 +1,15 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.utils.FileIO;
-import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.FileIO;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Command that prints all contents of specified file
@@ -21,20 +22,24 @@ public class CatCommand extends AbstractCommand {
     public CatCommand(List<String> arguments) {
         super(arguments);
     }
-    private final Logger logger = Logger.getLogger(CatCommand.class.getName());
 
     /**
      * Returns all lines of specified file
-     * File name is the last argument, all other arguments are ignored
+     * If two or more files was specified, error will be occurred
      * If cat have no arguments like "echo gradlew | cat"
      * it will simply print input value (in this example result is "gradlew")
      * @param input command input data
      * @return command result that specified above
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input) throws CliException {
+        if (arguments.size() > 1) {
+            CLILogger.INSTANCE.log_error("Too many arguments in cat command");
+            throw new CliException("Too many arguments in cat command");
+        }
+
         if (arguments.isEmpty()) {
-            logger.info("Cat of piped argument");
+            CLILogger.INSTANCE.log_info("Cat of piped argument");
             return new CommandResult(input);
         }
 
@@ -42,8 +47,8 @@ public class CatCommand extends AbstractCommand {
         try (InputStream file = new FileInputStream(fileName)) {
             return new CommandResult(FileIO.readLines(file));
         } catch (IOException e) {
-            logger.warning("Unable to read file for cat");
-            return CommandResult.ABORT;
+            CLILogger.INSTANCE.log_error("Unable to read file for cat");
+            throw new CliException("Unable to read file for cat");
         }
     }
 }

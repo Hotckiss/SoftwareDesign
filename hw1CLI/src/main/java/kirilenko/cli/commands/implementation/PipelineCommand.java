@@ -36,7 +36,7 @@ public final class PipelineCommand extends AbstractCommand {
 
     /**
      * Executes left commands sequence to produce arguments
-     * and then rins right sequence with that arguments
+     * and then runs right sequence with that arguments
      * @param input command input data
      * @return completed execution result
      * @throws CliException if any execution error occurred

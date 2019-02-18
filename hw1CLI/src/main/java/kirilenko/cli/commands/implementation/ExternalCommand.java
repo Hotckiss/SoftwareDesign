@@ -1,21 +1,19 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.utils.FileIO;
-import kirilenko.cli.exceptions.CliException;
-import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.FileIO;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Class for unsupported commands that may be executed outside
  */
 public class ExternalCommand extends AbstractCommand {
-    private final Logger logger = Logger.getLogger(ExternalCommand.class.getName());
-
     /**
      * Creates new external command with specified name and arguments
      * @param commandName external command name
@@ -40,7 +38,7 @@ public class ExternalCommand extends AbstractCommand {
             commandProcess.getOutputStream().close();
             return new CommandResult(FileIO.readLines(commandProcess.getInputStream()));
         } catch (IOException e) {
-            logger.warning("Error in external sub-process");
+            CLILogger.INSTANCE.log_error("Error in external sub-process");
             return CommandResult.ABORT;
         }
     }

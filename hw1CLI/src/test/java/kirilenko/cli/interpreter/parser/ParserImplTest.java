@@ -189,4 +189,32 @@ public class ParserImplTest {
         Parser parser = new ParserImpl();
         AbstractCommand result = parser.parse(substitutor.substitute("echo 123 |"));
     }
+
+    /**
+     * Parse grep command test
+     */
+    @Test
+    public void parseGrep() throws Exception {
+        Substitutor substitutor = new SubstitutorImpl();
+        Parser parser = new ParserImpl();
+        AbstractCommand result = parser.parse(substitutor.substitute("grep -A xxx yyy"));
+        assertTrue(result instanceof GrepCommand);
+    }
+
+    /**
+     * Parse pipeline with grep test
+     */
+    @Test
+    public void parseGrepInPipes() throws Exception {
+        Substitutor substitutor = new SubstitutorImpl();
+        Parser parser = new ParserImpl();
+        AbstractCommand result = parser.parse(substitutor.substitute("echo 12t 155T 122 | grep -i 1*t | wc"));
+        assertTrue(result instanceof PipelineCommand);
+
+        List<String> res = result.execute(Collections.emptyList()).getOutput();
+        assertEquals(3, res.size());
+        assertEquals("1", res.get(0));
+        assertEquals("3", res.get(1));
+        assertEquals("12", res.get(2));
+    }
 }
