@@ -34,9 +34,9 @@ public class PipelineCommandTest {
                 .getOutput();
 
         assertEquals(3, result.size());
-        assertEquals("2", result.get(0));
+        assertEquals("1", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals(String.valueOf(t1.length() + t2.length() + 1), result.get(2));
+        assertEquals(String.valueOf(t1.getBytes().length + t2.getBytes().length + 1), result.get(2));
     }
 
     /**
@@ -55,9 +55,9 @@ public class PipelineCommandTest {
                 .getOutput();
 
         assertEquals(3, result.size());
-        assertEquals("2", result.get(0));
+        assertEquals("1", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals(String.valueOf(t1.length() + t2.length() + 1), result.get(2));
+        assertEquals(String.valueOf(t1.getBytes().length + t2.getBytes().length + 1), result.get(2));
     }
 
     /**
@@ -77,6 +77,6 @@ public class PipelineCommandTest {
         assertEquals(3, result.size());
         assertEquals("3", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals("6", result.get(2));
+        assertEquals("4", result.get(2));
     }
 }
