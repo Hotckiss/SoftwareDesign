@@ -4,6 +4,7 @@ import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 
 import java.io.File;
@@ -38,7 +39,8 @@ public class WcCommand extends AbstractCommand {
         long fileSize;
 
         if (!arguments.isEmpty()) {
-            File inputFile = new File(arguments.get(0));
+            String fileName = arguments.get(0);
+            File inputFile = Environment.getFile(fileName);
             try (InputStream file = new FileInputStream(inputFile)) {
                 fileSize = inputFile.length();
                 lines = FileIO.readLines(file);

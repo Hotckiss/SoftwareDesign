@@ -1,9 +1,12 @@
 package kirilenko.cli.utils;
 
 import kirilenko.cli.CLILogger;
+import kirilenko.cli.exceptions.NoSuchDirectoryException;
 import kirilenko.cli.exceptions.NoSuchVariableException;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ import java.util.Map;
  */
 public final class Environment {
     private static final Map<String, String> VARIABLES_STORAGE = new HashMap<>();
+    private static final FileSystem fileSystem = new FileSystem();
 
     /**
      * Adds new variable to environment
@@ -46,5 +50,20 @@ public final class Environment {
      */
     public static void clear() {
         VARIABLES_STORAGE.clear();
+    }
+
+    /**
+     * {@link FileSystem#getFile(String)}
+     */
+    public static File getFile(String name) {
+        return fileSystem.getFile(name);
+    }
+
+    public static void setCurrentDirectory(String name) throws NoSuchDirectoryException {
+        fileSystem.setCurrentDirectory(name);
+    }
+
+    public static Path getCurrentDirectory() {
+        return fileSystem.getCurrentDirectory();
     }
 }

@@ -4,6 +4,7 @@ import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ public class CatCommand extends AbstractCommand {
         }
 
         String fileName = arguments.get(0);
-        try (InputStream file = new FileInputStream(fileName)) {
+        try (InputStream file = new FileInputStream(Environment.getFile(fileName))) {
             return new CommandResult(FileIO.readLines(file));
         } catch (IOException e) {
             CLILogger.INSTANCE.log_error("Unable to read file for cat");

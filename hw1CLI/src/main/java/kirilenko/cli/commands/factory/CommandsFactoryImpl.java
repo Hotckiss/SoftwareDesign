@@ -30,6 +30,10 @@ public final class CommandsFactoryImpl implements CommandsFactory {
                 return new CatCommand(arguments);
             case "grep":
                 return new GrepCommand(arguments);
+            case "ls":
+                return new LsCommand(arguments);
+            case "cd":
+                return new CdCommand(arguments);
             case "exit":
                 return new ExitCommand(arguments);
             default:

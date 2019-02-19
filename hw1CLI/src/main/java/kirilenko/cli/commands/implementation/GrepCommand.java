@@ -4,6 +4,7 @@ import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
@@ -74,7 +75,8 @@ public class GrepCommand extends AbstractCommand {
         // input file was specified
         if (extraArgs.size() == 2) {
             CLILogger.INSTANCE.log_info("Read input from file: " + extraArgs.get(1));
-            try (InputStream inputStream = new FileInputStream(extraArgs.get(1))) {
+            String fileName = extraArgs.get(1);
+            try (InputStream inputStream = new FileInputStream(Environment.getFile(fileName))) {
                 lines = FileIO.readLines(inputStream);
             } catch(IOException ex) {
                 throw new CliException(ex.getMessage());
