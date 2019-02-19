@@ -9,6 +9,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Command that lists content of directories.
+ */
 public class LsCommand extends AbstractCommand {
     /**
      * {@link AbstractCommand#AbstractCommand(List)}

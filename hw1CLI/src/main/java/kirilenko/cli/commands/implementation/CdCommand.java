@@ -9,6 +9,9 @@ import kirilenko.cli.utils.Environment;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Command that changes current directory.
+ */
 public class CdCommand extends AbstractCommand {
     /**
      * {@link AbstractCommand#AbstractCommand(List)}
