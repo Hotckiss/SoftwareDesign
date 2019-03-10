@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface GameModel {
     List<List<Drawable>> makeDrawable();
+    List<String> getInfo();
+    List<String> getLog();
     List<List<AbstractGameObject>> getField();
     void makeMove(Screen screen) throws IOException;
 }

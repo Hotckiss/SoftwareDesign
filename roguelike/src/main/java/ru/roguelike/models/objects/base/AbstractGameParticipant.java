@@ -46,6 +46,10 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         return health > 0;
     }
 
+    public int getHealth() {
+        return health;
+    }
+
     public void enableArtifact(AbstractArtifact artifact) {
         health = Math.min(fullHealth, health + artifact.restoringHealth);
         fireDamageMultiplier += artifact.fireDamageMultiplierBonus;

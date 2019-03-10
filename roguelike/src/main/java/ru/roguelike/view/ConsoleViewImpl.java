@@ -1,5 +1,6 @@
 package ru.roguelike.view;
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -14,6 +15,7 @@ import java.util.List;
 public class ConsoleViewImpl implements ConsoleView {
     private List<List<Character>> field = new ArrayList<>();
     private List<String> info = new ArrayList<>();
+    private List<String> log = new ArrayList<>();
     private Screen gameScreen;
 
     public ConsoleViewImpl() {
@@ -34,15 +36,16 @@ public class ConsoleViewImpl implements ConsoleView {
     }
     @Override
     public void clear() {
+        //TODO: clear logs if needed (do not clear game log)
         field.clear();
-        info.clear();
     }
 
 
     @Override
-    public void draw(List<List<Drawable>> figures, List<String> info) {
+    public void draw(List<List<Drawable>> figures, List<String> info, List<String> log) {
         figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
         this.info = info;
+        this.log = log;
 
         drawInner();
     }
@@ -62,14 +65,26 @@ public class ConsoleViewImpl implements ConsoleView {
             }
         }
 
+        for (int i = 0; i < info.size(); i++) {
+            for (int j = 0; j < info.get(i).length(); j++) {
+                gameScreen.setCharacter(j, field.size() + i, new TextCharacter(info.get(i).charAt(j)));
+            }
+        }
+
+        for (int i = 0; i < log.size(); i++) {
+            for (int j = 0; j < log.get(i).length(); j++) {
+                gameScreen.setCharacter(j, field.size() + info.size() + i, new TextCharacter(log.get(i).charAt(j)));
+            }
+        }
+
+        gameScreen.setCursorPosition(new TerminalPosition(0, field.size() + info.size() + log.size()));
+
         try {
             gameScreen.refresh();
         } catch (IOException e) {
             //TODO:
             e.printStackTrace();
         }
-
-        //info.forEach( line -> gameScreen.);
     }
 
     private List<Character> mapRow(List<Drawable> row) {

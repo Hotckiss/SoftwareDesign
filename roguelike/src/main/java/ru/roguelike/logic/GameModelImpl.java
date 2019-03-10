@@ -11,6 +11,7 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.Drawable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class GameModelImpl implements GameModel {
     private FinalKey key;
     private List<AbstractGameParticipant> mobs;
     private List<AbstractArtifact> artifacts;
+    private List<String> gameLog = new ArrayList<>();
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -36,6 +38,33 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<List<Drawable>> makeDrawable() {
         return (List)fieldModel;
+    }
+
+    @Override
+    public List<String> getInfo() {
+        List<String> info = new ArrayList<>();
+        info.add("Game INFO:");
+        info.add("P - player");
+        info.add("k - key to win");
+        info.add("...");
+
+        return info;
+    }
+
+    @Override
+    public List<String> getLog() {
+        List<String> gameSituation = new ArrayList<>();
+        gameSituation.add("Player health: " + String.valueOf(player.getHealth()));
+
+        for (AbstractGameParticipant mob: mobs) {
+            gameSituation.add("Mob health: " + String.valueOf(mob.getHealth()));
+        }
+
+        if (!player.isAlive()) {
+            gameSituation.add("You lose!");
+        }
+
+        return gameSituation;
     }
 
     @Override
@@ -57,7 +86,7 @@ public class GameModelImpl implements GameModel {
         }
 
         if (!player.isAlive()) {
-            System.out.println("You lose!");
+            gameLog.add("You lose!");
         }
     }
 
@@ -101,7 +130,7 @@ public class GameModelImpl implements GameModel {
                 if (opponent.isAlive()) {
                     return;
                 } else {
-                    System.out.println("killed");
+                    gameLog.add("You have killed mob!");
                 }
             }
         }
@@ -111,8 +140,6 @@ public class GameModelImpl implements GameModel {
             attack(participant, player);
             if (player.isAlive()) {
                 return;
-            } else {
-                System.out.println("killed player");
             }
         }
 
@@ -126,11 +153,12 @@ public class GameModelImpl implements GameModel {
     }
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
-        if (!((attacker instanceof Player && !(defender instanceof Player)) ||
-                (!(attacker instanceof Player) && defender instanceof Player))) {
-            return;
+        if (attacker instanceof Player && !(defender instanceof Player)) {
+            gameLog.add("Player attacks mob!");
+            attacker.hit(defender);
+        } else if (!(attacker instanceof Player) && defender instanceof Player) {
+            gameLog.add("Mob attacks player!");
+            attacker.hit(defender);
         }
-        System.out.println("attack");
-        attacker.hit(defender);
     }
 }

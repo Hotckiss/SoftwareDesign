@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ConsoleView {
     void clear();
-    void draw(List<List<Drawable>> figure, List<String> info);
+    void draw(List<List<Drawable>> figure, List<String> info, List<String> log);
     Screen getScreen();
 }
