@@ -67,7 +67,7 @@ public class Player extends AbstractGameParticipant {
         int x = position.getX();
         int y = position.getY();
 
-        //TODO: apply artifact
+        //TODO: apply artifact better
         switch (keyStroke.getCharacter()) {
             case 'w':
                 return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.TOP : Move.NONE;

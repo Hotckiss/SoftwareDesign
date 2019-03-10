@@ -13,4 +13,13 @@ public abstract class AbstractArtifact extends AbstractGameObject {
     protected double physicalDamageMultiplierBonus;
     //насколько увеличит множитель урона огнем
     protected double fireDamageMultiplierBonus;
+    protected boolean isTaken = false;
+
+    public void take() {
+        isTaken = true;
+    }
+
+    public boolean taken() {
+        return isTaken;
+    }
 }

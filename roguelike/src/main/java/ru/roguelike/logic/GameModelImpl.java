@@ -98,6 +98,12 @@ public class GameModelImpl implements GameModel {
         if (!player.isAlive()) {
             gameLog.add("You lose!");
         }
+
+        for (AbstractGameParticipant mob: mobs) {
+            mob.regenerate();
+        }
+
+        player.regenerate();
     }
 
     private void applyMove(AbstractGameParticipant participant, Move move) {
@@ -147,8 +153,9 @@ public class GameModelImpl implements GameModel {
 
         if (participant instanceof Player) {
             for (AbstractArtifact artifact: artifacts) {
-                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY()) {
+                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY() && !artifact.taken()) {
                     player.addArtifact(artifact);
+                    artifact.take();
                     break;
                 }
             }
