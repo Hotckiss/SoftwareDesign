@@ -13,7 +13,7 @@ import java.util.Collections;
 public class Main {
     public static void main(String[] args) throws InterruptedException, IOException {
         ConsoleView cv = new ConsoleViewImpl();
-        GameGenerator generator = new RandomGenerator(10, 10, 0.15, 3, 1);
+        GameGenerator generator = new RandomGenerator(15, 15, 0.15, 10, 1);
         GameModel game = generator.generate();
 
         while (true) {

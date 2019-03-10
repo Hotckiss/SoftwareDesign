@@ -7,6 +7,7 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,24 +72,28 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         int x = position.getX();
         int y = position.getY();
 
-        if (x - 1 >= 0 && field.get(x - 1).get(y).isAvailable) {
+        if (x - 1 >= 0 && availableForMob(field,x - 1, y)) {
             availableMoves.add(Move.TOP);
         }
 
-        if (x + 1 < field.size() && field.get(x + 1).get(y).isAvailable) {
+        if (x + 1 < field.size() && availableForMob(field,x + 1, y)) {
             availableMoves.add(Move.DOWN);
         }
 
-        if (y - 1 >= 0 && field.get(x).get(y - 1).isAvailable) {
+        if (y - 1 >= 0 && availableForMob(field, x, y - 1)) {
             availableMoves.add(Move.LEFT);
         }
 
-        if (y + 1 < field.get(x).size() && field.get(x).get(y + 1).isAvailable) {
+        if (y + 1 < field.get(x).size() && availableForMob(field,x, y + 1)) {
             availableMoves.add(Move.RIGHT);
         }
 
         Random random = new Random();
 
         return availableMoves.get(random.nextInt(availableMoves.size()));
+    }
+
+    private boolean availableForMob(List<List<AbstractGameObject>> field, int x, int y) {
+        return !(field.get(x).get(y) instanceof Wall || field.get(x).get(y) instanceof AbstractArtifact);
     }
 }

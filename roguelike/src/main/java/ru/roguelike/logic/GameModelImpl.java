@@ -55,6 +55,10 @@ public class GameModelImpl implements GameModel {
             Move to = mob.move(screen, this);
             applyMove(mob, to);
         }
+
+        if (!player.isAlive()) {
+            System.out.println("You lose!");
+        }
     }
 
     private void applyMove(AbstractGameParticipant participant, Move move) {
@@ -86,6 +90,9 @@ public class GameModelImpl implements GameModel {
                 }
                 break;
         }
+        if (pos.getY() == to.getY() && pos.getX() == to.getX()) {
+            return;
+        }
 
         for (AbstractGameParticipant opponent: mobs) {
             if (opponent.getPosition().getX() == to.getX() &&
@@ -99,6 +106,16 @@ public class GameModelImpl implements GameModel {
             }
         }
 
+        if (player.getPosition().getX() == to.getX() &&
+                player.getPosition().getY() == to.getY()) {
+            attack(participant, player);
+            if (player.isAlive()) {
+                return;
+            } else {
+                System.out.println("killed player");
+            }
+        }
+
         fieldModel.get(pos.getX()).set(pos.getY(), new FreePlace(pos));
         fieldModel.get(to.getX()).set(to.getY(), participant);
         participant.setPosition(to);
@@ -109,7 +126,8 @@ public class GameModelImpl implements GameModel {
     }
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
-        if (!(attacker instanceof Player || defender instanceof Player)) {
+        if (!((attacker instanceof Player && !(defender instanceof Player)) ||
+                (!(attacker instanceof Player) && defender instanceof Player))) {
             return;
         }
         System.out.println("attack");
