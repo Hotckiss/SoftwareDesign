@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface GameModel {
+    boolean finished();
     List<List<Drawable>> makeDrawable();
     List<String> getInfo();
     List<String> getLog();

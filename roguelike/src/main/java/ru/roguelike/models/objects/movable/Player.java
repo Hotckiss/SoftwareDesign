@@ -4,19 +4,21 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.base.AbstractArtifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.sql.DriverManager.println;
+import java.util.Queue;
 
 public class Player extends AbstractGameParticipant {
+    private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
 
     public Player(Position position) {
         this.position = position;
@@ -31,6 +33,21 @@ public class Player extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 5;
+    }
+
+    public void addArtifact(AbstractArtifact artifact) {
+        artifacts.addFirst(new ArtifactItem(artifact));
+    }
+
+    public String getArtifactsLog() {
+        StringBuilder builder = new StringBuilder();
+
+        for (ArtifactItem item: artifacts) {
+            builder.append(item.getItem().getDrawingFigure());
+            builder.append(' ');
+        }
+
+        return builder.toString();
     }
 
     @Override
@@ -61,11 +78,51 @@ public class Player extends AbstractGameParticipant {
             case 'd':
                 return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
             case 'e':
+                if (!artifacts.isEmpty() && !artifacts.getFirst().equipped()) {
+                    artifacts.getFirst().equip();
+                    enableArtifact(artifacts.getFirst().getItem());
+                }
+
                 return Move.NONE;
             case 'q':
+                if (!artifacts.isEmpty() && artifacts.getFirst().equipped()) {
+                    artifacts.getFirst().disable();
+                    disableArtifact(artifacts.getFirst().getItem());
+                }
+
                 return Move.NONE;
         }
 
         return Move.NONE;
+    }
+
+    private class ArtifactItem {
+        private AbstractArtifact item;
+        private boolean isEquipped;
+
+        public ArtifactItem(AbstractArtifact artifact) {
+            item = artifact;
+            isEquipped = false;
+        }
+
+        public AbstractArtifact getItem() {
+            return item;
+        }
+
+        private void setEquipped(boolean isEquipped) {
+            this.isEquipped = isEquipped;
+        }
+
+        public void equip() {
+            setEquipped(true);
+        }
+
+        public void disable() {
+            setEquipped(false);
+        }
+
+        public boolean equipped() {
+            return isEquipped;
+        }
     }
 }

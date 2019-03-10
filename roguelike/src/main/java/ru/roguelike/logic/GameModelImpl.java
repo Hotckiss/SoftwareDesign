@@ -22,6 +22,7 @@ public class GameModelImpl implements GameModel {
     private List<AbstractGameParticipant> mobs;
     private List<AbstractArtifact> artifacts;
     private List<String> gameLog = new ArrayList<>();
+    private boolean isFinished = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -33,6 +34,11 @@ public class GameModelImpl implements GameModel {
         this.key = key;
         this.mobs = mobs;
         this.artifacts = artifacts;
+    }
+
+    @Override
+    public boolean finished() {
+        return isFinished;
     }
 
     @Override
@@ -54,14 +60,18 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<String> getLog() {
         List<String> gameSituation = new ArrayList<>();
-        gameSituation.add("Player health: " + String.valueOf(player.getHealth()));
+        gameSituation.add("Health: " + player.getHealth() + " Items: " + player.getArtifactsLog());
 
         for (AbstractGameParticipant mob: mobs) {
-            gameSituation.add("Mob health: " + String.valueOf(mob.getHealth()));
+            gameSituation.add("Mob health: " + mob.getHealth());
         }
 
         if (!player.isAlive()) {
             gameSituation.add("You lose!");
+        }
+
+        if (player.isAlive() && isFinished) {
+            gameSituation.add("You win!");
         }
 
         return gameSituation;
@@ -135,11 +145,29 @@ public class GameModelImpl implements GameModel {
             }
         }
 
+        if (participant instanceof Player) {
+            for (AbstractArtifact artifact: artifacts) {
+                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY()) {
+                    player.addArtifact(artifact);
+                    break;
+                }
+            }
+
+            if (key.getPosition().getX() == to.getX() && key.getPosition().getY() == to.getY()) {
+                player.addArtifact(key);
+                isFinished = true;
+                gameLog.add("Player gets a key and wins");
+            }
+        }
+
+
         if (player.getPosition().getX() == to.getX() &&
                 player.getPosition().getY() == to.getY()) {
             attack(participant, player);
             if (player.isAlive()) {
                 return;
+            } else {
+                isFinished = true;
             }
         }
 
