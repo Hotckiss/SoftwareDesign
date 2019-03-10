@@ -33,6 +33,18 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     //восстанавливает хп в ход
     protected int regeneration;
 
+    public void hit(AbstractGameParticipant opponent) {
+        opponent.health = (int)(Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
+    }
+
+    public void regenerate() {
+        health = Math.min(fullHealth, health + regeneration);
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
     public void enableArtifact(AbstractArtifact artifact) {
         health = Math.min(fullHealth, health + artifact.restoringHealth);
         fireDamageMultiplier += artifact.fireDamageMultiplierBonus;

@@ -12,6 +12,7 @@ import ru.roguelike.view.Drawable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameModelImpl implements GameModel {
     private List<List<AbstractGameObject>> fieldModel;
@@ -48,6 +49,8 @@ public class GameModelImpl implements GameModel {
         Move playerMove = player.move(screen, this);
         applyMove(player, playerMove);
 
+        mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
+
         for (AbstractGameParticipant mob: mobs) {
             Move to = mob.move(screen, this);
             applyMove(mob, to);
@@ -56,7 +59,6 @@ public class GameModelImpl implements GameModel {
 
     private void applyMove(AbstractGameParticipant participant, Move move) {
         Position pos = participant.getPosition();
-        fieldModel.get(pos.getX()).set(pos.getY(), new FreePlace(pos));
         Position to = pos.none();
 
         switch (move) {
@@ -85,11 +87,32 @@ public class GameModelImpl implements GameModel {
                 break;
         }
 
+        for (AbstractGameParticipant opponent: mobs) {
+            if (opponent.getPosition().getX() == to.getX() &&
+            opponent.getPosition().getY() == to.getY()) {
+                attack(participant, opponent);
+                if (opponent.isAlive()) {
+                    return;
+                } else {
+                    System.out.println("killed");
+                }
+            }
+        }
+
+        fieldModel.get(pos.getX()).set(pos.getY(), new FreePlace(pos));
         fieldModel.get(to.getX()).set(to.getY(), participant);
         participant.setPosition(to);
     }
 
     private boolean isValidPosition(Position position) {
-        return position.getX() >= 0 && position.getY() >=0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
+        return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
+    }
+
+    private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
+        if (!(attacker instanceof Player || defender instanceof Player)) {
+            return;
+        }
+        System.out.println("attack");
+        attacker.hit(defender);
     }
 }

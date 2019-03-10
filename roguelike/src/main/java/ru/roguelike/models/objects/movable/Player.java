@@ -9,6 +9,7 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,13 +53,13 @@ public class Player extends AbstractGameParticipant {
         //TODO: apply artifact
         switch (keyStroke.getCharacter()) {
             case 'w':
-                return (x > 0 && field.get(x - 1).get(y).available()) ? Move.TOP : Move.NONE;
+                return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.TOP : Move.NONE;
             case 'a':
-                return (y > 0 && field.get(x).get(y - 1).available()) ? Move.LEFT : Move.NONE;
+                return (y > 0 && !(field.get(x).get(y - 1) instanceof Wall)) ? Move.LEFT : Move.NONE;
             case 's':
-                return (x + 1 < field.size() && field.get(x + 1).get(y).available()) ? Move.DOWN : Move.NONE;
+                return (x + 1 < field.size() && !(field.get(x + 1).get(y) instanceof Wall)) ? Move.DOWN : Move.NONE;
             case 'd':
-                return (y + 1 < field.get(0).size() && field.get(x).get(y + 1).available()) ? Move.RIGHT : Move.NONE;
+                return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
             case 'e':
                 return Move.NONE;
             case 'q':
