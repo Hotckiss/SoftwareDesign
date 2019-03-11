@@ -67,6 +67,10 @@ public class Player extends AbstractGameParticipant {
         int x = position.getX();
         int y = position.getY();
 
+        if (keyStroke.getCharacter() == null) {
+            return Move.NONE;
+        }
+
         //TODO: apply artifact better
         switch (keyStroke.getCharacter()) {
             case 'w':
