@@ -52,8 +52,7 @@ public class GameModelImpl implements GameModel {
     public List<String> getInfo() {
         List<String> info = new ArrayList<>();
         info.add("Game INFO:");
-        info.add("P - player");
-        info.add("k - key to win");
+        info.add("P - player, k - key to wi");
         info.add("Press h for more info");
         info.add("");
 
@@ -65,9 +64,15 @@ public class GameModelImpl implements GameModel {
         List<String> gameSituation = new ArrayList<>();
         gameSituation.add("Health: " + player.getHealth() + " Items: " + player.getArtifactsLog());
 
+        StringBuilder mobsHealth = new StringBuilder();
+        mobsHealth.append("Mobs' health: ");
+
         for (AbstractGameParticipant mob: mobs) {
-            gameSituation.add("Mob health: " + mob.getHealth());
+            mobsHealth.append(String.valueOf(mob.getHealth()));
+            mobsHealth.append(" ");
         }
+
+        gameSituation.add(mobsHealth.toString());
 
         if (!player.isAlive()) {
             gameSituation.add("You lose!");

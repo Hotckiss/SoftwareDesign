@@ -1,11 +1,13 @@
 package ru.roguelike.view;
 
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import ru.roguelike.info.GameInfo;
 import ru.roguelike.models.Position;
 
@@ -27,9 +29,10 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
+            
             this.gameScreen = screen;
 
-            screen.startScreen();
+            gameScreen.startScreen();
         } catch (IOException e) {
             //TODO: handle
             e.printStackTrace();
