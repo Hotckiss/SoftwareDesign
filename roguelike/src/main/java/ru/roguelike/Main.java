@@ -1,5 +1,6 @@
 package ru.roguelike;
 
+import ru.roguelike.controller.GameController;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.generators.GameGenerator;
 import ru.roguelike.logic.generators.RandomGenerator;
@@ -14,13 +15,7 @@ public class Main {
         GameGenerator generator = new RandomGenerator(15, 15, 0.15, 3, 5);
         GameModel game = generator.generate();
 
-        while (!game.finished()) {
-            cv.clear();
-            cv.draw(game.makeDrawable(), game.getInfo(), game.getLog());
-            game.makeMove(cv.getScreen());
-        }
-
-        cv.clear();
-        cv.draw(game.makeDrawable(), game.getInfo(), game.getLog());
+        GameController controller = new GameController(game, cv);
+        controller.runGame();
     }
 }
