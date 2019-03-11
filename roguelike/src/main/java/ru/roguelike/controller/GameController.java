@@ -17,11 +17,11 @@ public class GameController {
     public void runGame() throws IOException {
         while (!game.finished()) {
             view.clear();
-            view.draw(game.makeDrawable(), game.getInfo(), game.getLog());
-            game.makeMove(view.getScreen());
+            view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen());
+            game.makeAction(view.getScreen());
         }
 
         view.clear();
-        view.draw(game.makeDrawable(), game.getInfo(), game.getLog());
+        view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen());
     }
 }

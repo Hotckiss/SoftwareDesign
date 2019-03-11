@@ -56,9 +56,7 @@ public class Player extends AbstractGameParticipant {
     }
 
     @Override
-    public Move move(Screen screen, GameModel model) throws IOException {
-        KeyStroke keyStroke = screen.readInput();
-
+    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (keyStroke.getKeyType() == KeyType.Escape) {
             return Move.NONE;
         }

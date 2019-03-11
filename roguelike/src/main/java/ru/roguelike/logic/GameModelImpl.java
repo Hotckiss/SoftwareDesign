@@ -1,5 +1,6 @@
 package ru.roguelike.logic;
 
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
@@ -23,6 +24,7 @@ public class GameModelImpl implements GameModel {
     private List<AbstractArtifact> artifacts;
     private List<String> gameLog = new ArrayList<>();
     private boolean isFinished = false;
+    private boolean showHelpScreen = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -52,7 +54,8 @@ public class GameModelImpl implements GameModel {
         info.add("Game INFO:");
         info.add("P - player");
         info.add("k - key to win");
-        info.add("...");
+        info.add("Press h for more info");
+        info.add("");
 
         return info;
     }
@@ -83,15 +86,31 @@ public class GameModelImpl implements GameModel {
     }
 
     @Override
-    public void makeMove(Screen screen) throws IOException {
+    public void makeAction(Screen screen) throws IOException {
         screen.refresh();
-        Move playerMove = player.move(screen, this);
+
+        KeyStroke keyStroke = screen.readInput();
+
+        if (keyStroke.getCharacter() != null) {
+            if (keyStroke.getCharacter().equals('h')) {
+                showHelpScreen = true;
+            }
+            if (keyStroke.getCharacter().equals('r')) {
+                showHelpScreen = false;
+            }
+        }
+
+        if (showHelpScreen) {
+            return;
+        }
+
+        Move playerMove = player.move(keyStroke, this);
         applyMove(player, playerMove);
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
         for (AbstractGameParticipant mob: mobs) {
-            Move to = mob.move(screen, this);
+            Move to = mob.move(keyStroke, this);
             applyMove(mob, to);
         }
 
@@ -195,5 +214,13 @@ public class GameModelImpl implements GameModel {
             gameLog.add("Mob attacks player!");
             attacker.hit(defender);
         }
+    }
+
+    public boolean isShowHelpScreen() {
+        return showHelpScreen;
+    }
+
+    public void setShowHelpScreen(boolean showHelpScreen) {
+        this.showHelpScreen = showHelpScreen;
     }
 }

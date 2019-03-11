@@ -1,5 +1,6 @@
 package ru.roguelike.models.objects.base;
 
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
@@ -68,7 +69,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     }
 
     @Override
-    public Move move(Screen screen, GameModel model) throws IOException {
+    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         List<Move> availableMoves = new ArrayList<>();
         availableMoves.add(Move.NONE);
 
