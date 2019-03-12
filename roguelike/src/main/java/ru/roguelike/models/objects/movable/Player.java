@@ -61,16 +61,12 @@ public class Player extends AbstractGameParticipant {
      * d - right,
      * e -
      * q -
-     *
-     * @param screen -- is a screen from which an input will be taken
      * @param model  -- is a current game state
      * @return a move corresponding to the user's action.
      * @throws IOException if it occurs
      */
     @Override
-    public Move move(Screen screen, GameModel model) throws IOException {
-        KeyStroke keyStroke = screen.readInput();
-
+    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (keyStroke.getKeyType() == KeyType.Escape) {
             return Move.NONE;
         }

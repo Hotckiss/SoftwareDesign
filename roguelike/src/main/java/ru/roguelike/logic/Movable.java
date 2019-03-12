@@ -1,9 +1,9 @@
 package ru.roguelike.logic;
 
-import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.input.KeyStroke;
 
 import java.io.IOException;
 
 public interface Movable {
-    Move move(Screen screen, GameModel model) throws IOException;
+    Move move(KeyStroke keyStroke, GameModel model) throws IOException;
 }

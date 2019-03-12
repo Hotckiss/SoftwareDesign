@@ -20,11 +20,11 @@ public class GameController {
         logger.info("Game started");
         while (!game.finished()) {
             view.clear();
-            view.draw(game.makeDrawable(), game.getInfo(), game.getLog());
-            game.makeMove(view.getScreen());
+            view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen());
+            game.makeAction(view.getScreen());
         }
         logger.info("Game finished");
         view.clear();
-        view.draw(game.makeDrawable(), game.getInfo(), game.getLog());
+        view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen());
     }
 }

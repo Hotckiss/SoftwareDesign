@@ -1,11 +1,14 @@
 package ru.roguelike.view;
 
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.TerminalResizeListener;
+import ru.roguelike.info.GameInfo;
 import ru.roguelike.models.Position;
 
 import java.io.IOException;
@@ -26,9 +29,10 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
+            
             this.gameScreen = screen;
 
-            screen.startScreen();
+            gameScreen.startScreen();
         } catch (IOException e) {
             //TODO: handle
             e.printStackTrace();
@@ -42,12 +46,16 @@ public class ConsoleViewImpl implements ConsoleView {
 
 
     @Override
-    public void draw(List<List<Drawable>> figures, List<String> info, List<String> log) {
-        figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
-        this.info = info;
-        this.log = log;
+    public void draw(List<List<Drawable>> figures, List<String> info, List<String> log, boolean showHelpScreen) {
+        if (showHelpScreen) {
+            drawInfo(GameInfo.getInfo());
+        } else {
+            figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
+            this.info = info;
+            this.log = log;
 
-        drawInner();
+            drawInner();
+        }
     }
 
     @Override
@@ -84,6 +92,16 @@ public class ConsoleViewImpl implements ConsoleView {
         } catch (IOException e) {
             //TODO:
             e.printStackTrace();
+        }
+    }
+
+    private void drawInfo(List<String> info) {
+        gameScreen.clear();
+
+        for (int i = 0; i < info.size(); i++) {
+            for (int j = 0; j < info.get(i).length(); j++) {
+                gameScreen.setCharacter(j, i, new TextCharacter(info.get(i).charAt(j)));
+            }
         }
     }
 

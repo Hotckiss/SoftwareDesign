@@ -13,5 +13,6 @@ public interface GameModel {
     List<String> getInfo();
     List<String> getLog();
     List<List<AbstractGameObject>> getField();
-    void makeMove(Screen screen) throws IOException;
+    void makeAction(Screen screen) throws IOException;
+    boolean isShowHelpScreen();
 }
