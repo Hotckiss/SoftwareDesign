@@ -13,9 +13,7 @@ import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class Player extends AbstractGameParticipant {
     private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
@@ -42,7 +40,7 @@ public class Player extends AbstractGameParticipant {
     public String getArtifactsLog() {
         StringBuilder builder = new StringBuilder();
 
-        for (ArtifactItem item: artifacts) {
+        for (ArtifactItem item : artifacts) {
             builder.append(item.getItem().getDrawingFigure());
             builder.append(' ');
         }
@@ -55,6 +53,20 @@ public class Player extends AbstractGameParticipant {
         return 'P';
     }
 
+    /**
+     * The moves can be (relevant keys are given):
+     * w - up,
+     * a - left,
+     * s - down,
+     * d - right,
+     * e -
+     * q -
+     *
+     * @param screen -- is a screen from which an input will be taken
+     * @param model  -- is a current game state
+     * @return a move corresponding to the user's action.
+     * @throws IOException if it occurs
+     */
     @Override
     public Move move(Screen screen, GameModel model) throws IOException {
         KeyStroke keyStroke = screen.readInput();

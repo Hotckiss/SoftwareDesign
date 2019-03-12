@@ -13,9 +13,11 @@ import ru.roguelike.view.Drawable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class GameModelImpl implements GameModel {
+    private static Logger logger = Logger.getLogger("GameModelImpl");
     private List<List<AbstractGameObject>> fieldModel;
     private Player player;
     private FinalKey key;
@@ -73,7 +75,7 @@ public class GameModelImpl implements GameModel {
         if (player.isAlive() && isFinished) {
             gameSituation.add("You win!");
         }
-
+        logger.info(String.join(System.lineSeparator(), gameSituation));
         return gameSituation;
     }
 
@@ -86,6 +88,7 @@ public class GameModelImpl implements GameModel {
     public void makeMove(Screen screen) throws IOException {
         screen.refresh();
         Move playerMove = player.move(screen, this);
+        logger.info("Move " + playerMove);
         applyMove(player, playerMove);
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
