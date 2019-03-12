@@ -47,7 +47,7 @@ public class GameModelImpl implements GameModel {
 
     @Override
     public List<List<Drawable>> makeDrawable() {
-        return (List)fieldModel;
+        return (List) fieldModel;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class GameModelImpl implements GameModel {
         StringBuilder mobsHealth = new StringBuilder();
         mobsHealth.append("Mobs' health: ");
 
-        for (AbstractGameParticipant mob: mobs) {
+        for (AbstractGameParticipant mob : mobs) {
             mobsHealth.append(String.valueOf(mob.getHealth()));
             mobsHealth.append(" ");
         }
@@ -96,7 +96,7 @@ public class GameModelImpl implements GameModel {
     public void makeAction(Screen screen) throws IOException {
         screen.refresh();
         KeyStroke keyStroke = screen.readInput();
-
+        logger.info("Input from user: " + keyStroke.getCharacter());
         if (keyStroke.getCharacter() != null) {
             if (keyStroke.getCharacter().equals('h')) {
                 showHelpScreen = true;
@@ -116,16 +116,19 @@ public class GameModelImpl implements GameModel {
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
-        for (AbstractGameParticipant mob: mobs) {
+        for (AbstractGameParticipant mob : mobs) {
             Move to = mob.move(keyStroke, this);
+            logger.info("Mob move " + to + " from position " + mob.getPosition().getX()
+                    + " " + mob.getPosition().getY());
             applyMove(mob, to);
         }
 
         if (!player.isAlive()) {
+            logger.info("Lose");
             gameLog.add("You lose!");
         }
 
-        for (AbstractGameParticipant mob: mobs) {
+        for (AbstractGameParticipant mob : mobs) {
             mob.regenerate();
         }
 
@@ -165,9 +168,9 @@ public class GameModelImpl implements GameModel {
             return;
         }
 
-        for (AbstractGameParticipant opponent: mobs) {
+        for (AbstractGameParticipant opponent : mobs) {
             if (opponent.getPosition().getX() == to.getX() &&
-            opponent.getPosition().getY() == to.getY()) {
+                    opponent.getPosition().getY() == to.getY()) {
                 attack(participant, opponent);
                 if (opponent.isAlive()) {
                     return;
@@ -178,7 +181,7 @@ public class GameModelImpl implements GameModel {
         }
 
         if (participant instanceof Player) {
-            for (AbstractArtifact artifact: artifacts) {
+            for (AbstractArtifact artifact : artifacts) {
                 if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY() && !artifact.taken()) {
                     player.addArtifact(artifact);
                     artifact.take();
