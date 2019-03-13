@@ -36,13 +36,25 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     protected double fireDamageMultiplier;
     //восстанавливает хп в ход
     protected int regeneration;
+    //сколько ходов еще заморожен
+    protected int freezeCount;
 
     public void hit(AbstractGameParticipant opponent) {
+        Random random = new Random();
+
         opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
+        // opponent freezed
+        if (random.nextDouble() < freezeProbability) {
+            opponent.freezeCount = 3;
+        }
     }
 
     public void regenerate() {
         health = Math.min(fullHealth, health + regeneration);
+    }
+
+    public void freezeStep() {
+        freezeCount = Math.max(0, freezeCount - 1);
     }
 
     public boolean isAlive() {
@@ -82,6 +94,10 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         return new RandomStrategy().preferredMove(position, model);
     }
 }

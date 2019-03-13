@@ -20,6 +20,7 @@ public class SimpleMob extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
+        this.freezeCount = 0;
     }
 
     @Override

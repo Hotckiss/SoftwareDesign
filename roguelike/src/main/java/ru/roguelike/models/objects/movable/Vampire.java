@@ -27,6 +27,7 @@ public class Vampire extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 10;
+        this.freezeCount = 0;
     }
 
     @Override
@@ -36,6 +37,10 @@ public class Vampire extends AbstractGameParticipant {
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         return new PassiveStrategy().preferredMove(position, model);
     }
 }

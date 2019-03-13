@@ -171,10 +171,12 @@ public class GameModelImpl implements GameModel {
 
         for (AbstractGameParticipant mob : mobs) {
             mob.regenerate();
+            mob.freezeStep();
         }
 
         if (player.isAlive()) {
             player.regenerate();
+            player.freezeStep();
         }
     }
 

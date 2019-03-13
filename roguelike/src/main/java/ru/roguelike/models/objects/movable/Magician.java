@@ -27,6 +27,7 @@ public class Magician extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 15;
+        this.freezeCount = 0;
     }
 
     @Override
@@ -36,6 +37,10 @@ public class Magician extends AbstractGameParticipant {
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         return new AggressiveStrategy().preferredMove(position, model);
     }
 }

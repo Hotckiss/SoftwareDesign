@@ -28,6 +28,7 @@ public class Flier extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
+        this.freezeCount = 0;
     }
 
     @Override
@@ -37,6 +38,10 @@ public class Flier extends AbstractGameParticipant {
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         return new CowardStrategy().preferredMove(position, model);
     }
 }

@@ -34,6 +34,7 @@ public class Player extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 5;
+        this.freezeCount = 0;
     }
 
     public void addArtifact(AbstractArtifact artifact) {
@@ -73,6 +74,10 @@ public class Player extends AbstractGameParticipant {
     @NotNull
     public Move move(@NotNull KeyStroke keyStroke, GameModel model) throws
             IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         if (keyStroke.getKeyType() == KeyType.Escape) {
             return Move.NONE;
         }

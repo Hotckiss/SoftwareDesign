@@ -27,6 +27,7 @@ public class Berserk extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
+        this.freezeCount = 0;
     }
 
     @Override
@@ -36,6 +37,10 @@ public class Berserk extends AbstractGameParticipant {
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        if (freezeCount > 0) {
+            return Move.NONE;
+        }
+
         return new AggressiveStrategy().preferredMove(position, model);
     }
 }
