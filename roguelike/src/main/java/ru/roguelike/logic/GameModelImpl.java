@@ -2,6 +2,7 @@ package ru.roguelike.logic;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractArtifact;
@@ -14,11 +15,9 @@ import ru.roguelike.view.Drawable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class GameModelImpl implements GameModel {
-    private static Logger logger = Logger.getLogger("GameModelImpl");
     private List<List<AbstractGameObject>> fieldModel;
     private Player player;
     private FinalKey key;
@@ -83,7 +82,7 @@ public class GameModelImpl implements GameModel {
         if (player.isAlive() && isFinished) {
             gameSituation.add("You win!");
         }
-        logger.info(String.join(System.lineSeparator(), gameSituation));
+        RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
         return gameSituation;
     }
 
@@ -96,7 +95,7 @@ public class GameModelImpl implements GameModel {
     public void makeAction(Screen screen) throws IOException {
         screen.refresh();
         KeyStroke keyStroke = screen.readInput();
-        logger.info("Input from user: " + keyStroke.getCharacter());
+        RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
         if (keyStroke.getCharacter() != null) {
             if (keyStroke.getCharacter().equals('h')) {
                 showHelpScreen = true;
@@ -111,20 +110,20 @@ public class GameModelImpl implements GameModel {
         }
 
         Move playerMove = player.move(keyStroke, this);
-        logger.info("Move " + playerMove);
+        RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(player, playerMove);
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
         for (AbstractGameParticipant mob : mobs) {
             Move to = mob.move(keyStroke, this);
-            logger.info("Mob move " + to + " from position " + mob.getPosition().getX()
+            RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
                     + " " + mob.getPosition().getY());
             applyMove(mob, to);
         }
 
         if (!player.isAlive()) {
-            logger.info("Lose");
+            RoguelikeLogger.INSTANCE.log_info("Lose");
             gameLog.add("You lose!");
         }
 

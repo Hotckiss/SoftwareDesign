@@ -29,6 +29,7 @@ public final class RoguelikeLogger {
 
     /**
      * Log not error information
+     *
      * @param info message
      */
     public void log_info(String info) {
@@ -37,6 +38,7 @@ public final class RoguelikeLogger {
 
     /**
      * Log error information
+     *
      * @param error message
      */
     public void log_error(String error) {
