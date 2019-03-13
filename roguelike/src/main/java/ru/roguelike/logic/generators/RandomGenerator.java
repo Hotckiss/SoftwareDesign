@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Generates a random field for a new game.
+ */
 public class RandomGenerator implements GameGenerator {
-    private static String[] mobsIds = { "ber", "simple", "flier", "mag", "vam", "yeti" };
-    private static String[] artifactsIds = { "csword", "fsword", "fgoblet", "hw", "rp", "sb" };
+    private static String[] mobsIds = {"ber", "simple", "flier", "mag", "vam", "yeti"};
+    private static String[] artifactsIds = {"csword", "fsword", "fgoblet", "hw", "rp", "sb"};
 
     private double wallsProbability;
     private int mobsCount;

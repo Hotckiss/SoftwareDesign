@@ -7,6 +7,9 @@ import ru.roguelike.view.Drawable;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Represents a model (current state) of the game.
+ */
 public interface GameModel {
     boolean finished();
 

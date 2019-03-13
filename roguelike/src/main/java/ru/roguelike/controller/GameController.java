@@ -6,6 +6,9 @@ import ru.roguelike.view.ConsoleView;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+/**
+ * Controls the game process.
+ */
 public class GameController {
     private static Logger logger = Logger.getLogger("GameController");
     private GameModel game;
@@ -16,6 +19,11 @@ public class GameController {
         this.view = view;
     }
 
+    /**
+     * Starts the game process
+     *
+     * @throws IOException if it occurs during user's input reading.
+     */
     public void runGame() throws IOException {
         logger.info("Game started");
         while (!game.finished()) {

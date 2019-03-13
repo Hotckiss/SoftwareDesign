@@ -1,13 +1,9 @@
 package ru.roguelike.models.objects.base;
 
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
-import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.artifacts.FinalKey;
-import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
@@ -15,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents participant of the game (in current implementation it can
+ * player or mob).
+ */
 public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable {
     //фулл хп
     protected int fullHealth;
@@ -36,7 +36,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     protected int regeneration;
 
     public void hit(AbstractGameParticipant opponent) {
-        opponent.health = (int)(Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
+        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
     }
 
     public void regenerate() {
@@ -51,6 +51,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         return health;
     }
 
+    /**
+     * Collects a artifact.
+     *
+     * @param artifact is an artifact to be collected.
+     */
     public void enableArtifact(AbstractArtifact artifact) {
         health = Math.min(fullHealth, health + artifact.restoringHealth);
         fireDamageMultiplier += artifact.fireDamageMultiplierBonus;
@@ -60,6 +65,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         regeneration += artifact.regenerationBonus;
     }
 
+    /**
+     * Disables an artifact (loses it).
+     *
+     * @param artifact is an artifact to be disabled.
+     */
     public void disableArtifact(AbstractArtifact artifact) {
         fireDamageMultiplier -= artifact.fireDamageMultiplierBonus;
         fireProbability -= artifact.fireProbabilityBonus;
@@ -77,11 +87,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         int x = position.getX();
         int y = position.getY();
 
-        if (x - 1 >= 0 && availableForMob(field,x - 1, y)) {
+        if (x - 1 >= 0 && availableForMob(field, x - 1, y)) {
             availableMoves.add(Move.TOP);
         }
 
-        if (x + 1 < field.size() && availableForMob(field,x + 1, y)) {
+        if (x + 1 < field.size() && availableForMob(field, x + 1, y)) {
             availableMoves.add(Move.DOWN);
         }
 
@@ -89,7 +99,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
             availableMoves.add(Move.LEFT);
         }
 
-        if (y + 1 < field.get(x).size() && availableForMob(field,x, y + 1)) {
+        if (y + 1 < field.get(x).size() && availableForMob(field, x, y + 1)) {
             availableMoves.add(Move.RIGHT);
         }
 

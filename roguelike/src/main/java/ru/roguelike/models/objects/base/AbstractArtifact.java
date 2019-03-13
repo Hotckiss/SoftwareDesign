@@ -1,5 +1,9 @@
 package ru.roguelike.models.objects.base;
 
+/**
+ * Represents an element of the game (artifact), which is placed on board and
+ * can be collected by player or mob.
+ */
 public abstract class AbstractArtifact extends AbstractGameObject {
     //сколько воостановит здоровья
     protected int restoringHealth;

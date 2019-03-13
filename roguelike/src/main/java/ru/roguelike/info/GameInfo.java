@@ -3,7 +3,13 @@ package ru.roguelike.info;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a general info about the rules of the game.
+ */
 public class GameInfo {
+    /**
+     * @return description of mobs in the game.
+     */
     private static List<String> getMobsInfo() {
         List<String> info = new ArrayList<>();
         info.add("S - Simple Mob. Able to do physical damage.");
@@ -24,6 +30,9 @@ public class GameInfo {
         return info;
     }
 
+    /**
+     * @return info about available commands
+     */
     private static List<String> getControlInfo() {
         List<String> info = new ArrayList<>();
         info.add("w, a, s, d - move top, left, down, right respectively.");
@@ -33,6 +42,9 @@ public class GameInfo {
         return info;
     }
 
+    /**
+     * @return whole information about the game.
+     */
     public static List<String> getInfo() {
         List<String> info = new ArrayList<>();
 

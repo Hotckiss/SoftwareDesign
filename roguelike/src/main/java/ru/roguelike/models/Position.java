@@ -1,5 +1,8 @@
 package ru.roguelike.models;
 
+/**
+ * Represents a position of object.
+ */
 public class Position {
     private int x;
     private int y;

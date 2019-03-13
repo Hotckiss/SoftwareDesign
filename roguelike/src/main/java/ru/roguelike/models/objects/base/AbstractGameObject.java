@@ -4,6 +4,9 @@ import ru.roguelike.logic.Positionable;
 import ru.roguelike.models.Position;
 import ru.roguelike.view.Drawable;
 
+/**
+ * Represents an element which is present in the game.
+ */
 public abstract class AbstractGameObject implements Drawable, Positionable {
     // позиция на поле
     protected Position position;
