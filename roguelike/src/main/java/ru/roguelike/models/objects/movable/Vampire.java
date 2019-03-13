@@ -3,6 +3,9 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Has less health, but regenerates some part of lost health after damage.
+ */
 public class Vampire extends AbstractGameParticipant {
     public Vampire(Position position) {
         this.position = position;

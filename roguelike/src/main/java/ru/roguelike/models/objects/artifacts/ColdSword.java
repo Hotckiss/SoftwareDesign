@@ -3,6 +3,9 @@ package ru.roguelike.models.objects.artifacts;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractArtifact;
 
+/**
+ * In addition to physical damage can freeze the opponent.
+ */
 public class ColdSword extends AbstractArtifact {
     public ColdSword(Position position) {
         this.position = position;
@@ -16,6 +19,9 @@ public class ColdSword extends AbstractArtifact {
         this.fireDamageMultiplierBonus = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'c';

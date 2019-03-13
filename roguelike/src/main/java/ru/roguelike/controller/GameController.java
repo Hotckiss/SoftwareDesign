@@ -1,5 +1,6 @@
 package ru.roguelike.controller;
 
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.generators.FromFileGenerator;
@@ -15,7 +16,7 @@ public class GameController {
     private GameModel game;
     private ConsoleView view;
 
-    public GameController(GameModel model, ConsoleView view) {
+    public GameController(@NotNull GameModel model, @NotNull ConsoleView view) {
         this.game = model;
         this.view = view;
     }

@@ -12,16 +12,25 @@ public abstract class AbstractGameObject implements Drawable, Positionable {
     protected Position position;
     protected boolean isAvailable;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPosition(Position newPosition) {
         position = newPosition;
     }
 
+    /**
+     * @return if the object is available.
+     */
     public boolean available() {
         return isAvailable;
     }

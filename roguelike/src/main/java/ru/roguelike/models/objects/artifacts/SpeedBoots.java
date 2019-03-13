@@ -4,6 +4,10 @@ import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractArtifact;
 
 //TODO: multi-movement logic
+
+/**
+ * Allows to make two actions in one move.
+ */
 public class SpeedBoots extends AbstractArtifact {
     public SpeedBoots(Position position) {
         this.position = position;
@@ -17,6 +21,9 @@ public class SpeedBoots extends AbstractArtifact {
         this.fireDamageMultiplierBonus = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 's';

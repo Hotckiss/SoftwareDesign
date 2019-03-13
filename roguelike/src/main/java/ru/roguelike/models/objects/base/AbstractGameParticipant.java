@@ -1,6 +1,7 @@
 package ru.roguelike.models.objects.base;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
@@ -56,7 +57,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      *
      * @param artifact is an artifact to be collected.
      */
-    public void enableArtifact(AbstractArtifact artifact) {
+    public void enableArtifact(@NotNull AbstractArtifact artifact) {
         health = Math.min(fullHealth, health + artifact.restoringHealth);
         fireDamageMultiplier += artifact.fireDamageMultiplierBonus;
         fireProbability += artifact.fireProbabilityBonus;
@@ -70,7 +71,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      *
      * @param artifact is an artifact to be disabled.
      */
-    public void disableArtifact(AbstractArtifact artifact) {
+    public void disableArtifact(@NotNull AbstractArtifact artifact) {
         fireDamageMultiplier -= artifact.fireDamageMultiplierBonus;
         fireProbability -= artifact.fireProbabilityBonus;
         freezeProbability -= artifact.freezeProbabilityBonus;
@@ -108,7 +109,8 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         return availableMoves.get(random.nextInt(availableMoves.size()));
     }
 
-    private boolean availableForMob(List<List<AbstractGameObject>> field, int x, int y) {
+    private boolean availableForMob(@NotNull List<List<AbstractGameObject>> field,
+                                    int x, int y) {
         return !(field.get(x).get(y) instanceof Wall || field.get(x).get(y) instanceof AbstractArtifact);
     }
 }

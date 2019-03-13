@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 public class ConsoleViewImpl implements ConsoleView {
     private List<List<Character>> field = new ArrayList<>();
     private List<String> info = new ArrayList<>();
@@ -37,6 +40,10 @@ public class ConsoleViewImpl implements ConsoleView {
             e.printStackTrace();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         //TODO: clear logs if needed (do not clear game log)
@@ -44,6 +51,9 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DrawingResult draw(List<List<Drawable>> figures, List<String> info, List<String> log,
                      boolean showHelpScreen, boolean loadMapFromFile) throws IOException {
@@ -106,7 +116,10 @@ public class ConsoleViewImpl implements ConsoleView {
         
         return fileName.toString();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Screen getScreen() {
         return gameScreen;
@@ -117,7 +130,7 @@ public class ConsoleViewImpl implements ConsoleView {
         for (int i = 0; i < field.size(); i++) {
             List<Character> row = field.get(i);
 
-            for(int j = 0; j < row.size(); j++) {
+            for (int j = 0; j < row.size(); j++) {
                 gameScreen.setCharacter(j, i, new TextCharacter(row.get(j)));
             }
         }

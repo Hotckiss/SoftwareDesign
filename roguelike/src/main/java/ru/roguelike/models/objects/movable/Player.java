@@ -2,7 +2,7 @@ package ru.roguelike.models.objects.movable;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.screen.Screen;
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.List;
 
+/**
+ * Represents a player.
+ */
 public class Player extends AbstractGameParticipant {
     private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
 
@@ -59,14 +62,17 @@ public class Player extends AbstractGameParticipant {
      * a - left,
      * s - down,
      * d - right,
-     * e -
-     * q -
-     * @param model  -- is a current game state
+     * e - enable artifact,
+     * q - disable artifact.
+     *
+     * @param model -- is a current game state
      * @return a move corresponding to the user's action.
      * @throws IOException if it occurs
      */
     @Override
-    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+    @NotNull
+    public Move move(@NotNull KeyStroke keyStroke, GameModel model) throws
+            IOException {
         if (keyStroke.getKeyType() == KeyType.Escape) {
             return Move.NONE;
         }

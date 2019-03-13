@@ -1,5 +1,7 @@
 package ru.roguelike.info;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class GameInfo {
     /**
      * @return description of mobs in the game.
      */
+    @NotNull
     private static List<String> getMobsInfo() {
         List<String> info = new ArrayList<>();
         info.add("S - Simple Mob. Able to do physical damage.");
@@ -33,6 +36,7 @@ public class GameInfo {
     /**
      * @return info about available commands
      */
+    @NotNull
     private static List<String> getControlInfo() {
         List<String> info = new ArrayList<>();
         info.add("w, a, s, d - move top, left, down, right respectively.");
@@ -45,6 +49,7 @@ public class GameInfo {
     /**
      * @return whole information about the game.
      */
+    @NotNull
     public static List<String> getInfo() {
         List<String> info = new ArrayList<>();
 

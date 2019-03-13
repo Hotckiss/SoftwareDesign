@@ -3,6 +3,10 @@ package ru.roguelike.models.objects.artifacts;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractArtifact;
 
+/**
+ * Regenerates the health and gives constant ability
+ * of regeneration.
+ */
 public class RegenerationPotion extends AbstractArtifact {
     public RegenerationPotion(Position position) {
         this.position = position;
@@ -16,6 +20,9 @@ public class RegenerationPotion extends AbstractArtifact {
         this.fireDamageMultiplierBonus = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'r';

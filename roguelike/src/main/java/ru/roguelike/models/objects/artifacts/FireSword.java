@@ -16,6 +16,9 @@ public class FireSword extends AbstractArtifact {
         this.fireDamageMultiplierBonus = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'f';
