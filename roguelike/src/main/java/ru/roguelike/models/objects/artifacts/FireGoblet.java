@@ -19,6 +19,9 @@ public class FireGoblet extends AbstractArtifact {
         this.fireDamageMultiplierBonus = 1.0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'g';

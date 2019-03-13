@@ -2,6 +2,7 @@ package ru.roguelike.logic;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * {@inheritDoc}
+ */
 public class GameModelImpl implements GameModel {
     private List<List<AbstractGameObject>> fieldModel;
     private Player player;
@@ -39,16 +43,25 @@ public class GameModelImpl implements GameModel {
         this.artifacts = artifacts;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean finished() {
         return isFinished;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<List<Drawable>> makeDrawable() {
         return (List) fieldModel;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getInfo() {
         List<String> info = new ArrayList<>();
@@ -60,6 +73,9 @@ public class GameModelImpl implements GameModel {
         return info;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getLog() {
         List<String> gameSituation = new ArrayList<>();
@@ -86,13 +102,19 @@ public class GameModelImpl implements GameModel {
         return gameSituation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<List<AbstractGameObject>> getField() {
         return fieldModel;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void makeAction(Screen screen) throws IOException {
+    public void makeAction(@NotNull Screen screen) throws IOException {
         screen.refresh();
         KeyStroke keyStroke = screen.readInput();
         RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
@@ -134,7 +156,8 @@ public class GameModelImpl implements GameModel {
         player.regenerate();
     }
 
-    private void applyMove(AbstractGameParticipant participant, Move move) {
+    private void applyMove(@NotNull AbstractGameParticipant participant, @NotNull
+            Move move) {
         Position pos = participant.getPosition();
         Position to = pos.none();
 
@@ -211,7 +234,7 @@ public class GameModelImpl implements GameModel {
         participant.setPosition(to);
     }
 
-    private boolean isValidPosition(Position position) {
+    private boolean isValidPosition(@NotNull Position position) {
         return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
     }
 

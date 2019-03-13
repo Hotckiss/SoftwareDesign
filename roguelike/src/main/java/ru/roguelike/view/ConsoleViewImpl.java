@@ -1,20 +1,20 @@
 package ru.roguelike.view;
 
 import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import ru.roguelike.info.GameInfo;
-import ru.roguelike.models.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 public class ConsoleViewImpl implements ConsoleView {
     private List<List<Character>> field = new ArrayList<>();
     private List<String> info = new ArrayList<>();
@@ -29,7 +29,7 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
-            
+
             this.gameScreen = screen;
 
             gameScreen.startScreen();
@@ -38,6 +38,10 @@ public class ConsoleViewImpl implements ConsoleView {
             e.printStackTrace();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         //TODO: clear logs if needed (do not clear game log)
@@ -45,6 +49,9 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void draw(List<List<Drawable>> figures, List<String> info, List<String> log, boolean showHelpScreen) {
         if (showHelpScreen) {
@@ -58,6 +65,9 @@ public class ConsoleViewImpl implements ConsoleView {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Screen getScreen() {
         return gameScreen;
@@ -68,7 +78,7 @@ public class ConsoleViewImpl implements ConsoleView {
         for (int i = 0; i < field.size(); i++) {
             List<Character> row = field.get(i);
 
-            for(int j = 0; j < row.size(); j++) {
+            for (int j = 0; j < row.size(); j++) {
                 gameScreen.setCharacter(j, i, new TextCharacter(row.get(j)));
             }
         }

@@ -1,5 +1,6 @@
 package ru.roguelike.logic.generators;
 
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.models.Position;
@@ -36,6 +37,9 @@ public class RandomGenerator implements GameGenerator {
         this.height = height;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameModel generate() {
         List<List<AbstractGameObject>> field = new ArrayList<>();
@@ -89,7 +93,8 @@ public class RandomGenerator implements GameGenerator {
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
 
-    private AbstractArtifact makeArtifactForId(String id, Position position) {
+    @NotNull
+    private AbstractArtifact makeArtifactForId(@NotNull String id, Position position) {
         switch (id) {
             case "csword":
                 return new ColdSword(position);
@@ -108,7 +113,9 @@ public class RandomGenerator implements GameGenerator {
         }
     }
 
-    private AbstractGameParticipant makeMobForId(String id, Position position) {
+    @NotNull
+    private AbstractGameParticipant makeMobForId(@NotNull String id, Position
+            position) {
         switch (id) {
             case "ber":
                 return new Berserk(position);
@@ -127,7 +134,8 @@ public class RandomGenerator implements GameGenerator {
         }
     }
 
-    private Position generateRandomPosition(Random random) {
+    @NotNull
+    private Position generateRandomPosition(@NotNull Random random) {
         int x = random.nextInt(width);
         int y = random.nextInt(height);
 

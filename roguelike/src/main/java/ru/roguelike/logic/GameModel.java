@@ -11,6 +11,9 @@ import java.util.List;
  * Represents a model (current state) of the game.
  */
 public interface GameModel {
+    /**
+     * @return if the game is finished
+     */
     boolean finished();
 
     /**
@@ -41,5 +44,8 @@ public interface GameModel {
      */
     void makeAction(Screen screen) throws IOException;
 
+    /**
+     * @return if a help screen should be shown
+     */
     boolean isShowHelpScreen();
 }
