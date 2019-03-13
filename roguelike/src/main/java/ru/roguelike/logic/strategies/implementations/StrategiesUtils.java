@@ -8,6 +8,9 @@ import ru.roguelike.models.objects.movable.Player;
 
 import java.util.List;
 
+/**
+ * Utils for available positions
+ */
 public class StrategiesUtils {
     public static boolean availableForMob(@NotNull List<List<AbstractGameObject>> field,
                                     int x, int y) {

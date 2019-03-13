@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Aggressive strategy: attack player in next position
+ */
 public class AggressiveStrategy implements Strategy {
     private Strategy defaultStrategy = new RandomStrategy();
 
