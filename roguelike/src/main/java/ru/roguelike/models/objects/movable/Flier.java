@@ -3,6 +3,10 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Mob which is able to make to strokes in one move.
+ * Has less help than simple mob.
+ */
 public class Flier extends AbstractGameParticipant {
     public Flier(Position position) {
         this.position = position;

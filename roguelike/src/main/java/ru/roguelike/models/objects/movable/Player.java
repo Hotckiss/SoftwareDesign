@@ -2,7 +2,6 @@ package ru.roguelike.models.objects.movable;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
@@ -15,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.List;
 
+/**
+ * Represents a player.
+ */
 public class Player extends AbstractGameParticipant {
     private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
 
@@ -61,7 +63,8 @@ public class Player extends AbstractGameParticipant {
      * d - right,
      * e -
      * q -
-     * @param model  -- is a current game state
+     *
+     * @param model -- is a current game state
      * @return a move corresponding to the user's action.
      * @throws IOException if it occurs
      */

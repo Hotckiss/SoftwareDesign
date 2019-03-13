@@ -3,6 +3,10 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Simple monster with low physical damage which who has a higher probability
+ * to do freeze damage.
+ */
 public class Yeti extends AbstractGameParticipant {
     public Yeti(Position position) {
         this.position = position;

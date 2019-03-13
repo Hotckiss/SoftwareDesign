@@ -3,6 +3,9 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Represents a simple mob.
+ */
 public class SimpleMob extends AbstractGameParticipant {
     public SimpleMob(Position position) {
         this.position = position;

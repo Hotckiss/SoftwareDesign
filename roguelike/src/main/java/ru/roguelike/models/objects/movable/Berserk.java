@@ -3,6 +3,9 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Mob, who has higher physical damage but less health.
+ */
 public class Berserk extends AbstractGameParticipant {
     public Berserk(Position position) {
         this.position = position;

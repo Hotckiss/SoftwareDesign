@@ -3,6 +3,10 @@ package ru.roguelike.models.objects.movable;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
+/**
+ * Has less health but can regenerate quickly.
+ * Has small physical damage, but can strike only with fire.
+ */
 public class Magician extends AbstractGameParticipant {
     public Magician(Position position) {
         this.position = position;
