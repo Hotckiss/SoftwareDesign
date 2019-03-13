@@ -38,6 +38,10 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     protected int regeneration;
     //сколько ходов еще заморожен
     protected int freezeCount;
+    //сколько ходов еще горит
+    protected int fireCount;
+    //сколько получает огненного урона
+    protected int fireValue;
 
     public void hit(AbstractGameParticipant opponent) {
         Random random = new Random();
@@ -47,6 +51,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         if (random.nextDouble() < freezeProbability) {
             opponent.freezeCount = 3;
         }
+        // opponent fired
+        if (random.nextDouble() < fireProbability) {
+            opponent.fireCount = 3;
+            opponent.fireValue = (int)(fireDamageMultiplier * fireDamage);
+        }
     }
 
     public void regenerate() {
@@ -55,6 +64,13 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
     public void freezeStep() {
         freezeCount = Math.max(0, freezeCount - 1);
+    }
+
+    public void fireStep() {
+        if (fireCount > 0) {
+            health = (int) (Math.max(0, health - fireValue));
+            fireCount--;
+        }
     }
 
     public boolean isAlive() {

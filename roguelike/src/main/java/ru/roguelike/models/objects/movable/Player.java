@@ -28,7 +28,7 @@ public class Player extends AbstractGameParticipant {
         this.fullHealth = 100;
         this.health = 100;
         this.physicalDamage = 20;
-        this.fireDamage = 0;
+        this.fireDamage = 5;
         this.freezeProbability = 0;
         this.fireProbability = 0;
         this.physicalDamageMultiplier = 1;

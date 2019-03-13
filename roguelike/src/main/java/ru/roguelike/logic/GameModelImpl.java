@@ -170,13 +170,21 @@ public class GameModelImpl implements GameModel {
         }
 
         for (AbstractGameParticipant mob : mobs) {
+            mob.fireStep();
             mob.regenerate();
             mob.freezeStep();
         }
 
+        //remove burned mobs
+        mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
+
+        player.fireStep();
+
         if (player.isAlive()) {
             player.regenerate();
             player.freezeStep();
+        } else {
+            isFinished = true;
         }
     }
 
