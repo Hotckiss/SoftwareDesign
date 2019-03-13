@@ -42,4 +42,7 @@ public interface GameModel {
     void makeAction(Screen screen) throws IOException;
 
     boolean isShowHelpScreen();
+    boolean isLoadMapFromFile();
+    void setErrorWhileLoadingMap(boolean errorWhileLoadingMap);
+    void setLoadMapFromFile(boolean loadMapFromFile);
 }

@@ -1,15 +1,14 @@
 package ru.roguelike.view;
 
 import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import ru.roguelike.info.GameInfo;
-import ru.roguelike.models.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
-            
+
             this.gameScreen = screen;
 
             gameScreen.startScreen();
@@ -46,7 +45,30 @@ public class ConsoleViewImpl implements ConsoleView {
 
 
     @Override
-    public void draw(List<List<Drawable>> figures, List<String> info, List<String> log, boolean showHelpScreen) {
+    public DrawingResult draw(List<List<Drawable>> figures, List<String> info, List<String> log,
+                     boolean showHelpScreen, boolean loadMapFromFile) throws IOException {
+        String fileName = null;
+        
+        if (loadMapFromFile) {
+            TerminalPosition startCursorPosition = gameScreen.getCursorPosition();
+            String text = "Enter filename: ";
+
+            for (int i = startCursorPosition.getColumn(); i < startCursorPosition.getColumn() + text.length(); i++) {
+                gameScreen.setCharacter(i, startCursorPosition.getRow(),
+                        new TextCharacter(text.charAt(i - startCursorPosition.getColumn())));
+            }
+
+            gameScreen.setCursorPosition(new TerminalPosition(startCursorPosition.getColumn() + text.length(),
+                    startCursorPosition.getRow()));
+
+            try {
+                gameScreen.refresh();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            fileName = getFileName(gameScreen.getCursorPosition());
+        }
         if (showHelpScreen) {
             drawInfo(GameInfo.getInfo());
         } else {
@@ -56,8 +78,35 @@ public class ConsoleViewImpl implements ConsoleView {
 
             drawInner();
         }
+
+        return new DrawingResult(loadMapFromFile, fileName);
     }
 
+    private String getFileName(TerminalPosition cursorPosition) throws IOException {
+        KeyStroke keyStroke = gameScreen.readInput();
+        StringBuilder fileName = new StringBuilder();
+
+        while (keyStroke.getKeyType() != KeyType.Enter) {
+            if (keyStroke.getCharacter() != null && keyStroke.getKeyType() != KeyType.Delete) {
+                fileName.append(keyStroke.getCharacter());
+                gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
+                        new TextCharacter(keyStroke.getCharacter()));
+                gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
+                        cursorPosition.getRow()));
+                cursorPosition = gameScreen.getCursorPosition();
+
+                try {
+                    gameScreen.refresh();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            keyStroke = gameScreen.readInput();
+        }
+        
+        return fileName.toString();
+    }
+    
     @Override
     public Screen getScreen() {
         return gameScreen;

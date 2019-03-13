@@ -26,6 +26,8 @@ public class GameModelImpl implements GameModel {
     private List<String> gameLog = new ArrayList<>();
     private boolean isFinished = false;
     private boolean showHelpScreen = false;
+    private boolean loadMapFromFile = false;
+    private boolean errorWhileLoadingMap = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -53,8 +55,9 @@ public class GameModelImpl implements GameModel {
     public List<String> getInfo() {
         List<String> info = new ArrayList<>();
         info.add("Game INFO:");
-        info.add("P - player, k - key to wi");
+        info.add("P - player, k - key to win");
         info.add("Press h for more info");
+        info.add("Press l for loading map from file");
         info.add("");
 
         return info;
@@ -63,6 +66,7 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<String> getLog() {
         List<String> gameSituation = new ArrayList<>();
+
         gameSituation.add("Health: " + player.getHealth() + " Items: " + player.getArtifactsLog());
 
         StringBuilder mobsHealth = new StringBuilder();
@@ -83,6 +87,13 @@ public class GameModelImpl implements GameModel {
             gameSituation.add("You win!");
         }
         RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
+
+
+        if (errorWhileLoadingMap) {
+            gameSituation.add("Error while loading map!");
+            errorWhileLoadingMap = false;
+        }
+
         return gameSituation;
     }
 
@@ -95,7 +106,9 @@ public class GameModelImpl implements GameModel {
     public void makeAction(Screen screen) throws IOException {
         screen.refresh();
         KeyStroke keyStroke = screen.readInput();
+
         RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
+
         if (keyStroke.getCharacter() != null) {
             if (keyStroke.getCharacter().equals('h')) {
                 showHelpScreen = true;
@@ -103,6 +116,13 @@ public class GameModelImpl implements GameModel {
             if (keyStroke.getCharacter().equals('r')) {
                 showHelpScreen = false;
             }
+            if (keyStroke.getCharacter().equals('l')) {
+                loadMapFromFile = true;
+            }
+        }
+
+        if (loadMapFromFile) {
+            return;
         }
 
         if (showHelpScreen) {
@@ -231,5 +251,21 @@ public class GameModelImpl implements GameModel {
 
     public void setShowHelpScreen(boolean showHelpScreen) {
         this.showHelpScreen = showHelpScreen;
+    }
+
+    public boolean isLoadMapFromFile() {
+        return loadMapFromFile;
+    }
+
+    public void setLoadMapFromFile(boolean loadMapFromFile) {
+        this.loadMapFromFile = loadMapFromFile;
+    }
+
+    public boolean isErrorWhileLoadingMap() {
+        return errorWhileLoadingMap;
+    }
+
+    public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
+        this.errorWhileLoadingMap = errorWhileLoadingMap;
     }
 }
