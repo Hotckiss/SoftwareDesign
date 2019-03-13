@@ -25,6 +25,7 @@ public final class RoguelikeLogger {
         } catch (Exception ex) {
             System.err.println("Can't specify log file");
         }
+        System.out.println("Logger initialized");
     }
 
     /**

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.objects.map.Wall;
 
 import java.io.IOException;
@@ -81,36 +82,6 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
-        List<Move> availableMoves = new ArrayList<>();
-        availableMoves.add(Move.NONE);
-
-        List<List<AbstractGameObject>> field = model.getField();
-        int x = position.getX();
-        int y = position.getY();
-
-        if (x - 1 >= 0 && availableForMob(field, x - 1, y)) {
-            availableMoves.add(Move.TOP);
-        }
-
-        if (x + 1 < field.size() && availableForMob(field, x + 1, y)) {
-            availableMoves.add(Move.DOWN);
-        }
-
-        if (y - 1 >= 0 && availableForMob(field, x, y - 1)) {
-            availableMoves.add(Move.LEFT);
-        }
-
-        if (y + 1 < field.get(x).size() && availableForMob(field, x, y + 1)) {
-            availableMoves.add(Move.RIGHT);
-        }
-
-        Random random = new Random();
-
-        return availableMoves.get(random.nextInt(availableMoves.size()));
-    }
-
-    private boolean availableForMob(@NotNull List<List<AbstractGameObject>> field,
-                                    int x, int y) {
-        return !(field.get(x).get(y) instanceof Wall || field.get(x).get(y) instanceof AbstractArtifact);
+        return new RandomStrategy().preferredMove(position, model);
     }
 }
