@@ -95,7 +95,7 @@ public class GameModelImpl implements GameModel {
 
         gameSituation.add(mobsHealth.toString());
 
-        if (!player.isAlive()) {
+        if (!player.isAlive() && isFinished) {
             gameSituation.add("You lose!");
         }
 
@@ -173,7 +173,9 @@ public class GameModelImpl implements GameModel {
             mob.regenerate();
         }
 
-        player.regenerate();
+        if (player.isAlive()) {
+            player.regenerate();
+        }
     }
 
     private void applyMove(@NotNull AbstractGameParticipant participant, @NotNull

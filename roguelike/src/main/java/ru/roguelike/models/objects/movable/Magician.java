@@ -1,7 +1,13 @@
 package ru.roguelike.models.objects.movable;
 
+import com.googlecode.lanterna.input.KeyStroke;
+import ru.roguelike.logic.GameModel;
+import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+
+import java.io.IOException;
 
 /**
  * Has less health but can regenerate quickly.
@@ -26,5 +32,10 @@ public class Magician extends AbstractGameParticipant {
     @Override
     public Character getDrawingFigure() {
         return 'M';
+    }
+
+    @Override
+    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+        return new AggressiveStrategy().preferredMove(position, model);
     }
 }
