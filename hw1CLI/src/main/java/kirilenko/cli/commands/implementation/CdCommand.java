@@ -28,16 +28,20 @@ public class CdCommand extends AbstractCommand {
      */
     @Override
     public CommandResult execute(List<String> input) throws CliException {
-        if (input.size() > 1) {
+        if (arguments.size() > 1) {
             throw new CliException("cd: too many arguments");
         }
 
-        if (!input.isEmpty()) {
-            try {
-                Environment.setCurrentDirectory(input.get(0));
-            } catch (NoSuchDirectoryException exception) {
-                throw new CliException("cd: " + input.get(0) + ": no such directory");
-            }
+        String directory;
+        if (arguments.isEmpty()) {
+            directory = System.getProperty("user.home");
+        } else {
+            directory = arguments.get(0);
+        }
+        try {
+            Environment.setCurrentDirectory(directory);
+        } catch (NoSuchDirectoryException exception) {
+            throw new CliException("cd: " + directory + ": no such directory");
         }
 
         return new CommandResult(Collections.emptyList());

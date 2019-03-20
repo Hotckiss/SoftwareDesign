@@ -4,6 +4,7 @@ import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 
 import java.io.IOException;
@@ -33,7 +34,9 @@ public class ExternalCommand extends AbstractCommand {
     public CommandResult execute(List<String> input) throws CliException {
         try {
             String[] args = arguments.toArray(new String[0]);
-            Process commandProcess = Runtime.getRuntime().exec(args);
+            Process commandProcess = new ProcessBuilder(args)
+                    .directory(Environment.getCurrentDirectory().toFile())
+                    .start();
             FileIO.writeLines(input, commandProcess.getOutputStream());
             commandProcess.getOutputStream().close();
             return new CommandResult(FileIO.readLines(commandProcess.getInputStream()));

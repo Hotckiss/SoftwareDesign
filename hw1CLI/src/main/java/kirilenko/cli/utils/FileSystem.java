@@ -25,7 +25,7 @@ public class FileSystem {
         if (!Files.exists(newDirectory) || !Files.isDirectory(newDirectory)) {
             throw new NoSuchDirectoryException();
         }
-        currentDirectory = newDirectory;
+        currentDirectory = newDirectory.toAbsolutePath().normalize();
     }
 
     public Path getCurrentDirectory() {

@@ -24,7 +24,7 @@ public class LsCommandTest {
     @Test
     public void testLsNoArguments() throws Exception {
         File testFolder = createTemporaryFolderWithFiles("file1", "f2");
-        new CdCommand(Collections.emptyList()).execute(Collections.singletonList(testFolder.getPath()));
+        new CdCommand(Collections.singletonList(testFolder.getPath())).execute(Collections.emptyList());
 
         List<String> result = new LsCommand(Collections.emptyList())
                 .execute(Collections.emptyList()).getOutput();
