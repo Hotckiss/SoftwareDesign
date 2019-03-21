@@ -35,8 +35,8 @@ public class LsCommandTest {
     @Test
     public void testLsOneArgument() throws Exception {
         File testFolder = createTemporaryFolderWithFiles("file1", "f2");
-        List<String> result = new LsCommand(Collections.emptyList())
-                .execute(Collections.singletonList(testFolder.getPath())).getOutput();
+        List<String> result = new LsCommand(Collections.singletonList(testFolder.getPath()))
+                .execute(Collections.emptyList()).getOutput();
         assertEquals(1, result.size());
         assertTrue(result.get(0).equals("file1 f2") || result.get(0).equals("f2 file1"));
     }
@@ -46,8 +46,8 @@ public class LsCommandTest {
         File testFolder1 = createTemporaryFolderWithFiles("file1", "f2");
         File testFolder2 = createTemporaryFolderWithFiles("f1", "abc");
 
-        List<String> result = new LsCommand(Collections.emptyList())
-                .execute(Arrays.asList(testFolder1.getPath(), testFolder2.getPath())).getOutput();
+        List<String> result = new LsCommand(Arrays.asList(testFolder1.getPath(), testFolder2.getPath()))
+                .execute(Collections.emptyList()).getOutput();
         assertEquals(2, result.size());
         assertTrue(result.get(0).equals("file1 f2") || result.get(0).equals("f2 file1"));
         assertTrue(result.get(1).equals("abc f1") || result.get(1).equals("f1 abc"));
@@ -58,7 +58,7 @@ public class LsCommandTest {
         File testFolder = createTemporaryFolderWithFiles();
         exception.expect(CliException.class);
         exception.expectMessage("ls: " + testFolder.getPath() + "k: no such directory");
-        new LsCommand(Collections.emptyList()).execute(Collections.singletonList(testFolder.getPath() + "k"));
+        new LsCommand(Collections.singletonList(testFolder.getPath() + "k")).execute(Collections.emptyList());
     }
 
     private File createTemporaryFolderWithFiles(String... filesToCreate) throws IOException {

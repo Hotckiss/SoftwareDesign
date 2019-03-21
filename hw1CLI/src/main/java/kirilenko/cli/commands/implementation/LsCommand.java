@@ -30,12 +30,12 @@ public class LsCommand extends AbstractCommand {
     public CommandResult execute(List<String> input) throws CliException {
         List<String> result = new ArrayList<>();
 
-        if (input.isEmpty()) {
+        if (arguments.isEmpty()) {
             String[] dirContent = getDirectoryContent(Environment.getCurrentDirectory().toFile());
             result.add(String.join(" ", dirContent));
         }
 
-        for (String directory : input) {
+        for (String directory : arguments) {
             String[] dirContent = getDirectoryContent(Environment.getFile(directory));
             result.add(String.join(" ", dirContent));
         }
