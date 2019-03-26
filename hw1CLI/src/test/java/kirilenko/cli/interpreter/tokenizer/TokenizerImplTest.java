@@ -26,7 +26,7 @@ public class TokenizerImplTest {
             queue.add(c);
         }
 
-        assertEquals("echo", tokenizer.parseToken(queue, TokenizerImpl.NAME_CHARACTERS::contains, false));
+        assertEquals("echo", tokenizer.parseToken(queue, TokenizerImpl.isNameCharacter, false));
     }
 
     /**
@@ -42,6 +42,6 @@ public class TokenizerImplTest {
             queue.add(c);
         }
 
-        assertEquals("a", tokenizer.parseToken(queue, TokenizerImpl.NAME_CHARACTERS::contains, false));
+        assertEquals("a", tokenizer.parseToken(queue, TokenizerImpl.isNameCharacter, false));
     }
 }

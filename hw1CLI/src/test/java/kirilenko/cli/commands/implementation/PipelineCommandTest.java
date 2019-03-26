@@ -15,9 +15,11 @@ import static org.junit.Assert.*;
  * Pipeline command test
  */
 public class PipelineCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -30,13 +32,13 @@ public class PipelineCommandTest {
         AbstractCommand echo = new EchoCommand(Arrays.asList(t1, t2));
         AbstractCommand wc = new WcCommand(Collections.emptyList());
         List<String> result = new PipelineCommand(Collections.emptyList(), echo, wc)
-                .execute(Collections.emptyList())
+                .execute(Collections.emptyList(), testEnvironment)
                 .getOutput();
 
         assertEquals(3, result.size());
-        assertEquals("2", result.get(0));
+        assertEquals("1", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals(String.valueOf(t1.length() + t2.length() + 1), result.get(2));
+        assertEquals(String.valueOf(t1.getBytes().length + t2.getBytes().length + 1), result.get(2));
     }
 
     /**
@@ -51,13 +53,13 @@ public class PipelineCommandTest {
         AbstractCommand wc = new WcCommand(Collections.emptyList());
         AbstractCommand echoCat = new PipelineCommand(Collections.emptyList(), echo, cat);
         List<String> result = new PipelineCommand(Collections.emptyList(), echoCat, wc)
-                .execute(Collections.emptyList())
+                .execute(Collections.emptyList(), testEnvironment)
                 .getOutput();
 
         assertEquals(3, result.size());
-        assertEquals("2", result.get(0));
+        assertEquals("1", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals(String.valueOf(t1.length() + t2.length() + 1), result.get(2));
+        assertEquals(String.valueOf(t1.getBytes().length + t2.getBytes().length + 1), result.get(2));
     }
 
     /**
@@ -72,11 +74,11 @@ public class PipelineCommandTest {
         AbstractCommand wc2 = new WcCommand(Collections.emptyList());
         List<String> result = new PipelineCommand(Collections.emptyList(),
                 new PipelineCommand(Collections.emptyList(), echo, wc1),
-                wc2).execute(Collections.emptyList()).getOutput();
+                wc2).execute(Collections.emptyList(), testEnvironment).getOutput();
 
         assertEquals(3, result.size());
         assertEquals("3", result.get(0));
         assertEquals("3", result.get(1));
-        assertEquals("6", result.get(2));
+        assertEquals("4", result.get(2));
     }
 }

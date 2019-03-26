@@ -12,9 +12,11 @@ import static org.junit.Assert.*;
  * Exit command test
  */
 public class ExitCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -22,6 +24,6 @@ public class ExitCommandTest {
      */
     @Test
     public void testExit() throws Exception {
-        assertTrue(new ExitCommand(Collections.emptyList()).execute(Collections.emptyList()).isExit());
+        assertTrue(new ExitCommand(Collections.emptyList()).execute(Collections.emptyList(), testEnvironment).isExit());
     }
 }

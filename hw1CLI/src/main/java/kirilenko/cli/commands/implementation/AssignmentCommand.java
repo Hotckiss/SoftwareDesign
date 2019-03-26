@@ -1,13 +1,13 @@
 package kirilenko.cli.commands.implementation;
 
-import kirilenko.cli.interpreter.parser.ParserImpl;
-import kirilenko.cli.utils.Environment;
-import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Special command that sets new variables in CLI
@@ -17,7 +17,6 @@ public final class AssignmentCommand extends AbstractCommand {
      * Any variable must have name
      */
     private final String variableName;
-    private final Logger logger = Logger.getLogger(AssignmentCommand.class.getName());
 
     /**
      * Constructs assignment command with specified variable name
@@ -37,13 +36,13 @@ public final class AssignmentCommand extends AbstractCommand {
      * @return result of command
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         if (arguments.size() != 1) {
-            logger.info("Assign of multiple values, aborted ");
-            return CommandResult.ABORT;
+            CLILogger.INSTANCE.log_info("Assign of multiple values, aborted");
+            throw new CliException("Assign of multiple values, aborted");
         }
 
-        Environment.setVariable(variableName, arguments.get(0));
+        environment.setVariable(variableName, arguments.get(0));
         return CommandResult.EMPTY;
     }
 }

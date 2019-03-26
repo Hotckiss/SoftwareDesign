@@ -13,9 +13,11 @@ import static org.junit.Assert.*;
  * Assign command tests
  */
 public class AssignmentCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -23,8 +25,8 @@ public class AssignmentCommandTest {
      */
     @Test
     public void assignTest() throws Exception {
-        new AssignmentCommand(Collections.singletonList("text"), "t").execute(Collections.emptyList());
-        assertEquals("text", Environment.getVariable("t"));
+        new AssignmentCommand(Collections.singletonList("text"), "t").execute(Collections.emptyList(), testEnvironment);
+        assertEquals("text", testEnvironment.getVariable("t"));
     }
 
     /**
@@ -32,9 +34,9 @@ public class AssignmentCommandTest {
      */
     @Test
     public void reassignTest() throws Exception {
-        new AssignmentCommand(Collections.singletonList("text"), "t").execute(Collections.emptyList());
-        new AssignmentCommand(Collections.singletonList("text1"), "t").execute(Collections.emptyList());
-        assertEquals("text1", Environment.getVariable("t"));
+        new AssignmentCommand(Collections.singletonList("text"), "t").execute(Collections.emptyList(), testEnvironment);
+        new AssignmentCommand(Collections.singletonList("text1"), "t").execute(Collections.emptyList(), testEnvironment);
+        assertEquals("text1", testEnvironment.getVariable("t"));
     }
 
     /**
@@ -42,6 +44,6 @@ public class AssignmentCommandTest {
      */
     @Test(expected = NoSuchVariableException.class)
     public void noSuchVariableTest() throws Exception {
-        Environment.getVariable("ex");
+        testEnvironment.getVariable("ex");
     }
 }

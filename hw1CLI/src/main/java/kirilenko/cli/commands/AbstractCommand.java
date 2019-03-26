@@ -1,6 +1,8 @@
 package kirilenko.cli.commands;
 
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,8 +29,9 @@ public abstract class AbstractCommand {
     /**
      * Abstract method that is specific for each command
      * @param input command input data
+     * @param environment current CLI environment
      * @return command execution result
      * @throws CliException if any error occurred
      */
-    public abstract CommandResult execute(List<String> input) throws CliException;
+    public abstract CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException;
 }

@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
  * Cat command test
  */
 public class CatCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -24,7 +26,7 @@ public class CatCommandTest {
      */
     @Test
     public void testEmpty() throws Exception {
-        List<String> result = new CatCommand(Collections.emptyList()).execute(Collections.emptyList()).getOutput();
+        List<String> result = new CatCommand(Collections.emptyList()).execute(Collections.emptyList(), testEnvironment).getOutput();
         assertTrue(result.isEmpty());
     }
 
@@ -35,7 +37,7 @@ public class CatCommandTest {
     public void testCat() throws Exception {
         String t1 = "text1";
         String t2 = "text2";
-        List<String> result = new CatCommand(Collections.emptyList()).execute(Arrays.asList(t1, t2)).getOutput();
+        List<String> result = new CatCommand(Collections.emptyList()).execute(Arrays.asList(t1, t2), testEnvironment).getOutput();
         assertEquals(2, result.size());
         assertEquals(t1, result.get(0));
         assertEquals(t2, result.get(1));
@@ -50,7 +52,7 @@ public class CatCommandTest {
         List<String> result = new PipelineCommand(Collections.emptyList(),
                 new EchoCommand(Collections.singletonList(t)),
                 new CatCommand(Collections.emptyList()))
-                .execute(Collections.emptyList())
+                .execute(Collections.emptyList(), testEnvironment)
                 .getOutput();
         assertEquals(1, result.size());
         assertEquals(t, result.get(0));

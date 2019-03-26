@@ -10,9 +10,11 @@ import static org.junit.Assert.assertEquals;
  * Substitutor test class
  */
 public class SubstitutorImplTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -23,7 +25,7 @@ public class SubstitutorImplTest {
         Substitutor substitutor = new SubstitutorImpl();
         String statement = "aaa";
 
-        assertEquals("aaa", substitutor.substitute(statement));
+        assertEquals("aaa", substitutor.substitute(statement, testEnvironment));
     }
 
     /**
@@ -32,10 +34,10 @@ public class SubstitutorImplTest {
     @Test
     public void substituteTestSingleQuoted() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
-        Environment.setVariable("t", "text");
+        testEnvironment.setVariable("t", "text");
         String statement = "'$t'";
 
-        assertEquals("'$t'", substitutor.substitute(statement));
+        assertEquals("'$t'", substitutor.substitute(statement, testEnvironment));
     }
 
     /**
@@ -44,10 +46,10 @@ public class SubstitutorImplTest {
     @Test
     public void substituteTestDoubleQuoted() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
-        Environment.setVariable("t", "text");
+        testEnvironment.setVariable("t", "text");
         String statement = '"' + "$t" + '"';
 
-        assertEquals("\"text\"", substitutor.substitute(statement));
+        assertEquals("\"text\"", substitutor.substitute(statement, testEnvironment));
     }
 
     /**
@@ -56,9 +58,9 @@ public class SubstitutorImplTest {
     @Test
     public void substituteTestMulti() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
-        Environment.setVariable("t", "text");
+        testEnvironment.setVariable("t", "text");
         String statement = "\"$t\" '$t'";
 
-        assertEquals("\"text\" '$t'", substitutor.substitute(statement));
+        assertEquals("\"text\" '$t'", substitutor.substitute(statement, testEnvironment));
     }
 }

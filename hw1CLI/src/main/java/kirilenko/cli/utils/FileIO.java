@@ -1,11 +1,11 @@
 package kirilenko.cli.utils;
 
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.exceptions.FileIOException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -13,15 +13,13 @@ import java.util.stream.Collectors;
  * Class for reading lines from file and writing lines to output
  */
 public final class FileIO {
-    private static final Logger logger = Logger.getLogger(FileIO.class.getName());
-
     /**
      * Reads all lines of specified file
      * @param input input file stream
      * @return file lines list
      */
     public static List<String> readLines(@NotNull InputStream input) {
-        logger.info("FileIO: try to read lines from file");
+        CLILogger.INSTANCE.log_info("FileIO: try to read lines from file");
         return new BufferedReader(new InputStreamReader(input)).lines().collect(Collectors.toList());
     }
 
@@ -38,13 +36,20 @@ public final class FileIO {
         stringStream.forEach(
                 str -> {
                     try {
-                        logger.info("FileIO: writing new line...");
-                        writer.write(str + "\n");
-                        writer.flush();
+                        CLILogger.INSTANCE.log_info("FileIO: writing new line...");
+                        writer.write(str + System.lineSeparator());
                     } catch (IOException e) {
-                        logger.warning("FileIO: error during writing line: " + str);
+                        CLILogger.INSTANCE.log_error("FileIO: error during writing line: " + str);
                         throw new FileIOException(e.getMessage());
                     }
                 });
+
+        try {
+            CLILogger.INSTANCE.log_info("FileIO: flush stream...");
+            writer.flush();
+        } catch (IOException e) {
+            CLILogger.INSTANCE.log_error("FileIO: error during flush");
+            throw new FileIOException(e.getMessage());
+        }
     }
 }

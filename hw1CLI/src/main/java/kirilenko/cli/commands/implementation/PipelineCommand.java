@@ -3,6 +3,7 @@ package kirilenko.cli.commands.implementation;
 import kirilenko.cli.exceptions.CliException;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.utils.Environment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -36,18 +37,18 @@ public final class PipelineCommand extends AbstractCommand {
 
     /**
      * Executes left commands sequence to produce arguments
-     * and then rins right sequence with that arguments
+     * and then runs right sequence with that arguments
      * @param input command input data
      * @return completed execution result
      * @throws CliException if any execution error occurred
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
-        CommandResult first = left.execute(input);
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
+        CommandResult first = left.execute(input, environment);
         if (first.isAborted() || first.isExit()) {
             return first;
         }
 
-        return right.execute(first.getOutput());
+        return right.execute(first.getOutput(), environment);
     }
 }

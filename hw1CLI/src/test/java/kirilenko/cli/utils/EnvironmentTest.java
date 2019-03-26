@@ -10,9 +10,11 @@ import static org.junit.Assert.*;
  * Environment test class
  */
 public class EnvironmentTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -20,8 +22,8 @@ public class EnvironmentTest {
      */
     @Test
     public void testSetGet() throws Exception {
-        Environment.setVariable("t", "test");
-        assertEquals("test", Environment.getVariable("t"));
+        testEnvironment.setVariable("t", "test");
+        assertEquals("test", testEnvironment.getVariable("t"));
     }
 
     /**
@@ -29,6 +31,6 @@ public class EnvironmentTest {
      */
     @Test(expected = NoSuchVariableException.class)
     public void testNoVariable() throws Exception {
-        Environment.getVariable("t");
+        testEnvironment.getVariable("t");
     }
 }

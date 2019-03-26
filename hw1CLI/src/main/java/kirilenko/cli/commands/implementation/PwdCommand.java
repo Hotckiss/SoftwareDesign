@@ -2,6 +2,8 @@ package kirilenko.cli.commands.implementation;
 
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.commands.AbstractCommand;
+import kirilenko.cli.utils.Environment;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -25,7 +27,7 @@ public class PwdCommand extends AbstractCommand {
      * @return command result with current directory
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) {
         String path = Paths.get("").toAbsolutePath().toString();
 
         return new CommandResult(Collections.singletonList(path));

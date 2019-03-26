@@ -8,19 +8,21 @@ import kirilenko.cli.interpreter.parser.Parser;
 import kirilenko.cli.interpreter.parser.ParserImpl;
 import kirilenko.cli.interpreter.substitutor.Substitutor;
 import kirilenko.cli.interpreter.substitutor.SubstitutorImpl;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 /**
  * CLI main class
  */
 public class Main {
-    private static Logger logger = Logger.getLogger(Main.class.getName());
+    private static final Substitutor substitutor = new SubstitutorImpl();
+    private static final Parser parser = new ParserImpl();
+    private static final Environment CLIEnvironment = new Environment();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -32,26 +34,24 @@ public class Main {
                     break;
                 }
             } catch (CliException e) {
-                logger.warning("CLI was aborted with error: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI was aborted with error: " + e.getMessage());
                 System.err.println(e.getMessage());
             } catch (FileIOException e) {
-                logger.warning("CLI was aborted with I/O error: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI was aborted with I/O error: " + e.getMessage());
                 e.getCause().printStackTrace();
             } catch (NoSuchElementException e) {
-                logger.warning("CLI was aborted with variable name: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI was aborted with variable name: " + e.getMessage());
                 scanner = new Scanner(System.in);
             } catch (Exception e) {
-                logger.warning("CLI was aborted with unknown error: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI was aborted with unknown error: " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
     private static boolean execute(String input, OutputStream output) throws CliException {
-        Substitutor substitutor = new SubstitutorImpl();
-        Parser parser = new ParserImpl();
-        AbstractCommand start = parser.parse(substitutor.substitute(input));
-        CommandResult result = start.execute(Collections.emptyList());
+        AbstractCommand start = parser.parse(substitutor.substitute(input, CLIEnvironment));
+        CommandResult result = start.execute(Collections.emptyList(), CLIEnvironment);
         if (result.isExit()) {
             return true;
         }
