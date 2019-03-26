@@ -12,9 +12,6 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'application'
-mainClassName = 'kirilenko.cli.Main'
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -25,4 +22,10 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'kirilenko.cli.Main'
+    }
 }
