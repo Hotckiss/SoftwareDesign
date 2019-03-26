@@ -19,7 +19,7 @@ public final class Environment {
      * @param name variable identifier
      * @param value variable new value
      */
-    public static void setVariable(@NotNull String name,
+    public void setVariable(@NotNull String name,
                                    @NotNull String value) {
         CLILogger.INSTANCE.log_info("Environment: update variable with name: " + name + " new value is: " + value);
         VARIABLES_STORAGE.put(name, value);
@@ -31,7 +31,7 @@ public final class Environment {
      * @return variable value
      * @throws NoSuchVariableException if variable with input name doesn't exist
      */
-    public static String getVariable(@NotNull String name) throws NoSuchVariableException {
+    public String getVariable(@NotNull String name) throws NoSuchVariableException {
         if (!VARIABLES_STORAGE.containsKey(name)) {
             CLILogger.INSTANCE.log_error("No such variable in environment: " + name);
             throw new NoSuchVariableException(name);
@@ -44,7 +44,7 @@ public final class Environment {
     /**
      * Clears environment variables
      */
-    public static void clear() {
+    public void clear() {
         VARIABLES_STORAGE.clear();
     }
 }

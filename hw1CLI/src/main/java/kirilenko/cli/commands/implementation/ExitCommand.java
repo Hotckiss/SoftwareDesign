@@ -2,6 +2,8 @@ package kirilenko.cli.commands.implementation;
 
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.utils.Environment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class ExitCommand extends AbstractCommand {
      * @return exit command result
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) {
         return CommandResult.EXIT;
     }
 }

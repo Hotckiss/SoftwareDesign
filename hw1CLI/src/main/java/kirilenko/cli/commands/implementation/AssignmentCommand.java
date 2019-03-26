@@ -36,13 +36,13 @@ public final class AssignmentCommand extends AbstractCommand {
      * @return result of command
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         if (arguments.size() != 1) {
             CLILogger.INSTANCE.log_info("Assign of multiple values, aborted");
             throw new CliException("Assign of multiple values, aborted");
         }
 
-        Environment.setVariable(variableName, arguments.get(0));
+        environment.setVariable(variableName, arguments.get(0));
         return CommandResult.EMPTY;
     }
 }

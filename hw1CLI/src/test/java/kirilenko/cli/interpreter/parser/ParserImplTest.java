@@ -20,9 +20,11 @@ import static org.junit.Assert.assertTrue;
  * Parser test class
  */
 public class ParserImplTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -32,11 +34,11 @@ public class ParserImplTest {
     public void parseEcho() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        Environment.setVariable("t", "text");
-        AbstractCommand result = parser.parse(substitutor.substitute("echo $t"));
+        testEnvironment.setVariable("t", "text");
+        AbstractCommand result = parser.parse(substitutor.substitute("echo $t", testEnvironment));
         assertTrue(result instanceof EchoCommand);
 
-        List<String> executionResult = result.execute(Collections.emptyList()).getOutput();
+        List<String> executionResult = result.execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(1, executionResult.size());
         assertEquals("text", executionResult.get(0));
     }
@@ -48,13 +50,13 @@ public class ParserImplTest {
     public void parseEchoFromVariables() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        Environment.setVariable("a", "ec");
-        Environment.setVariable("b", "ho");
-        Environment.setVariable("c", "xxx");
-        AbstractCommand result = parser.parse(substitutor.substitute("$a$b $c"));
+        testEnvironment.setVariable("a", "ec");
+        testEnvironment.setVariable("b", "ho");
+        testEnvironment.setVariable("c", "xxx");
+        AbstractCommand result = parser.parse(substitutor.substitute("$a$b $c", testEnvironment));
         assertTrue(result instanceof EchoCommand);
 
-        List<String> executionResult = result.execute(Collections.emptyList()).getOutput();
+        List<String> executionResult = result.execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(1, executionResult.size());
         assertEquals("xxx", executionResult.get(0));
     }
@@ -66,10 +68,10 @@ public class ParserImplTest {
     public void parseQuotedPipe() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("echo \"xxx|\""));
+        AbstractCommand result = parser.parse(substitutor.substitute("echo \"xxx|\"", testEnvironment));
         assertTrue(result instanceof EchoCommand);
 
-        List<String> executionResult = result.execute(Collections.emptyList()).getOutput();
+        List<String> executionResult = result.execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(1, executionResult.size());
         assertEquals("xxx|", executionResult.get(0));
     }
@@ -81,11 +83,11 @@ public class ParserImplTest {
     public void parseAssign() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("a=5"));
+        AbstractCommand result = parser.parse(substitutor.substitute("a=5", testEnvironment));
         assertTrue(result instanceof AssignmentCommand);
 
-        CommandResult res = result.execute(Collections.emptyList());
-        assertEquals("5", Environment.getVariable("a"));
+        CommandResult res = result.execute(Collections.emptyList(), testEnvironment);
+        assertEquals("5", testEnvironment.getVariable("a"));
     }
 
     /**
@@ -95,10 +97,10 @@ public class ParserImplTest {
     public void parsePipes() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("echo 123 | cat | wc"));
+        AbstractCommand result = parser.parse(substitutor.substitute("echo 123 | cat | wc", testEnvironment));
         assertTrue(result instanceof PipelineCommand);
 
-        List<String> res = result.execute(Collections.emptyList()).getOutput();
+        List<String> res = result.execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(3, res.size());
         assertEquals("1", res.get(0));
         assertEquals("1", res.get(1));
@@ -112,7 +114,7 @@ public class ParserImplTest {
     public void parseCat() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("cat file.in"));
+        AbstractCommand result = parser.parse(substitutor.substitute("cat file.in", testEnvironment));
         assertTrue(result instanceof CatCommand);
     }
 
@@ -123,7 +125,7 @@ public class ParserImplTest {
     public void parseExit() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("exit"));
+        AbstractCommand result = parser.parse(substitutor.substitute("exit", testEnvironment));
         assertTrue(result instanceof ExitCommand);
     }
 
@@ -134,7 +136,7 @@ public class ParserImplTest {
     public void parsePwd() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("pwd"));
+        AbstractCommand result = parser.parse(substitutor.substitute("pwd", testEnvironment));
         assertTrue(result instanceof PwdCommand);
     }
 
@@ -145,7 +147,7 @@ public class ParserImplTest {
     public void parseWc() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("wc"));
+        AbstractCommand result = parser.parse(substitutor.substitute("wc", testEnvironment));
         assertTrue(result instanceof WcCommand);
     }
 
@@ -156,7 +158,7 @@ public class ParserImplTest {
     public void parseExternal() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("ls -a"));
+        AbstractCommand result = parser.parse(substitutor.substitute("ls -a", testEnvironment));
         assertTrue(result instanceof ExternalCommand);
     }
 
@@ -167,7 +169,7 @@ public class ParserImplTest {
     public void parseError1() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("''=text"));
+        AbstractCommand result = parser.parse(substitutor.substitute("''=text", testEnvironment));
     }
 
     /**
@@ -177,7 +179,7 @@ public class ParserImplTest {
     public void parseError2() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute(""));
+        AbstractCommand result = parser.parse(substitutor.substitute("", testEnvironment));
     }
 
     /**
@@ -187,6 +189,6 @@ public class ParserImplTest {
     public void parseError3() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("echo 123 |"));
+        AbstractCommand result = parser.parse(substitutor.substitute("echo 123 |", testEnvironment));
     }
 }

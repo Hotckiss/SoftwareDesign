@@ -4,7 +4,9 @@ import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class CatCommand extends AbstractCommand {
      * @return command result that specified above
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         if (arguments.size() > 1) {
             CLILogger.INSTANCE.log_error("Too many arguments in cat command");
             throw new CliException("Too many arguments in cat command");

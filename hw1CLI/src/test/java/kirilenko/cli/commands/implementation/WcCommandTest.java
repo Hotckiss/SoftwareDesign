@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
  * Wc command test
  */
 public class WcCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -24,7 +26,7 @@ public class WcCommandTest {
      */
     @Test
     public void testWcEmpty() throws Exception {
-        List<String> result = new WcCommand(Collections.emptyList()).execute(Collections.emptyList()).getOutput();
+        List<String> result = new WcCommand(Collections.emptyList()).execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(3, result.size());
         assertEquals("0", result.get(0));
         assertEquals("0", result.get(1));
@@ -37,7 +39,7 @@ public class WcCommandTest {
     @Test
     public void testWc1() throws Exception {
         String t = "text";
-        List<String> result = new WcCommand(Collections.emptyList()).execute(Collections.singletonList(t)).getOutput();
+        List<String> result = new WcCommand(Collections.emptyList()).execute(Collections.singletonList(t), testEnvironment).getOutput();
         assertEquals(3, result.size());
         assertEquals("1", result.get(0));
         assertEquals("1", result.get(1));
@@ -51,7 +53,7 @@ public class WcCommandTest {
     public void testWc2() throws Exception {
         String t1 = "text1";
         String t2 = "text2   xx";
-        List<String> result = new WcCommand(Collections.emptyList()).execute(Arrays.asList(t1, t2)).getOutput();
+        List<String> result = new WcCommand(Collections.emptyList()).execute(Arrays.asList(t1, t2), testEnvironment).getOutput();
         assertEquals(3, result.size());
         assertEquals("2", result.get(0));
         assertEquals("3", result.get(1));

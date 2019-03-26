@@ -21,7 +21,7 @@ public class SubstitutorImpl implements Substitutor {
      * {@inheritDoc}
      */
     @Override
-    public String substitute(@NotNull String statement) throws ParseException, NoSuchVariableException {
+    public String substitute(@NotNull String statement, @NotNull Environment environment) throws ParseException, NoSuchVariableException {
         Queue<Character> queue = new LinkedList<>();
 
         for (Character c : statement.toCharArray()) {
@@ -41,7 +41,7 @@ public class SubstitutorImpl implements Substitutor {
             if (queue.element().equals('$')) {
                 queue.remove();
                 CLILogger.INSTANCE.log_info("SubstitutorImpl: substitution start");
-                substituted.append(Environment.getVariable(tokenizer.parseToken(queue, TokenizerImpl.isNameCharacter, false)));
+                substituted.append(environment.getVariable(tokenizer.parseToken(queue, TokenizerImpl.isNameCharacter, false)));
                 CLILogger.INSTANCE.log_info("SubstitutorImpl: substitution completed");
                 continue;
             }
