@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -127,12 +128,11 @@ public class GrepCommandTest {
      * Test match by word
      */
     @Test
-    public void byWordMatchTest() throws Exception {
-        Object[] expected = Arrays.asList("text").toArray();
-        Object[] actual = new GrepCommand(Arrays.asList("-w", "text"))
-                .execute(Arrays.asList("texte", "text", "ttt", "xxx", "qqq"), testEnvironment)
+    public void wordMatchTest() throws Exception {
+        Object[] expected = Collections.singletonList("so me text").toArray();
+        Object[] actual = new GrepCommand(Collections.singletonList("me text"))
+                .execute(Collections.singletonList("so me text"), testEnvironment)
                 .getOutput().toArray();
-
         assertArrayEquals(expected, actual);
     }
 

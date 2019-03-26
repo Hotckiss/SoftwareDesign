@@ -92,12 +92,18 @@ public class GrepCommand extends AbstractCommand {
 
         List<String> result = new ArrayList<>();
         int patternFlags = i ? Pattern.CASE_INSENSITIVE : 0;
-        Pattern pattern = Pattern.compile(extraArgs.get(0), patternFlags);
+        String patternString = extraArgs.get(0);
+
+        if (w) {
+            patternString = "\\b" + patternString + "\\b";
+        }
+
+        Pattern pattern = Pattern.compile(patternString, patternFlags);
 
         int shouldPrintLinesCount = 0;
 
         for (String line : lines) {
-            boolean matched = w ? matchesByWord(line, pattern) : pattern.matcher(line).find();
+            boolean matched = pattern.matcher(line).find();
 
             if (matched || shouldPrintLinesCount > 0) {
                 shouldPrintLinesCount = matched ? A : (shouldPrintLinesCount - 1);
@@ -106,23 +112,5 @@ public class GrepCommand extends AbstractCommand {
         }
 
         return new CommandResult(result);
-    }
-
-    /**
-     * Search matching in line by words
-     * @param line current line for search
-     * @param regex pattern
-     * @return true if matching was successful false otherwise
-     */
-    private boolean matchesByWord(@NotNull String line,
-                                  @NotNull Pattern regex) {
-        String[] words = line.split("\\W+");
-        for (String word : words) {
-            if (regex.matcher(word).matches()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
