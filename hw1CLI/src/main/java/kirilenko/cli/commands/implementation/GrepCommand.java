@@ -1,5 +1,6 @@
 package kirilenko.cli.commands.implementation;
 
+import kirilenko.cli.CLILogger;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
@@ -23,8 +24,6 @@ import java.util.regex.Pattern;
  * Command that search for pattern matches in text
  */
 public class GrepCommand extends AbstractCommand {
-    private final Logger logger = Logger.getLogger(GrepCommand.class.getName());
-
     /**
      * Option that makes search case insensitive if true
      */
@@ -64,11 +63,11 @@ public class GrepCommand extends AbstractCommand {
     public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         final CmdLineParser parser = new CmdLineParser(this);
         try {
-            logger.info("Parse GREP options from args");
+            CLILogger.INSTANCE.log_info("Parse GREP options from args");
             parser.parseArgument(arguments);
         }
         catch (CmdLineException ex) {
-            logger.warning("Unable to parse command-line options");
+            CLILogger.INSTANCE.log_error("Unable to parse command-line options");
             throw new CliException(ex.getMessage());
         }
 
@@ -76,14 +75,14 @@ public class GrepCommand extends AbstractCommand {
 
         // input file was specified
         if (extraArgs.size() == 2) {
-            logger.info("Read input from file: " + extraArgs.get(1));
+            CLILogger.INSTANCE.log_info("Read input from file: " + extraArgs.get(1));
             try (InputStream inputStream = new FileInputStream(extraArgs.get(1))) {
                 lines = FileIO.readLines(inputStream);
             } catch(IOException ex) {
                 throw new CliException(ex.getMessage());
             }
         }  else {
-            logger.info("Read input from pipe: " + input);
+            CLILogger.INSTANCE.log_info("Read input from pipe: " + input);
             lines = input;
         }
 
