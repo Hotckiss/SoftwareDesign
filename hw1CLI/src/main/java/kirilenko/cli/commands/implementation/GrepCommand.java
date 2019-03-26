@@ -71,6 +71,10 @@ public class GrepCommand extends AbstractCommand {
             throw new CliException(ex.getMessage());
         }
 
+        if (A < 0) {
+            throw new IllegalArgumentException("incorrect parameter value: negetive number of lines");
+        }
+
         List<String> lines;
 
         // input file was specified
