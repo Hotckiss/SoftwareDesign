@@ -3,6 +3,7 @@ package kirilenko.cli.commands.implementation;
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
+import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
@@ -60,7 +61,7 @@ public class GrepCommand extends AbstractCommand {
      * {@inheritDoc}
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         final CmdLineParser parser = new CmdLineParser(this);
         try {
             logger.info("Parse GREP options from args");

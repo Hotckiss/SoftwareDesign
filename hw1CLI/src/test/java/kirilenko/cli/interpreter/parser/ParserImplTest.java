@@ -199,7 +199,7 @@ public class ParserImplTest {
     public void parseGrep() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("grep -A xxx yyy"));
+        AbstractCommand result = parser.parse(substitutor.substitute("grep -A xxx yyy", testEnvironment));
         assertTrue(result instanceof GrepCommand);
     }
 
@@ -210,13 +210,13 @@ public class ParserImplTest {
     public void parseGrepInPipes() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("echo 12t 155T 122 | grep -i 1*t | wc"));
+        AbstractCommand result = parser.parse(substitutor.substitute("echo 12t 155T 122 | grep -i 1*t | wc", testEnvironment));
         assertTrue(result instanceof PipelineCommand);
 
-        List<String> res = result.execute(Collections.emptyList()).getOutput();
+        List<String> res = result.execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(3, res.size());
-        assertEquals("2", res.get(0));
-        assertEquals("2", res.get(1));
-        assertEquals("8", res.get(2));
+        assertEquals("1", res.get(0));
+        assertEquals("3", res.get(1));
+        assertEquals("12", res.get(2));
     }
 }
