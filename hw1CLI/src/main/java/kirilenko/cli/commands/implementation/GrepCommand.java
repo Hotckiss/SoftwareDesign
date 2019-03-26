@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -28,19 +27,19 @@ public class GrepCommand extends AbstractCommand {
      * Option that makes search case insensitive if true
      */
     @Option(name="-i", aliases="--ignore case", usage="Ignore case in search")
-    private boolean i;
+    private boolean ignoreCaseFlag;
 
     /**
-     * Option that makes search by words in lines if true
+     * Option that makes search by whole words in lines if true
      */
     @Option(name="-w", aliases="--words", usage="Search only words")
-    private boolean w;
+    private boolean wholeWords;
 
     /**
      * Option that forces to print next N lines after successful match
      */
     @Option(name="-A", aliases="--lines after success", usage="Force print n lines after successful match")
-    private int A;
+    private int forcePrintLinesNumber;
 
     /**
      * Arguments that contains pattern and optional file name
@@ -71,7 +70,7 @@ public class GrepCommand extends AbstractCommand {
             throw new CliException(ex.getMessage());
         }
 
-        if (A < 0) {
+        if (forcePrintLinesNumber < 0) {
             throw new IllegalArgumentException("incorrect parameter value: negetive number of lines");
         }
 
@@ -91,10 +90,10 @@ public class GrepCommand extends AbstractCommand {
         }
 
         List<String> result = new ArrayList<>();
-        int patternFlags = i ? Pattern.CASE_INSENSITIVE : 0;
+        int patternFlags = ignoreCaseFlag ? Pattern.CASE_INSENSITIVE : 0;
         String patternString = extraArgs.get(0);
 
-        if (w) {
+        if (wholeWords) {
             patternString = "\\b" + patternString + "\\b";
         }
 
@@ -106,7 +105,7 @@ public class GrepCommand extends AbstractCommand {
             boolean matched = pattern.matcher(line).find();
 
             if (matched || shouldPrintLinesCount > 0) {
-                shouldPrintLinesCount = matched ? A : (shouldPrintLinesCount - 1);
+                shouldPrintLinesCount = matched ? forcePrintLinesNumber : (shouldPrintLinesCount - 1);
                 result.add(line);
             }
         }
