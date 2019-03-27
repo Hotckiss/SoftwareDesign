@@ -82,7 +82,7 @@ public class GrepCommand extends AbstractCommand {
             CLILogger.INSTANCE.log_info("Read input from file: " + extraArgs.get(1));
             try (InputStream inputStream = new FileInputStream(extraArgs.get(1))) {
                 lines = FileIO.readLines(inputStream);
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 CLILogger.INSTANCE.log_error("IO error: " + ex.getMessage());
                 throw new CliException(ex.getMessage());
             }
