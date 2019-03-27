@@ -71,6 +71,7 @@ public class GrepCommand extends AbstractCommand {
         }
 
         if (forcePrintLinesNumber < 0) {
+            CLILogger.INSTANCE.log_error("incorrect parameter value: negetive number of lines");
             throw new IllegalArgumentException("incorrect parameter value: negetive number of lines");
         }
 
