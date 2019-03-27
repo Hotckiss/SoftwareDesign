@@ -1,8 +1,0 @@
-мар 27, 2019 10:29:34 PM kirilenko.cli.CLILogger log_info
-INFO: CommandsFactoryImpl: try to create GREP command with arguments: [-A, -10, compile, build.gradle]
-мар 27, 2019 10:29:34 PM kirilenko.cli.CLILogger log_info
-INFO: Parse GREP options from args
-мар 27, 2019 10:29:34 PM kirilenko.cli.CLILogger log_error
-WARNING: incorrect parameter value: negetive number of lines
-мар 27, 2019 10:29:34 PM kirilenko.cli.CLILogger log_error
-WARNING: CLI command was aborted with unknown error: incorrect parameter value: negetive number of lines
