@@ -33,15 +33,14 @@ public class Main {
                 if (execute(line, System.out)) {
                     break;
                 }
-            } catch (CliException e) {
-                CLILogger.INSTANCE.log_error("CLI was aborted with error: " + e.getMessage());
             } catch (FileIOException e) {
-                CLILogger.INSTANCE.log_error("CLI was aborted with I/O error: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI command was aborted with I/O error: " + e.getMessage());
             } catch (NoSuchElementException e) {
-                CLILogger.INSTANCE.log_error("CLI was aborted with variable name: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI command was aborted with variable name: " + e.getMessage());
                 scanner = new Scanner(System.in);
             } catch (Exception e) {
-                CLILogger.INSTANCE.log_error("CLI was aborted with unknown error: " + e.getMessage());
+                CLILogger.INSTANCE.log_error("CLI command was aborted with error: " + e.getMessage());
+
             }
         }
     }
