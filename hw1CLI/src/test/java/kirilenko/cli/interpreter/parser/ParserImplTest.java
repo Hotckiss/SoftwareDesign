@@ -158,7 +158,7 @@ public class ParserImplTest {
     public void parseExternal() throws Exception {
         Substitutor substitutor = new SubstitutorImpl();
         Parser parser = new ParserImpl();
-        AbstractCommand result = parser.parse(substitutor.substitute("ls -a", testEnvironment));
+        AbstractCommand result = parser.parse(substitutor.substitute("ks -a"));
         assertTrue(result instanceof ExternalCommand);
     }
 

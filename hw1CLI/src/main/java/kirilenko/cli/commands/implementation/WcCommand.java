@@ -40,7 +40,8 @@ public class WcCommand extends AbstractCommand {
         long fileSize;
 
         if (!arguments.isEmpty()) {
-            File inputFile = new File(arguments.get(0));
+            String fileName = arguments.get(0);
+            File inputFile = Environment.getFile(fileName);
             try (InputStream file = new FileInputStream(inputFile)) {
                 fileSize = inputFile.length();
                 lines = FileIO.readLines(file);

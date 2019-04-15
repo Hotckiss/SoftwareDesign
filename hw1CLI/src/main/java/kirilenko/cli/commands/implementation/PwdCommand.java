@@ -27,8 +27,8 @@ public class PwdCommand extends AbstractCommand {
      * @return command result with current directory
      */
     @Override
-    public CommandResult execute(List<String> input, @NotNull Environment environment) {
-        String path = Paths.get("").toAbsolutePath().toString();
+    public CommandResult execute(List<String> input) {
+        String path = Environment.getCurrentDirectory().toString();
 
         return new CommandResult(Collections.singletonList(path));
     }

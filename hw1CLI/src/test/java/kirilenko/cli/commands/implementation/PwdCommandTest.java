@@ -26,7 +26,7 @@ public class PwdCommandTest {
      */
     @Test
     public void testPwd() throws Exception {
-        String expected = Paths.get("").toAbsolutePath().toString();
+        String expected = Environment.getCurrentDirectory().normalize().toString();
 
         List<String> result = new PwdCommand(Collections.emptyList()).execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(1, result.size());
