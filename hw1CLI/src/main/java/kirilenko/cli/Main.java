@@ -40,6 +40,7 @@ public class Main {
                 scanner = new Scanner(System.in);
             } catch (Exception e) {
                 CLILogger.INSTANCE.log_error("CLI command was aborted with error: " + e.getMessage());
+
             }
         }
     }
