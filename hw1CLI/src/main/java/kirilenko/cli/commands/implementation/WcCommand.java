@@ -6,6 +6,7 @@ import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
 import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +35,7 @@ public class WcCommand extends AbstractCommand {
      * @return command result with three values of counters
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         List<String> lines = input;
         long fileSize;
 

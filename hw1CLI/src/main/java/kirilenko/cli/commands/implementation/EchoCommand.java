@@ -2,6 +2,8 @@ package kirilenko.cli.commands.implementation;
 
 import kirilenko.cli.commands.AbstractCommand;
 import kirilenko.cli.commands.CommandResult;
+import kirilenko.cli.utils.Environment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +27,7 @@ public class EchoCommand extends AbstractCommand {
      * @return command result with all passed arguments
      */
     @Override
-    public CommandResult execute(List<String> input) {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) {
         if (arguments.isEmpty()) {
             return new CommandResult(Collections.emptyList());
         }

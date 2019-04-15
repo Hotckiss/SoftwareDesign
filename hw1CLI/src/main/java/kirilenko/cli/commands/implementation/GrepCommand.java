@@ -27,19 +27,19 @@ public class GrepCommand extends AbstractCommand {
      * Option that makes search case insensitive if true
      */
     @Option(name="-i", aliases="--ignore case", usage="Ignore case in search")
-    private boolean i;
+    private boolean ignoreCaseFlag;
 
     /**
-     * Option that makes search by words in lines if true
+     * Option that makes search by whole words in lines if true
      */
     @Option(name="-w", aliases="--words", usage="Search only words")
-    private boolean w;
+    private boolean wholeWords;
 
     /**
      * Option that forces to print next N lines after successful match
      */
     @Option(name="-A", aliases="--lines after success", usage="Force print n lines after successful match")
-    private int A;
+    private int forcePrintLinesNumber;
 
     /**
      * Arguments that contains pattern and optional file name
@@ -59,7 +59,7 @@ public class GrepCommand extends AbstractCommand {
      * {@inheritDoc}
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         final CmdLineParser parser = new CmdLineParser(this);
         try {
             CLILogger.INSTANCE.log_info("Parse GREP options from args");
@@ -70,6 +70,11 @@ public class GrepCommand extends AbstractCommand {
             throw new CliException(ex.getMessage());
         }
 
+        if (forcePrintLinesNumber < 0) {
+            CLILogger.INSTANCE.log_error("incorrect parameter value: negetive number of lines");
+            throw new IllegalArgumentException("incorrect parameter value: negetive number of lines");
+        }
+
         List<String> lines;
 
         // input file was specified
@@ -78,7 +83,8 @@ public class GrepCommand extends AbstractCommand {
             String fileName = extraArgs.get(1);
             try (InputStream inputStream = new FileInputStream(Environment.getFile(fileName))) {
                 lines = FileIO.readLines(inputStream);
-            } catch(IOException ex) {
+            } catch (IOException ex) {
+                CLILogger.INSTANCE.log_error("IO error: " + ex.getMessage());
                 throw new CliException(ex.getMessage());
             }
         }  else {
@@ -87,38 +93,26 @@ public class GrepCommand extends AbstractCommand {
         }
 
         List<String> result = new ArrayList<>();
-        int patternFlags = i ? Pattern.CASE_INSENSITIVE : 0;
-        Pattern pattern = Pattern.compile(extraArgs.get(0), patternFlags);
+        int patternFlags = ignoreCaseFlag ? Pattern.CASE_INSENSITIVE : 0;
+        String patternString = extraArgs.get(0);
+
+        if (wholeWords) {
+            patternString = "\\b" + patternString + "\\b";
+        }
+
+        Pattern pattern = Pattern.compile(patternString, patternFlags);
 
         int shouldPrintLinesCount = 0;
 
         for (String line : lines) {
-            boolean matched = w ? matchesByWord(line, pattern) : pattern.matcher(line).find();
+            boolean matched = pattern.matcher(line).find();
 
             if (matched || shouldPrintLinesCount > 0) {
-                shouldPrintLinesCount = matched ? A : (shouldPrintLinesCount - 1);
+                shouldPrintLinesCount = matched ? forcePrintLinesNumber : (shouldPrintLinesCount - 1);
                 result.add(line);
             }
         }
 
         return new CommandResult(result);
-    }
-
-    /**
-     * Search matching in line by words
-     * @param line current line for search
-     * @param regex pattern
-     * @return true if matching was successful false otherwise
-     */
-    private boolean matchesByWord(@NotNull String line,
-                                  @NotNull Pattern regex) {
-        String[] words = line.split("\\W+");
-        for (String word : words) {
-            if (regex.matcher(word).matches()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

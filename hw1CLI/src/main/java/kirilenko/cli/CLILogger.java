@@ -42,5 +42,6 @@ public final class CLILogger {
      */
     public void log_error(String error) {
         logger.warning(error);
+        System.err.println(error);
     }
 }

@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
  * Pwd command test
  */
 public class PwdCommandTest {
+    private final Environment testEnvironment = new Environment();
+
     @Before
     public void prepare() {
-        Environment.clear();
+        testEnvironment.clear();
     }
 
     /**
@@ -26,7 +28,7 @@ public class PwdCommandTest {
     public void testPwd() throws Exception {
         String expected = Environment.getCurrentDirectory().normalize().toString();
 
-        List<String> result = new PwdCommand(Collections.emptyList()).execute(Collections.emptyList()).getOutput();
+        List<String> result = new PwdCommand(Collections.emptyList()).execute(Collections.emptyList(), testEnvironment).getOutput();
         assertEquals(1, result.size());
         assertEquals(expected, result.get(0));
     }

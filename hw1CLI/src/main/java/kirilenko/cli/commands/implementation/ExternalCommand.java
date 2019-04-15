@@ -6,6 +6,7 @@ import kirilenko.cli.commands.CommandResult;
 import kirilenko.cli.exceptions.CliException;
 import kirilenko.cli.utils.Environment;
 import kirilenko.cli.utils.FileIO;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ExternalCommand extends AbstractCommand {
      * @throws CliException if error in sub-process occurred
      */
     @Override
-    public CommandResult execute(List<String> input) throws CliException {
+    public CommandResult execute(List<String> input, @NotNull Environment environment) throws CliException {
         try {
             String[] args = arguments.toArray(new String[0]);
             Process commandProcess = new ProcessBuilder(args)
