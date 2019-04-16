@@ -3,9 +3,11 @@ package ru.roguelike.models.objects.movable;
 import com.googlecode.lanterna.input.KeyStroke;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.base.AbstractMob;
 
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
  * Has less health but can regenerate quickly.
  * Has small physical damage, but can strike only with fire.
  */
-public class Magician extends AbstractGameParticipant {
+public class Magician extends AbstractMob {
     public Magician(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -28,19 +30,12 @@ public class Magician extends AbstractGameParticipant {
         this.fireDamageMultiplier = 1;
         this.regeneration = 15;
         this.freezeCount = 0;
+        this.defaultStrategy = new AggressiveStrategy();
+        this.mobStrategy = defaultStrategy;
     }
 
     @Override
     public Character getDrawingFigure() {
         return 'M';
-    }
-
-    @Override
-    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
-        if (freezeCount > 0) {
-            return Move.NONE;
-        }
-
-        return new AggressiveStrategy().preferredMove(position, model);
     }
 }

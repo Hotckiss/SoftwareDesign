@@ -2,20 +2,18 @@ package ru.roguelike.logic.strategies.implementations;
 
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
-import ru.roguelike.logic.strategies.Strategy;
+import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.movable.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Aggressive strategy: attack player in next position
  */
-public class AggressiveStrategy implements Strategy {
-    private Strategy defaultStrategy = new RandomStrategy();
+public class AggressiveStrategy extends AbstractStrategy {
+    private AbstractStrategy defaultStrategy = new RandomStrategy();
 
     @Override
     public Move preferredMove(Position position, GameModel model) {

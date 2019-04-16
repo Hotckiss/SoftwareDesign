@@ -1,12 +1,16 @@
 package ru.roguelike.models.objects.movable;
 
+import ru.roguelike.logic.strategies.AbstractStrategy;
+import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
+import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.base.AbstractMob;
 
 /**
  * Represents a simple mob.
  */
-public class SimpleMob extends AbstractGameParticipant {
+public class SimpleMob extends AbstractMob {
     public SimpleMob(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -21,6 +25,8 @@ public class SimpleMob extends AbstractGameParticipant {
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
         this.freezeCount = 0;
+        this.defaultStrategy = new RandomStrategy();
+        this.mobStrategy = defaultStrategy;
     }
 
     @Override

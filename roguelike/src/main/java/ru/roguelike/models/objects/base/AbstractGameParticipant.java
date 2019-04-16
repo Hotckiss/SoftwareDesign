@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.ConfusedStrategyDecorator;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.objects.map.Wall;
 
@@ -55,6 +56,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         if (random.nextDouble() < fireProbability) {
             opponent.fireCount = 3;
             opponent.fireValue = (int)(fireDamageMultiplier * fireDamage);
+        }
+
+        if (opponent instanceof AbstractMob) {
+            AbstractMob mob = (AbstractMob)opponent;
+            mob.mobStrategy = new ConfusedStrategyDecorator(mob.defaultStrategy, 3);
         }
     }
 

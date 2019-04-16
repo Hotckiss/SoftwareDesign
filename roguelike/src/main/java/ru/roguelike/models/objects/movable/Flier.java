@@ -3,10 +3,11 @@ package ru.roguelike.models.objects.movable;
 import com.googlecode.lanterna.input.KeyStroke;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
 import ru.roguelike.logic.strategies.implementations.CowardStrategy;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.base.AbstractMob;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
  * Mob which is able to make to strokes in one move.
  * Has less help than simple mob.
  */
-public class Flier extends AbstractGameParticipant {
+public class Flier extends AbstractMob {
     public Flier(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -29,19 +30,12 @@ public class Flier extends AbstractGameParticipant {
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
         this.freezeCount = 0;
+        this.defaultStrategy = new CowardStrategy();
+        this.mobStrategy = defaultStrategy;
     }
 
     @Override
     public Character getDrawingFigure() {
         return 'F';
-    }
-
-    @Override
-    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
-        if (freezeCount > 0) {
-            return Move.NONE;
-        }
-
-        return new CowardStrategy().preferredMove(position, model);
     }
 }

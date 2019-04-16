@@ -7,12 +7,12 @@ import ru.roguelike.models.Position;
 /**
  * Interface for preferred move decisions
  */
-public interface Strategy {
+public abstract class AbstractStrategy {
     /**
      * Generate preferred movement
      * @param position current position
      * @param model game situation
      * @return preferred movement
      */
-    Move preferredMove(Position position, GameModel model);
+    public abstract Move preferredMove(Position position, GameModel model);
 }

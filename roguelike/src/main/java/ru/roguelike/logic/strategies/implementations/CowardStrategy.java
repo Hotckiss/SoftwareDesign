@@ -2,7 +2,7 @@ package ru.roguelike.logic.strategies.implementations;
 
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
-import ru.roguelike.logic.strategies.Strategy;
+import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Coward strategy: not attack player in next position
  */
-public class CowardStrategy implements Strategy {
+public class CowardStrategy extends AbstractStrategy {
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();
