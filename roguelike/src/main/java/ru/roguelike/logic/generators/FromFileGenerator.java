@@ -67,7 +67,13 @@ public class FromFileGenerator implements GameGenerator {
         for (int i = 0; i < n; i++) {
             field.add(new ArrayList<>());
             for (int j = 0; j < m; j++) {
-                char c = mapFromFile.get(i).charAt(j);
+
+                char c;
+                try {
+                    c = mapFromFile.get(i).charAt(j);
+                } catch (Exception e) {
+                    return null;
+                }
 
                 switch (c) {
                     case '.':
@@ -97,6 +103,7 @@ public class FromFileGenerator implements GameGenerator {
                     case 'V':
                     case 'Y':
                         field.get(i).add(getMobFromChar(c, new Position(i, j)));
+                        break;
                     case 'c':
                     case 'g':
                     case 'f':
@@ -142,7 +149,7 @@ public class FromFileGenerator implements GameGenerator {
             case 'M' :
                 return new Magician(position);
             case 'S':
-                return new Flier(position);
+                return new SimpleMob(position);
             case 'V':
                 return new Vampire(position);
             case 'Y':
