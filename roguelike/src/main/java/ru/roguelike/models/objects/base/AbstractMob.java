@@ -7,8 +7,13 @@ import ru.roguelike.logic.strategies.AbstractStrategy;
 
 import java.io.IOException;
 
+/**
+ * Class that represents mob with AI strategy
+ */
 public abstract class AbstractMob extends AbstractGameParticipant {
+    // current mob strategy
     protected AbstractStrategy mobStrategy;
+    // default mob strategy
     protected AbstractStrategy defaultStrategy;
 
     @Override

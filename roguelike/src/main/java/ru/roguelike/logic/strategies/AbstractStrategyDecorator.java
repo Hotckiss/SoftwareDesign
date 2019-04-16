@@ -4,6 +4,9 @@ import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
 
+/**
+ * Decorator for strategies
+ */
 public class AbstractStrategyDecorator extends AbstractStrategy {
     protected AbstractStrategy decoratee;
 
