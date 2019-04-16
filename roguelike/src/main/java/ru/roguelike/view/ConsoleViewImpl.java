@@ -97,7 +97,7 @@ public class ConsoleViewImpl implements ConsoleView {
         StringBuilder fileName = new StringBuilder();
 
         while (keyStroke.getKeyType() != KeyType.Enter) {
-            if (keyStroke.getCharacter() != null && keyStroke.getKeyType() != KeyType.Delete) {
+            if (keyStroke.getCharacter() != null && keyStroke.getKeyType() != KeyType.Backspace) {
                 fileName.append(keyStroke.getCharacter());
                 gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
                         new TextCharacter(keyStroke.getCharacter()));
