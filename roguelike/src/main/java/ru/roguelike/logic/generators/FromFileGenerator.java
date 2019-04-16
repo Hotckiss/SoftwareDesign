@@ -1,5 +1,6 @@
 package ru.roguelike.logic.generators;
 
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.models.Position;
@@ -10,8 +11,6 @@ import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
 import ru.roguelike.models.objects.map.Wall;
 import ru.roguelike.models.objects.movable.*;
-import ru.roguelike.view.ConsoleView;
-import ru.roguelike.view.ConsoleViewImpl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,8 +22,6 @@ public class FromFileGenerator implements GameGenerator {
     private List<String> mapFromFile = new ArrayList<>();
 
     public FromFileGenerator(String fileName) {
-        System.out.println(fileName);
-
         BufferedReader reader;
 
         try {
@@ -44,7 +41,7 @@ public class FromFileGenerator implements GameGenerator {
     @Override
     public GameModel generate() {
         if (!ifFileExist) {
-            System.out.println("NOT FILE");
+            RoguelikeLogger.INSTANCE.log_info("File doesn't exist");
             return null;
         }
 
@@ -102,7 +99,9 @@ public class FromFileGenerator implements GameGenerator {
                     case 'S':
                     case 'V':
                     case 'Y':
-                        field.get(i).add(getMobFromChar(c, new Position(i, j)));
+                        AbstractGameParticipant mob = getMobFromChar(c, new Position(i, j));
+                        mobs.add(mob);
+                        field.get(i).add(mob);
                         break;
                     case 'c':
                     case 'g':
@@ -110,7 +109,9 @@ public class FromFileGenerator implements GameGenerator {
                     case 'h':
                     case 'r':
                     case 's':
-                        field.get(i).add(getArtifactFromChar(c, new Position(i, j)));
+                        AbstractArtifact artifact = getArtifactFromChar(c, new Position(i, j));
+                        artifacts.add(artifact);
+                        field.get(i).add(artifact);
                         break;
                     default:
                         return null;
@@ -157,18 +158,5 @@ public class FromFileGenerator implements GameGenerator {
         }
 
         return null;
-    }
-
-    public static void main(String[] args) throws IOException {
-        FromFileGenerator generator = new FromFileGenerator("/Users/aliscafo/map.txt");
-
-        GameModel model = generator.generate();
-
-        System.out.println(model.makeDrawable());
-
-        ConsoleView consoleView = new ConsoleViewImpl();
-        consoleView.draw(model.makeDrawable(), model.getInfo(), model.getLog(),
-                model.isShowHelpScreen(), model.isLoadMapFromFile());
-
     }
 }
