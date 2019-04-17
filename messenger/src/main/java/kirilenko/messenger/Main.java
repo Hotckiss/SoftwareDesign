@@ -1,30 +1,34 @@
 package kirilenko.messenger;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 
-/**
- * Класс, запускающий чат в одностороннем порядке.
- */
-public class Main {
-    /***
-     * Запуск и поддержка работы чата.
-     * @param args должно быть четыре аргумента.
-     *             args[0] - имя пользователя
-     *             args[1] - порт пользователя
-     *             args[2] - адрес подключения
-     *             args[3] - порт подключения
-     * @throws IOException в случае проблем с вводом-выводом в консоль
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+    private static String[] input_args;
+
+    /**
+     * args[0] - имя пользователя
+     * args[1] - порт пользователя
+     * args[2] - адрес подключения
+     * args[3] - порт подключения
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        input_args = args;
+        Application.launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         Messenger messenger;
         try {
-            String author = args[0];
-            int port = Integer.parseInt(args[1]);
-            String peerAddress = args[2];
-            int peerPort = Integer.parseInt(args[3]);
-            messenger = new Messenger(author, port, peerAddress, peerPort, System.out);
+            String author = input_args[0];
+            int port = Integer.parseInt(input_args[1]);
+            String peerAddress = input_args[2];
+            int peerPort = Integer.parseInt(input_args[3]);
+            messenger = new Messenger(author, port, peerAddress, peerPort);
         } catch (ArrayIndexOutOfBoundsException exception) {
             System.err.println("Please, provide four argument! \'author port connection_address connection_port\'");
             return;
@@ -32,12 +36,6 @@ public class Main {
             System.err.println("Failed to bind.");
             return;
         }
-        String input;
-        LineNumberReader lnr = new LineNumberReader(new InputStreamReader(System.in));
-        while (!(input = lnr.readLine()).equals(":quit")) {
-            if (!messenger.sendMessage(input)) {
-                System.err.println("\nCouldn't deliver your message. Please, try again later.\n");
-            }
-        }
+        new UI().run(primaryStage, messenger);
     }
 }
