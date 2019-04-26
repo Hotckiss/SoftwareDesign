@@ -36,5 +36,5 @@ public interface ConsoleView {
      * Shows menu and returns user selection in the menu
      * @return user selection in the menu
      */
-    String showMenu(String[] menuOptions) throws IOException;
+    String showMenu(String[] menuOptions, String error) throws IOException;
 }

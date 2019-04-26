@@ -1,7 +1,11 @@
 package ru.roguelike.logic;
 
 import com.googlecode.lanterna.screen.Screen;
+import ru.roguelike.models.objects.artifacts.FinalKey;
+import ru.roguelike.models.objects.base.AbstractArtifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.Drawable;
 
 import java.io.IOException;
@@ -75,6 +79,21 @@ public interface GameModel {
     /**
      * Starts the game in the desired way.
      * @param selection user menu selection
+     * @param error
      */
-    void startGameFromSelection(String selection);
+    GameModel startGameFromSelection(String selection, String error) throws Exception;
+
+    List<List<AbstractGameObject>> getFieldModel();
+
+    Player getPlayer();
+
+    FinalKey getKey();
+
+    List<AbstractArtifact> getArtifacts();
+
+    List<AbstractGameParticipant> getMobs();
+
+    boolean isSavedGameEqualToCurrent();
+
+    void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent);
 }

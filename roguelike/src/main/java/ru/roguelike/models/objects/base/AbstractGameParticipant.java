@@ -80,11 +80,92 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     }
 
     public boolean isAlive() {
+        System.out.println("HEALTH = " + health);
         return health > 0;
     }
 
     public int getHealth() {
         return health;
+    }
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getFullHealth() {
+        return fullHealth;
+    }
+    public void setFullHealth(int fullHealth) {
+        this.fullHealth = fullHealth;
+    }
+
+    public int getPhysicalDamage() {
+        return physicalDamage;
+    }
+    public void setPhysicalDamage(int physicalDamage) {
+        this.physicalDamage = physicalDamage;
+    }
+
+    public int getFireDamage() {
+        return fireDamage;
+    }
+    public void setFireDamage(int fireDamage) {
+        this.fireDamage = fireDamage;
+    }
+
+    public double getFreezeProbability() {
+        return freezeProbability;
+    }
+    public void setFreezeProbability(double freezeProbability) {
+        this.freezeProbability = freezeProbability;
+    }
+
+    public double getFireProbability() {
+        return fireProbability;
+    }
+    public void setFireProbability(double fireProbability) {
+        this.fireProbability = fireProbability;
+    }
+
+    public double getPhysicalDamageMultiplier() {
+        return physicalDamageMultiplier;
+    }
+    public void setPhysicalDamageMultiplier(double physicalDamageMultiplier) {
+        this.physicalDamageMultiplier = physicalDamageMultiplier;
+    }
+
+    public double getFireDamageMultiplier() {
+        return fireDamageMultiplier;
+    }
+    public void setFireDamageMultiplier(double fireDamageMultiplier) {
+        this.fireDamageMultiplier = fireDamageMultiplier;
+    }
+
+    public int getRegeneration() {
+        return regeneration;
+    }
+    public void setRegeneration(int regeneration) {
+        this.regeneration = regeneration;
+    }
+
+    public int getFreezeCount() {
+        return freezeCount;
+    }
+    public void setFreezeCount(int freezeCount) {
+        this.freezeCount = freezeCount;
+    }
+
+    public int getFireCount() {
+        return fireCount;
+    }
+    public void setFireCount(int fireCount) {
+        this.fireCount = fireCount;
+    }
+
+    public int getFireValue() {
+        return fireValue;
+    }
+    public void setFireValue(int fireValue) {
+        this.fireValue = fireValue;
     }
 
     /**

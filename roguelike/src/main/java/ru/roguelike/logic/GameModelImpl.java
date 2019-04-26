@@ -4,6 +4,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
+import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractArtifact;
@@ -33,6 +34,7 @@ public class GameModelImpl implements GameModel {
     private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
     private String[] startMenuOptions = {"Start new game", "Load saved game"};
+    private boolean isSavedGameEqualToCurrent = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -47,15 +49,23 @@ public class GameModelImpl implements GameModel {
     }
 
     @Override
-    public void startGameFromSelection(String selection) {
+    public GameModel startGameFromSelection(String selection, String error) throws Exception {
         switch (selection) {
             case "Start new game":
-                return;
+                return this;
             case "Load saved game":
-                // TODO(alina): Loading game
-                return;
+                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
+                GameModel newGame = saverAndLoader.loadGame();
+                if (newGame == null) {
+                    throw new Exception("There is not any saved games!");
+                }
+                return newGame;
         }
+
+        return null;
     }
+
+
 
     /**
      * {@inheritDoc}
@@ -82,7 +92,7 @@ public class GameModelImpl implements GameModel {
         info.add("Game INFO:");
         info.add("P - player, k - key to win");
         info.add("Press h for more info");
-        info.add("Press l for loading map from file");
+        info.add("Press l for loading map from file, v for saving game");
         info.add("");
 
         return info;
@@ -153,6 +163,12 @@ public class GameModelImpl implements GameModel {
             if (keyStroke.getCharacter().equals('l')) {
                 loadMapFromFile = true;
             }
+            if (keyStroke.getCharacter().equals('v')) {
+                isSavedGameEqualToCurrent = true;
+                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
+                saverAndLoader.saveGame(this);
+                return;
+            }
         }
 
         if (loadMapFromFile) {
@@ -179,6 +195,10 @@ public class GameModelImpl implements GameModel {
         if (!player.isAlive()) {
             RoguelikeLogger.INSTANCE.log_info("Lose");
             gameLog.add("You lose!");
+            if (isSavedGameEqualToCurrent && isFinished) {
+                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
+                //saverAndLoader.deleteGame();
+            }
         }
 
         for (AbstractGameParticipant mob : mobs) {
@@ -319,5 +339,33 @@ public class GameModelImpl implements GameModel {
     @Override
     public String[] getStartMenuOptions() {
         return startMenuOptions;
+    }
+
+    public List<List<AbstractGameObject>> getFieldModel() {
+        return fieldModel;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public FinalKey getKey() {
+        return key;
+    }
+
+    public List<AbstractArtifact> getArtifacts() {
+        return artifacts;
+    }
+
+    public List<AbstractGameParticipant> getMobs() {
+        return mobs;
+    }
+
+    public boolean isSavedGameEqualToCurrent() {
+        return isSavedGameEqualToCurrent;
+    }
+
+    public void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent) {
+        isSavedGameEqualToCurrent = savedGameEqualToCurrent;
     }
 }

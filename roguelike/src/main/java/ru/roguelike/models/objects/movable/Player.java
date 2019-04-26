@@ -119,7 +119,15 @@ public class Player extends AbstractGameParticipant {
         return Move.NONE;
     }
 
-    private class ArtifactItem {
+    public ArrayDeque<ArtifactItem> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(ArrayDeque<ArtifactItem> artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    public static class ArtifactItem {
         private AbstractArtifact item;
         private boolean isEquipped;
 
