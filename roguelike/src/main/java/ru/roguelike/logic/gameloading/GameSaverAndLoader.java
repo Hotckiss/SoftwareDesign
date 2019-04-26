@@ -49,6 +49,7 @@ public class GameSaverAndLoader {
         // PLAYER INFO
         Position position = player.getPosition();
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
+        appendToFile(savedGameFile,  player.exp() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
         ArrayDeque<Player.ArtifactItem> artifactItems = player.getArtifacts();
         boolean isEquipped = false;
@@ -135,6 +136,10 @@ public class GameSaverAndLoader {
             int x = Integer.parseInt(coords[0]);
             int y = Integer.parseInt(coords[1]);
             player = new Player(new Position(x, y));
+
+            line = reader.readLine();
+            int exp = Integer.parseInt(line);
+            player.setExperience(exp);
 
             line = reader.readLine();
             ArrayDeque<Player.ArtifactItem> artifactItems = new ArrayDeque<>();

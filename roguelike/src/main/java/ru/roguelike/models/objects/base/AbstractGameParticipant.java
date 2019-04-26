@@ -171,6 +171,14 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         this.fireValue = fireValue;
     }
 
+    public int exp() {
+        return experience;
+    }
+
+    public void setExperience(int newExp) {
+        experience = newExp;
+    }
+
     /**
      * Collects a artifact.
      *
