@@ -33,7 +33,7 @@ public class GameController {
         String selection = view.showMenu(menuOptions);
 
         game.startGameFromSelection(selection);
-        
+
         while (!game.finished()) {
             view.clear();
             DrawingResult result = view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen(), game.isLoadMapFromFile());
