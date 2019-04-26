@@ -2,6 +2,7 @@ package ru.roguelike.models.objects.base;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import org.jetbrains.annotations.NotNull;
+import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
@@ -18,7 +19,7 @@ import java.util.Random;
  * Represents participant of the game (in current implementation it can
  * player or mob).
  */
-public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable {
+public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
     //фулл хп
     protected int fullHealth;
     //остаток хп
@@ -37,17 +38,18 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     protected double fireDamageMultiplier;
     //восстанавливает хп в ход
     protected int regeneration;
-    //сколько ходов еще заморожен
+    // self freeze turns count
     protected int freezeCount;
-    //сколько ходов еще горит
+    // self fire turns count
     protected int fireCount;
-    //сколько получает огненного урона
+    // fire damage per turn to self
     protected int fireValue;
 
+    protected int experience;
     public void hit(AbstractGameParticipant opponent) {
         Random random = new Random();
 
-        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
+        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
         // opponent freezed
         if (random.nextDouble() < freezeProbability) {
             opponent.freezeCount = 3;
@@ -62,6 +64,8 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
             AbstractMob mob = (AbstractMob)opponent;
             mob.mobStrategy = new ConfusedStrategyDecorator(mob.defaultStrategy, 3);
         }
+
+        experience += opponent.getExperience();
     }
 
     public void regenerate() {
@@ -80,7 +84,6 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     }
 
     public boolean isAlive() {
-        System.out.println("HEALTH = " + health);
         return health > 0;
     }
 
@@ -202,5 +205,9 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
 
         return new RandomStrategy().preferredMove(position, model);
+    }
+
+    public int getLevel() {
+        return experience / 50 + 1;
     }
 }

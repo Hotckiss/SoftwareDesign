@@ -25,6 +25,7 @@ public class SimpleMob extends AbstractMob {
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
         this.freezeCount = 0;
+        this.experience = 0;
         this.defaultStrategy = new RandomStrategy();
         this.mobStrategy = defaultStrategy;
     }
@@ -32,5 +33,13 @@ public class SimpleMob extends AbstractMob {
     @Override
     public Character getDrawingFigure() {
         return 'S';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 15;
+        }
+
+        return 2;
     }
 }

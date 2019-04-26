@@ -31,11 +31,20 @@ public class Magician extends AbstractMob {
         this.regeneration = 15;
         this.freezeCount = 0;
         this.defaultStrategy = new AggressiveStrategy();
+        this.experience = 0;
         this.mobStrategy = defaultStrategy;
     }
 
     @Override
     public Character getDrawingFigure() {
         return 'M';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 30;
+        }
+
+        return 6;
     }
 }

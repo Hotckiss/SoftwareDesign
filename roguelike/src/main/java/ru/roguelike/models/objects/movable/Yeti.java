@@ -30,6 +30,7 @@ public class Yeti extends AbstractMob {
         this.fireDamageMultiplier = 1;
         this.regeneration = 0;
         this.freezeCount = 0;
+        this.experience = 0;
         this.defaultStrategy = new AggressiveStrategy();
         this.mobStrategy = defaultStrategy;
     }
@@ -37,5 +38,13 @@ public class Yeti extends AbstractMob {
     @Override
     public Character getDrawingFigure() {
         return 'Y';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 20;
+        }
+
+        return 6;
     }
 }

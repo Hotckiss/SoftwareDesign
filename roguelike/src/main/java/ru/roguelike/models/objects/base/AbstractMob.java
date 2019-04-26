@@ -1,6 +1,7 @@
 package ru.roguelike.models.objects.base;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.AbstractStrategy;
