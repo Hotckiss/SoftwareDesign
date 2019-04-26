@@ -42,6 +42,47 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     /**
+     * Shows menu and returns user selection in the menu
+     * @return user selection in the menu
+     */
+    @Override
+    public String showMenu(String[] menuOptions) throws IOException {
+        gameScreen.clear();
+
+        drawOnIthLine(0, "Menu:");
+        int lineNum = 1;
+
+        for (String option : menuOptions) {
+            drawOnIthLine(lineNum + 1, option + " - Press " + lineNum);
+            lineNum++;
+        }
+
+        gameScreen.refresh();
+
+        while (true) {
+            KeyStroke keyStroke = gameScreen.readInput();
+
+            if (keyStroke.getCharacter() != null) {
+                Character character = keyStroke.getCharacter();
+
+                if (Character.isDigit(character)) {
+                    int num = character - '0';
+
+                    if (0 < num && num <= menuOptions.length) {
+                        return menuOptions[num - 1];
+                    }
+                }
+            }
+        }
+    }
+
+    private void drawOnIthLine(int line, String text) {
+        for (int j = 0; j < text.length(); j++) {
+            gameScreen.setCharacter(j, line, new TextCharacter(text.charAt(j)));
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

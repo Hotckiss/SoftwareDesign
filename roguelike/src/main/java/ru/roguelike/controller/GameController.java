@@ -28,6 +28,12 @@ public class GameController {
      */
     public void runGame() throws IOException {
         RoguelikeLogger.INSTANCE.log_info("Game started");
+
+        String[] menuOptions = game.getStartMenuOptions();
+        String selection = view.showMenu(menuOptions);
+
+        game.startGameFromSelection(selection);
+        
         while (!game.finished()) {
             view.clear();
             DrawingResult result = view.draw(game.makeDrawable(), game.getInfo(), game.getLog(), game.isShowHelpScreen(), game.isLoadMapFromFile());
