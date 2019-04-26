@@ -32,7 +32,6 @@ public class GameModelImpl implements GameModel {
     private boolean showHelpScreen = false;
     private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
-    private String[] startMenuOptions = {"Start new game", "Load saved game"};
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -44,17 +43,6 @@ public class GameModelImpl implements GameModel {
         this.key = key;
         this.mobs = mobs;
         this.artifacts = artifacts;
-    }
-
-    @Override
-    public void startGameFromSelection(String selection) {
-        switch (selection) {
-            case "Start new game":
-                return;
-            case "Load saved game":
-                // TODO(alina): Loading game
-                return;
-        }
     }
 
     /**
@@ -314,10 +302,5 @@ public class GameModelImpl implements GameModel {
 
     public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
         this.errorWhileLoadingMap = errorWhileLoadingMap;
-    }
-
-    @Override
-    public String[] getStartMenuOptions() {
-        return startMenuOptions;
     }
 }

@@ -65,16 +65,4 @@ public interface GameModel {
      * @param loadMapFromFile is true if "loading map from file" mode is on
      */
     void setLoadMapFromFile(boolean loadMapFromFile);
-
-    /**
-     * Returns an array of start menu options
-     * @return an array of start menu options
-     */
-    String[] getStartMenuOptions();
-
-    /**
-     * Starts the game in the desired way.
-     * @param selection user menu selection
-     */
-    void startGameFromSelection(String selection);
 }

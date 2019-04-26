@@ -31,10 +31,4 @@ public interface ConsoleView {
      * @return a current screen.
      */
     Screen getScreen();
-
-    /**
-     * Shows menu and returns user selection in the menu
-     * @return user selection in the menu
-     */
-    String showMenu(String[] menuOptions) throws IOException;
 }
