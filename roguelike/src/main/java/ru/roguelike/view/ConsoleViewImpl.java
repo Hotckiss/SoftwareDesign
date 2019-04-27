@@ -76,6 +76,28 @@ public class ConsoleViewImpl implements ConsoleView {
         }
     }
 
+    @Override
+    public String getMapFileName() throws IOException {
+        TerminalPosition startCursorPosition = gameScreen.getCursorPosition();
+        String text = "Enter filename: ";
+
+        for (int i = startCursorPosition.getColumn(); i < startCursorPosition.getColumn() + text.length(); i++) {
+            gameScreen.setCharacter(i, startCursorPosition.getRow(),
+                    new TextCharacter(text.charAt(i - startCursorPosition.getColumn())));
+        }
+
+        gameScreen.setCursorPosition(new TerminalPosition(startCursorPosition.getColumn() + text.length(),
+                startCursorPosition.getRow()));
+
+        try {
+            gameScreen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return getFileName(gameScreen.getCursorPosition());
+    }
+
     private void drawOnIthLine(int line, String text) {
         for (int j = 0; j < text.length(); j++) {
             gameScreen.setCharacter(j, line, new TextCharacter(text.charAt(j)));
@@ -101,24 +123,7 @@ public class ConsoleViewImpl implements ConsoleView {
         String fileName = null;
         
         if (loadMapFromFile) {
-            TerminalPosition startCursorPosition = gameScreen.getCursorPosition();
-            String text = "Enter filename: ";
 
-            for (int i = startCursorPosition.getColumn(); i < startCursorPosition.getColumn() + text.length(); i++) {
-                gameScreen.setCharacter(i, startCursorPosition.getRow(),
-                        new TextCharacter(text.charAt(i - startCursorPosition.getColumn())));
-            }
-
-            gameScreen.setCursorPosition(new TerminalPosition(startCursorPosition.getColumn() + text.length(),
-                    startCursorPosition.getRow()));
-
-            try {
-                gameScreen.refresh();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            fileName = getFileName(gameScreen.getCursorPosition());
         }
         if (showHelpScreen) {
             drawInfo(GameInfo.getInfo());

@@ -47,4 +47,16 @@ public class Position {
     public Position none() {
         return this;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Position && ((Position)obj).getX() == getX()
+                && ((Position)obj).getY() == getY();
+    }
+
+    @Override
+    public int hashCode() {
+        //TODO
+        return super.hashCode();
+    }
 }

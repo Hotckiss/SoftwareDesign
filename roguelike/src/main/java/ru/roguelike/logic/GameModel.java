@@ -1,9 +1,16 @@
 package ru.roguelike.logic;
 
 import com.googlecode.lanterna.screen.Screen;
+import org.jetbrains.annotations.NotNull;
+import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.artifacts.FinalKey;
+import ru.roguelike.models.objects.base.AbstractArtifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.Drawable;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,18 +38,20 @@ public interface GameModel {
      */
     List<String> getLog();
 
+    void AddToGameLog(String log);
+
     /**
      * @return returns a field
      */
     List<List<AbstractGameObject>> getField();
 
     /**
-     * Takes an input from user and makes a corresponding action.
+     * Takes an input from user and makes a corresponding move.
      *
-     * @param screen is a screen from which a screen will be taken
+     * @param keyStroke is
      * @throws IOException if it occurs
      */
-    void makeAction(Screen screen) throws IOException;
+    void makeMove(KeyStroke keyStroke) throws IOException;
 
     /**
      * @return if a help screen should be shown
@@ -77,4 +86,18 @@ public interface GameModel {
      * @param selection user menu selection
      */
     void startGameFromSelection(String selection);
+
+   List<AbstractGameParticipant> getMobs();
+
+   boolean isValidPosition(@NotNull Position position);
+
+   List<AbstractArtifact> getArtifacts();
+
+   Position getKeyPosition();
+
+   FinalKey getKey();
+
+   void setFinished(boolean finished);
+
+   Player getPlayer();
 }
