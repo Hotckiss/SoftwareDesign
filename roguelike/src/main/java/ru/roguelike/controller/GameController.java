@@ -64,7 +64,15 @@ public class GameController {
         RoguelikeLogger.INSTANCE.log_info("Game finished");
     }
 
+    /**
+     * Takes input from user and invokes corresponding command.
+     */
     private class Invoker {
+        /**
+         * Reads input and makes a corresponding action.
+         *
+         * @throws IOException if it occurs.
+         */
         void makeAction() throws IOException {
             Screen screen = GameController.this.view.getScreen();
             screen.refresh();
@@ -76,8 +84,12 @@ public class GameController {
             }
         }
 
+        /**
+         * @param keyStroke is input fromm user
+         * @return an instance of command corresponding to user's input
+         */
         @Nullable
-        private Command createCommand(KeyStroke keyStroke) {
+        private Command createCommand(@NotNull KeyStroke keyStroke) {
             if (keyStroke.getCharacter() == null) {
                 return null;
             }

@@ -7,7 +7,9 @@ import ru.roguelike.view.ConsoleView;
 
 import java.io.IOException;
 
-
+/**
+ * Applies player's move and redraws a field.
+ */
 public class ApplyMoveCommand implements Command {
     private final KeyStroke keyStroke;
     private final GameModel model;

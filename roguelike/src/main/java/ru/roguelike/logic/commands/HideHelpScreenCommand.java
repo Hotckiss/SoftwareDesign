@@ -5,6 +5,9 @@ import ru.roguelike.view.ConsoleView;
 
 import java.io.IOException;
 
+/**
+ * Hides help screen.
+ */
 public class HideHelpScreenCommand implements Command {
     private final GameModel model;
     private final ConsoleView view;

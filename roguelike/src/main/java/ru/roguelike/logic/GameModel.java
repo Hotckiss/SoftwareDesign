@@ -98,5 +98,4 @@ public interface GameModel {
 
     void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent);
 
-
 }

@@ -2,6 +2,9 @@ package ru.roguelike.logic.commands;
 
 import ru.roguelike.view.ConsoleView;
 
+/**
+ * Shows help screen.
+ */
 public class ShowHelpScreenCommand implements Command {
     private final ConsoleView view;
 

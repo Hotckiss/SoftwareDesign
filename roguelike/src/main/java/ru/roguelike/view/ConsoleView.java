@@ -17,9 +17,9 @@ public interface ConsoleView {
     /**
      * Draws a given board on the console.
      *
-     * @param figure         is a figure to be drawn.
-     * @param info           is a general info about possible actions.
-     * @param log            is a current game log.
+     * @param figure is a figure to be drawn.
+     * @param info   is a general info about possible actions.
+     * @param log    is a current game log.
      */
     void draw(List<List<Drawable>> figure, List<String> info, List<String> log)
             throws IOException;
@@ -31,12 +31,23 @@ public interface ConsoleView {
 
     /**
      * Shows menu and returns user selection in the menu
+     *
      * @return user selection in the menu
      */
     String showMenu(String[] menuOptions) throws IOException;
 
+    /**
+     * Takes a file name from user.
+     *
+     * @return a file name from which a map will be loaded.
+     * @throws IOException if it occurs
+     */
     String getMapFileName() throws IOException;
+
     String showMenu(String[] menuOptions, String error) throws IOException;
 
+    /**
+     * Draws help screen.
+     */
     void drawHelpScreen();
 }

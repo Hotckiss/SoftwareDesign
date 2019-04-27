@@ -7,6 +7,9 @@ import ru.roguelike.view.ConsoleView;
 
 import java.io.IOException;
 
+/**
+ * Loads map from file.
+ */
 public class LoadMapCommand implements Command {
     private final GameController controller;
     private ConsoleView view;
