@@ -57,6 +57,12 @@ public class GameModelImpl implements GameModel {
         }
     }
 
+    @Override
+    public List<AbstractGameParticipant> getMobs() {
+        mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
+        return mobs;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -138,10 +144,6 @@ public class GameModelImpl implements GameModel {
      */
     @Override
     public void makeAction(@NotNull Screen screen) throws IOException {
-        screen.refresh();
-        KeyStroke keyStroke = screen.readInput();
-
-        RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
 
         if (keyStroke.getCharacter() != null) {
             if (keyStroke.getCharacter().equals('h')) {
@@ -161,134 +163,6 @@ public class GameModelImpl implements GameModel {
 
         if (showHelpScreen) {
             return;
-        }
-
-        Move playerMove = player.move(keyStroke, this);
-        RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
-        applyMove(player, playerMove);
-
-        mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
-
-        for (AbstractGameParticipant mob : mobs) {
-            Move to = mob.move(keyStroke, this);
-            RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
-                    + " " + mob.getPosition().getY());
-            applyMove(mob, to);
-        }
-
-        if (!player.isAlive()) {
-            RoguelikeLogger.INSTANCE.log_info("Lose");
-            gameLog.add("You lose!");
-        }
-
-        for (AbstractGameParticipant mob : mobs) {
-            mob.fireStep();
-            mob.regenerate();
-            mob.freezeStep();
-        }
-
-        //remove burned mobs
-        mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
-
-        player.fireStep();
-
-        if (player.isAlive()) {
-            player.regenerate();
-            player.freezeStep();
-        } else {
-            isFinished = true;
-        }
-    }
-
-    private void applyMove(@NotNull AbstractGameParticipant participant, @NotNull
-            Move move) {
-        Position pos = participant.getPosition();
-        Position to = pos.none();
-
-        switch (move) {
-            case NONE:
-                to = pos.none();
-                break;
-            case LEFT:
-                if (isValidPosition(pos.left())) {
-                    to = pos.left();
-                }
-                break;
-            case RIGHT:
-                if (isValidPosition(pos.right())) {
-                    to = pos.right();
-                }
-                break;
-            case TOP:
-                if (isValidPosition(pos.top())) {
-                    to = pos.top();
-                }
-                break;
-            case DOWN:
-                if (isValidPosition(pos.bottom())) {
-                    to = pos.bottom();
-                }
-                break;
-        }
-        if (pos.getY() == to.getY() && pos.getX() == to.getX()) {
-            return;
-        }
-
-        for (AbstractGameParticipant opponent : mobs) {
-            if (opponent.getPosition().getX() == to.getX() &&
-                    opponent.getPosition().getY() == to.getY()) {
-                attack(participant, opponent);
-                if (opponent.isAlive()) {
-                    return;
-                } else {
-                    gameLog.add("You have killed mob!");
-                }
-            }
-        }
-
-        if (participant instanceof Player) {
-            for (AbstractArtifact artifact : artifacts) {
-                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY() && !artifact.taken()) {
-                    player.addArtifact(artifact);
-                    artifact.take();
-                    break;
-                }
-            }
-
-            if (key.getPosition().getX() == to.getX() && key.getPosition().getY() == to.getY()) {
-                player.addArtifact(key);
-                isFinished = true;
-                gameLog.add("Player gets a key and wins");
-            }
-        }
-
-
-        if (player.getPosition().getX() == to.getX() &&
-                player.getPosition().getY() == to.getY()) {
-            attack(participant, player);
-            if (player.isAlive()) {
-                return;
-            } else {
-                isFinished = true;
-            }
-        }
-
-        fieldModel.get(pos.getX()).set(pos.getY(), new FreePlace(pos));
-        fieldModel.get(to.getX()).set(to.getY(), participant);
-        participant.setPosition(to);
-    }
-
-    private boolean isValidPosition(@NotNull Position position) {
-        return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
-    }
-
-    private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
-        if (attacker instanceof Player && !(defender instanceof Player)) {
-            gameLog.add("Player attacks mob!");
-            attacker.hit(defender);
-        } else if (!(attacker instanceof Player) && defender instanceof Player) {
-            gameLog.add("Mob attacks player!");
-            attacker.hit(defender);
         }
     }
 
@@ -319,5 +193,9 @@ public class GameModelImpl implements GameModel {
     @Override
     public String[] getStartMenuOptions() {
         return startMenuOptions;
+    }
+
+    public boolean isValidPosition(@NotNull Position position) {
+        return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
     }
 }
