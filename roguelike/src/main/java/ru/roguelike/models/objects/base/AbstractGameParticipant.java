@@ -2,6 +2,7 @@ package ru.roguelike.models.objects.base;
 
 import com.googlecode.lanterna.input.KeyStroke;
 import org.jetbrains.annotations.NotNull;
+import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
@@ -18,7 +19,7 @@ import java.util.Random;
  * Represents participant of the game (in current implementation it can
  * player or mob).
  */
-public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable {
+public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
     //фулл хп
     protected int fullHealth;
     //остаток хп
@@ -37,17 +38,18 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     protected double fireDamageMultiplier;
     //восстанавливает хп в ход
     protected int regeneration;
-    //сколько ходов еще заморожен
+    // self freeze turns count
     protected int freezeCount;
-    //сколько ходов еще горит
+    // self fire turns count
     protected int fireCount;
-    //сколько получает огненного урона
+    // fire damage per turn to self
     protected int fireValue;
 
+    protected int experience;
     public void hit(AbstractGameParticipant opponent) {
         Random random = new Random();
 
-        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
+        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
         // opponent freezed
         if (random.nextDouble() < freezeProbability) {
             opponent.freezeCount = 3;
@@ -62,6 +64,8 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
             AbstractMob mob = (AbstractMob)opponent;
             mob.mobStrategy = new ConfusedStrategyDecorator(mob.defaultStrategy, 3);
         }
+
+        experience += opponent.getExperience();
     }
 
     public void regenerate() {
@@ -85,6 +89,94 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
     public int getHealth() {
         return health;
+    }
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getFullHealth() {
+        return fullHealth;
+    }
+    public void setFullHealth(int fullHealth) {
+        this.fullHealth = fullHealth;
+    }
+
+    public int getPhysicalDamage() {
+        return physicalDamage;
+    }
+    public void setPhysicalDamage(int physicalDamage) {
+        this.physicalDamage = physicalDamage;
+    }
+
+    public int getFireDamage() {
+        return fireDamage;
+    }
+    public void setFireDamage(int fireDamage) {
+        this.fireDamage = fireDamage;
+    }
+
+    public double getFreezeProbability() {
+        return freezeProbability;
+    }
+    public void setFreezeProbability(double freezeProbability) {
+        this.freezeProbability = freezeProbability;
+    }
+
+    public double getFireProbability() {
+        return fireProbability;
+    }
+    public void setFireProbability(double fireProbability) {
+        this.fireProbability = fireProbability;
+    }
+
+    public double getPhysicalDamageMultiplier() {
+        return physicalDamageMultiplier;
+    }
+    public void setPhysicalDamageMultiplier(double physicalDamageMultiplier) {
+        this.physicalDamageMultiplier = physicalDamageMultiplier;
+    }
+
+    public double getFireDamageMultiplier() {
+        return fireDamageMultiplier;
+    }
+    public void setFireDamageMultiplier(double fireDamageMultiplier) {
+        this.fireDamageMultiplier = fireDamageMultiplier;
+    }
+
+    public int getRegeneration() {
+        return regeneration;
+    }
+    public void setRegeneration(int regeneration) {
+        this.regeneration = regeneration;
+    }
+
+    public int getFreezeCount() {
+        return freezeCount;
+    }
+    public void setFreezeCount(int freezeCount) {
+        this.freezeCount = freezeCount;
+    }
+
+    public int getFireCount() {
+        return fireCount;
+    }
+    public void setFireCount(int fireCount) {
+        this.fireCount = fireCount;
+    }
+
+    public int getFireValue() {
+        return fireValue;
+    }
+    public void setFireValue(int fireValue) {
+        this.fireValue = fireValue;
+    }
+
+    public int exp() {
+        return experience;
+    }
+
+    public void setExperience(int newExp) {
+        experience = newExp;
     }
 
     /**
@@ -121,5 +213,9 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
 
         return new RandomStrategy().preferredMove(position, model);
+    }
+
+    public int getLevel() {
+        return experience / 50 + 1;
     }
 }

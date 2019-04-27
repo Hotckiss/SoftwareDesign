@@ -30,6 +30,7 @@ public class Vampire extends AbstractMob {
         this.fireDamageMultiplier = 1;
         this.regeneration = 10;
         this.freezeCount = 0;
+        this.experience = 0;
         this.defaultStrategy = new PassiveStrategy();
         this.mobStrategy = defaultStrategy;
     }
@@ -37,5 +38,13 @@ public class Vampire extends AbstractMob {
     @Override
     public Character getDrawingFigure() {
         return 'V';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 5;
+        }
+
+        return 0;
     }
 }

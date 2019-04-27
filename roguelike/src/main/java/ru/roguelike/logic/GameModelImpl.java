@@ -148,7 +148,6 @@ public class GameModelImpl implements GameModel {
      */
     @Override
     public void makeMove(@NotNull KeyStroke keyStroke) throws IOException {
-
         Move playerMove = player.move(keyStroke, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(player, playerMove);

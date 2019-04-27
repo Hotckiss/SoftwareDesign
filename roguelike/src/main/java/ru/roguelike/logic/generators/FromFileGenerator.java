@@ -38,6 +38,10 @@ public class FromFileGenerator implements GameGenerator {
         }
     }
 
+    public FromFileGenerator() {
+        ifFileExist = false;
+    }
+
     @Override
     public GameModel generate() {
         if (!ifFileExist) {
@@ -122,7 +126,7 @@ public class FromFileGenerator implements GameGenerator {
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
 
-    private AbstractArtifact getArtifactFromChar(char c, Position position) {
+    public AbstractArtifact getArtifactFromChar(char c, Position position) {
         switch (c) {
             case 'c':
                 return new ColdSword(position);
@@ -141,7 +145,7 @@ public class FromFileGenerator implements GameGenerator {
         return null;
     }
 
-    private AbstractGameParticipant getMobFromChar(char c, Position position) {
+    public AbstractGameParticipant getMobFromChar(char c, Position position) {
         switch (c) {
             case 'B':
                 return new Berserk(position);

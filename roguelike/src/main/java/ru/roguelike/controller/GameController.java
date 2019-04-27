@@ -34,9 +34,23 @@ public class GameController {
         RoguelikeLogger.INSTANCE.log_info("Game started");
 
         String[] menuOptions = game.getStartMenuOptions();
-        String selection = view.showMenu(menuOptions);
+        String error = null;
 
-        game.startGameFromSelection(selection);
+        while (true) {
+            String selection = view.showMenu(menuOptions, error);
+            error = null;
+            GameModel newGame = null;
+            try {
+                newGame = game.startGameFromSelection(selection, error);
+            } catch (Exception e) {
+                error = e.getMessage();
+            }
+
+            if (newGame != null) {
+                game = newGame;
+                break;
+            }
+        }
 
         while (!game.finished()) {
             view.clear();

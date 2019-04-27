@@ -39,4 +39,5 @@ public interface ConsoleView {
     String showMenu(String[] menuOptions) throws IOException;
 
     String getMapFileName() throws IOException;
+    String showMenu(String[] menuOptions, String error) throws IOException;
 }

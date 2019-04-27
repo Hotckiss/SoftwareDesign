@@ -31,11 +31,20 @@ public class Flier extends AbstractMob {
         this.regeneration = 0;
         this.freezeCount = 0;
         this.defaultStrategy = new CowardStrategy();
+        this.experience = 0;
         this.mobStrategy = defaultStrategy;
     }
 
     @Override
     public Character getDrawingFigure() {
         return 'F';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 5;
+        }
+
+        return 1;
     }
 }

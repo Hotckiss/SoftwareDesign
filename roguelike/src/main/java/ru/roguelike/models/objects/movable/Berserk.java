@@ -31,11 +31,20 @@ public class Berserk extends AbstractMob {
         this.regeneration = 0;
         this.freezeCount = 0;
         this.defaultStrategy = new AggressiveStrategy();
+        this.experience = 0;
         this.mobStrategy = defaultStrategy;
     }
 
     @Override
     public Character getDrawingFigure() {
         return 'B';
+    }
+
+    public int getExperience() {
+        if (health == 0) {
+            return 30;
+        }
+
+        return 4;
     }
 }

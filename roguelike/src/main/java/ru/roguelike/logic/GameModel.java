@@ -84,6 +84,7 @@ public interface GameModel {
     /**
      * Starts the game in the desired way.
      * @param selection user menu selection
+     * @param error
      */
     void startGameFromSelection(String selection);
 
@@ -100,4 +101,20 @@ public interface GameModel {
    void setFinished(boolean finished);
 
    Player getPlayer();
+
+    GameModel startGameFromSelection(String selection, String error) throws Exception;
+
+    List<List<AbstractGameObject>> getFieldModel();
+
+    Player getPlayer();
+
+    FinalKey getKey();
+
+    List<AbstractArtifact> getArtifacts();
+
+    List<AbstractGameParticipant> getMobs();
+
+    boolean isSavedGameEqualToCurrent();
+
+    void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent);
 }

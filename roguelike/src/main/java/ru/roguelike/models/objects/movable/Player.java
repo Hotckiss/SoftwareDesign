@@ -34,6 +34,7 @@ public class Player extends AbstractGameParticipant {
         this.physicalDamageMultiplier = 1;
         this.fireDamageMultiplier = 1;
         this.regeneration = 5;
+        this.experience = 0;
         this.freezeCount = 0;
     }
 
@@ -119,7 +120,15 @@ public class Player extends AbstractGameParticipant {
         return Move.NONE;
     }
 
-    private class ArtifactItem {
+    public ArrayDeque<ArtifactItem> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(ArrayDeque<ArtifactItem> artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    public static class ArtifactItem {
         private AbstractArtifact item;
         private boolean isEquipped;
 
@@ -147,5 +156,9 @@ public class Player extends AbstractGameParticipant {
         public boolean equipped() {
             return isEquipped;
         }
+    }
+
+    public int getExperience() {
+        return 0;
     }
 }
