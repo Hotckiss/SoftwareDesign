@@ -20,12 +20,9 @@ public interface ConsoleView {
      * @param figure         is a figure to be drawn.
      * @param info           is a general info about possible actions.
      * @param log            is a current game log.
-     * @param showHelpScreen is true if we want to show help screen.
-     * @param loadMapFromFile is true if want to load a map from file.
-     * @return DrawingResult for current drawing process.
      */
-    DrawingResult draw(List<List<Drawable>> figure, List<String> info, List<String> log,
-                       boolean showHelpScreen, boolean loadMapFromFile) throws IOException;
+    void draw(List<List<Drawable>> figure, List<String> info, List<String> log)
+            throws IOException;
 
     /**
      * @return a current screen.
@@ -40,4 +37,6 @@ public interface ConsoleView {
 
     String getMapFileName() throws IOException;
     String showMenu(String[] menuOptions, String error) throws IOException;
+
+    void drawHelpScreen();
 }

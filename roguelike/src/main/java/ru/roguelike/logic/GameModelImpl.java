@@ -1,7 +1,6 @@
 package ru.roguelike.logic;
 
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
@@ -64,7 +63,6 @@ public class GameModelImpl implements GameModel {
 
         return null;
     }
-
 
 
     /**

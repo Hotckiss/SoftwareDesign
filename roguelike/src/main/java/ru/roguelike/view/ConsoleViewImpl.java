@@ -81,6 +81,11 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     @Override
+    public void drawHelpScreen() {
+        drawInfo(GameInfo.getInfo());
+    }
+
+    @Override
     public String getMapFileName() throws IOException {
         TerminalPosition startCursorPosition = gameScreen.getCursorPosition();
         String text = "Enter filename: ";
@@ -122,24 +127,13 @@ public class ConsoleViewImpl implements ConsoleView {
      * {@inheritDoc}
      */
     @Override
-    public DrawingResult draw(List<List<Drawable>> figures, List<String> info, List<String> log,
-                     boolean showHelpScreen, boolean loadMapFromFile) throws IOException {
-        String fileName = null;
-        
-        if (loadMapFromFile) {
+    public void draw(List<List<Drawable>> figures, List<String> info,
+                  List<String> log) throws IOException {
+        figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
+        this.info = info;
+        this.log = log;
 
-        }
-        if (showHelpScreen) {
-            drawInfo(GameInfo.getInfo());
-        } else {
-            figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
-            this.info = info;
-            this.log = log;
-
-            drawInner();
-        }
-
-        return new DrawingResult(loadMapFromFile, fileName);
+        drawInner();
     }
 
     private String getFileName(TerminalPosition cursorPosition) throws IOException {
@@ -173,6 +167,11 @@ public class ConsoleViewImpl implements ConsoleView {
     @Override
     public Screen getScreen() {
         return gameScreen;
+    }
+
+    @Override
+    public String showMenu(String[] menuOptions) throws IOException {
+        return null;
     }
 
     private void drawInner() {
