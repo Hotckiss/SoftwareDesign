@@ -4,6 +4,10 @@ import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractArtifact;
 
 public class FireSword extends AbstractArtifact {
+    /**
+     * Constructs new fire sword artifact on specified position
+     * @param position artifact position
+     */
     public FireSword(Position position) {
         this.position = position;
         this.isAvailable = true;

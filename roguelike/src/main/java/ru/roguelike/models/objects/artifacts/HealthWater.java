@@ -7,6 +7,10 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
  * Regenerates a health of the participant.
  */
 public class HealthWater extends AbstractArtifact {
+    /**
+     * Constructs new health water artifact on specified position
+     * @param position artifact position
+     */
     public HealthWater(Position position) {
         this.position = position;
         this.isAvailable = true;
