@@ -14,6 +14,10 @@ import java.util.Random;
  * Random allowed movement
  */
 public class RandomStrategy implements Strategy {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();

@@ -285,26 +285,47 @@ public class GameModelImpl implements GameModel {
         }
     }
 
+    /**
+     * Returns flag of showing help screen
+     * @return show help flag
+     */
     public boolean isShowHelpScreen() {
         return showHelpScreen;
     }
 
+    /**
+     * Sets flag of showing help screen
+     */
     public void setShowHelpScreen(boolean showHelpScreen) {
         this.showHelpScreen = showHelpScreen;
     }
 
+    /**
+     * Returns flag of loading map from file
+     * @return loading map from file flag
+     */
     public boolean isLoadMapFromFile() {
         return loadMapFromFile;
     }
 
+    /**
+     * Sets flag of loading map from file
+     */
     public void setLoadMapFromFile(boolean loadMapFromFile) {
         this.loadMapFromFile = loadMapFromFile;
     }
 
+    /**
+     * Returns flag of error loading map from file
+     * @return loading map from file error flag
+     */
     public boolean isErrorWhileLoadingMap() {
         return errorWhileLoadingMap;
     }
 
+    /**
+     * Sets error flag of loading map from file
+     */
     public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
         this.errorWhileLoadingMap = errorWhileLoadingMap;
     }

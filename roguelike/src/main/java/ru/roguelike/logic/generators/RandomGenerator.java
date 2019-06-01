@@ -93,6 +93,12 @@ public class RandomGenerator implements GameGenerator {
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
 
+    /**
+     * Generates artifact by id
+     * @param id artifact id
+     * @param position artifact position
+     * @return artifact
+     */
     @NotNull
     private AbstractArtifact makeArtifactForId(@NotNull String id, Position position) {
         switch (id) {
@@ -113,9 +119,14 @@ public class RandomGenerator implements GameGenerator {
         }
     }
 
+    /**
+     * Generates mob by id
+     * @param id mob id
+     * @param position mob position
+     * @return mob
+     */
     @NotNull
-    private AbstractGameParticipant makeMobForId(@NotNull String id, Position
-            position) {
+    private AbstractGameParticipant makeMobForId(@NotNull String id, Position position) {
         switch (id) {
             case "ber":
                 return new Berserk(position);
@@ -134,6 +145,11 @@ public class RandomGenerator implements GameGenerator {
         }
     }
 
+    /**
+     * Generates random position on map
+     * @param random random generator
+     * @return generated position
+     */
     @NotNull
     private Position generateRandomPosition(@NotNull Random random) {
         int x = random.nextInt(width);

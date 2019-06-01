@@ -17,6 +17,9 @@ import java.util.Random;
 public class AggressiveStrategy implements Strategy {
     private Strategy defaultStrategy = new RandomStrategy();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<List<AbstractGameObject>> field = model.getField();

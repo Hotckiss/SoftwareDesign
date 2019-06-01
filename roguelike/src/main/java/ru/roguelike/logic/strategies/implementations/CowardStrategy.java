@@ -14,6 +14,10 @@ import java.util.Random;
  * Coward strategy: not attack player in next position
  */
 public class CowardStrategy implements Strategy {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();

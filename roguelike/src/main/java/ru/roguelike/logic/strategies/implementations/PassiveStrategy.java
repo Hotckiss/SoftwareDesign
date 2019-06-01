@@ -9,6 +9,10 @@ import ru.roguelike.models.Position;
  * Passive strategy: not moving, todo: attack player in next position
  */
 public class PassiveStrategy implements Strategy {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         return Move.NONE;
