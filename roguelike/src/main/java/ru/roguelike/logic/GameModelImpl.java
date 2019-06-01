@@ -135,12 +135,14 @@ public class GameModelImpl implements GameModel {
             switch (keyStroke.getCharacter()) {
                 case 'r':
                     showHelpScreen = false;
-                    break;
+                    return;
                 case 'l':
                     loadMapFromFile = true;
-                    break;
-                default:
+                    return;
+                case 'h':
                     showHelpScreen = true;
+                    return;
+                default:
                     break;
             }
         }
