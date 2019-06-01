@@ -132,22 +132,20 @@ public class GameModelImpl implements GameModel {
         RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
 
         if (keyStroke.getCharacter() != null) {
-            if (keyStroke.getCharacter().equals('h')) {
-                showHelpScreen = true;
-            }
-            if (keyStroke.getCharacter().equals('r')) {
-                showHelpScreen = false;
-            }
-            if (keyStroke.getCharacter().equals('l')) {
-                loadMapFromFile = true;
+            switch (keyStroke.getCharacter()) {
+                case 'r':
+                    showHelpScreen = false;
+                    break;
+                case 'l':
+                    loadMapFromFile = true;
+                    break;
+                default:
+                    showHelpScreen = true;
+                    break;
             }
         }
 
-        if (loadMapFromFile) {
-            return;
-        }
-
-        if (showHelpScreen) {
+        if (loadMapFromFile || showHelpScreen) {
             return;
         }
 
