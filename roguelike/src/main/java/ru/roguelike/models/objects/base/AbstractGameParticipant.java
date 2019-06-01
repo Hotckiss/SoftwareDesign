@@ -18,31 +18,59 @@ import java.util.Random;
  * player or mob).
  */
 public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable {
-    //фулл хп
+    /**
+     * Full health of participant
+     */
     protected int fullHealth;
-    //остаток хп
+    /**
+     * Current health of participant
+     */
     protected int health;
-    //урон обычный
+    /**
+     * Physical damage of participant
+     */
     protected int physicalDamage;
-    //урон огнем в ход при нанесении
+    /**
+     * Fire damage of participant
+     */
     protected int fireDamage;
-    //шанс заморозить
+    /**
+     * Freeze chance of participant
+     */
     protected double freezeProbability;
-    //шанс поджечь
+    /**
+     * Fire chance of participant
+     */
     protected double fireProbability;
-    // множитель физ урона
+    /**
+     * Physical damage multiplier of participant
+     */
     protected double physicalDamageMultiplier;
-    //множитель огненного урона
+    /**
+     * Fire damage multiplier of participant
+     */
     protected double fireDamageMultiplier;
-    //восстанавливает хп в ход
+    /**
+     * Current health regeneration of participant each turn
+     */
     protected int regeneration;
-    //сколько ходов еще заморожен
+    /**
+     * Freezed turns count
+     */
     protected int freezeCount;
-    //сколько ходов еще горит
+    /**
+     * Fired turns count
+     */
     protected int fireCount;
-    //сколько получает огненного урона
+    /**
+     * Damafe taken from fire each turn
+     */
     protected int fireValue;
 
+    /**
+     * Method that hits opponent
+     * @param opponent opponent to hit
+     */
     public void hit(AbstractGameParticipant opponent) {
         Random random = new Random();
 
@@ -58,14 +86,23 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
     }
 
+    /**
+     * Method that regenerates participant after turn
+     */
     public void regenerate() {
         health = Math.min(fullHealth, health + regeneration);
     }
 
+    /**
+     * Method that decrease freeze of player
+     */
     public void freezeStep() {
         freezeCount = Math.max(0, freezeCount - 1);
     }
 
+    /**
+     * Method that decrease fire health of player
+     */
     public void fireStep() {
         if (fireCount > 0) {
             health = (int) (Math.max(0, health - fireValue));
@@ -73,10 +110,18 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
     }
 
+    /**
+     * Indicates that participant is alive
+     * @return true if participant is alive false otherwise
+     */
     public boolean isAlive() {
         return health > 0;
     }
 
+    /**
+     * Method to get participant health
+     * @return current health of participant
+     */
     public int getHealth() {
         return health;
     }
@@ -108,6 +153,13 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         regeneration -= artifact.regenerationBonus;
     }
 
+    /**
+     * Returns preferred move for participant
+     * @param keyStroke an input from user
+     * @param model a current game model
+     * @return preferred move
+     * @throws IOException if can not read move from input
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

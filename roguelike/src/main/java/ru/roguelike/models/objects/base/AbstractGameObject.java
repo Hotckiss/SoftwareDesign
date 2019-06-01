@@ -8,8 +8,13 @@ import ru.roguelike.view.Drawable;
  * Represents an element which is present in the game.
  */
 public abstract class AbstractGameObject implements Drawable, Positionable {
-    // позиция на поле
+    /**
+     * Game object position on game field
+     */
     protected Position position;
+    /**
+     * Flag to indicate availability for game participants
+     */
     protected boolean isAvailable;
 
     /**
