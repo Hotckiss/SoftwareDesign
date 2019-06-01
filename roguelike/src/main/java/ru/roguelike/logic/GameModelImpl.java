@@ -207,7 +207,7 @@ public class GameModelImpl implements GameModel {
                     to = pos.right();
                 }
                 break;
-            case TOP:
+            case UP:
                 if (isValidPosition(pos.top())) {
                     to = pos.top();
                 }

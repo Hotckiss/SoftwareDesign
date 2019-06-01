@@ -28,7 +28,7 @@ public class RandomStrategy implements Strategy {
         int y = position.getY();
 
         if (x - 1 >= 0 && StrategiesUtils.availableForMob(field, x - 1, y)) {
-            availableMoves.add(Move.TOP);
+            availableMoves.add(Move.UP);
         }
 
         if (x + 1 < field.size() && StrategiesUtils.availableForMob(field, x + 1, y)) {

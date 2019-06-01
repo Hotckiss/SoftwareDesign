@@ -28,7 +28,7 @@ public class CowardStrategy implements Strategy {
         int y = position.getY();
 
         if (x - 1 >= 0 && StrategiesUtils.availableForCowardMob(field, x - 1, y)) {
-            availableMoves.add(Move.TOP);
+            availableMoves.add(Move.UP);
         }
 
         if (x + 1 < field.size() && StrategiesUtils.availableForCowardMob(field, x + 1, y)) {

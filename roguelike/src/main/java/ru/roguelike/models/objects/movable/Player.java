@@ -93,7 +93,7 @@ public class Player extends AbstractGameParticipant {
         //TODO: apply artifact better
         switch (keyStroke.getCharacter()) {
             case 'w':
-                return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.TOP : Move.NONE;
+                return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.UP : Move.NONE;
             case 'a':
                 return (y > 0 && !(field.get(x).get(y - 1) instanceof Wall)) ? Move.LEFT : Move.NONE;
             case 's':

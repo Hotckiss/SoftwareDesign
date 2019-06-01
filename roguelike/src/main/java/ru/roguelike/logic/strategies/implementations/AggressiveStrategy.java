@@ -7,9 +7,7 @@ import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.movable.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Aggressive strategy: attack player in next position
@@ -27,7 +25,7 @@ public class AggressiveStrategy implements Strategy {
         int y = position.getY();
 
         if (x - 1 >= 0 && field.get(x - 1).get(y) instanceof Player) {
-            return Move.TOP;
+            return Move.UP;
         }
 
         if (x + 1 < field.size() && field.get(x + 1).get(y) instanceof Player) {
