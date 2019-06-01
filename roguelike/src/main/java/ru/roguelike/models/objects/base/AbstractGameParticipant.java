@@ -72,15 +72,13 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      * @param opponent opponent to hit
      */
     public void hit(AbstractGameParticipant opponent) {
-        Random random = new Random();
-
         opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier));
         // opponent freezed
-        if (random.nextDouble() < freezeProbability) {
+        if (Math.random() < freezeProbability) {
             opponent.freezeCount = 3;
         }
         // opponent fired
-        if (random.nextDouble() < fireProbability) {
+        if (Math.random() < fireProbability) {
             opponent.fireCount = 3;
             opponent.fireValue = (int)(fireDamageMultiplier * fireDamage);
         }
