@@ -236,7 +236,9 @@ public class GameModelImpl implements GameModel {
 
         if (participant instanceof Player) {
             for (AbstractArtifact artifact : artifacts) {
-                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY() && !artifact.taken()) {
+                if (artifact.getPosition().getX() == to.getX() &&
+                        artifact.getPosition().getY() == to.getY() &&
+                        !artifact.taken()) {
                     player.addArtifact(artifact);
                     artifact.take();
                     break;
@@ -267,7 +269,10 @@ public class GameModelImpl implements GameModel {
     }
 
     private boolean isValidPosition(@NotNull Position position) {
-        return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
+        return position.getX() >= 0 &&
+                position.getY() >= 0 &&
+                position.getX() < fieldModel.size() &&
+                position.getY() < fieldModel.get(0).size();
     }
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
