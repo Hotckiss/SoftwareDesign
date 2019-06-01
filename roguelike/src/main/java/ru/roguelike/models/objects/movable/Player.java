@@ -21,6 +21,10 @@ import java.util.List;
 public class Player extends AbstractGameParticipant {
     private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
 
+    /**
+     * Constructs new Player on specified position
+     * @param position position to add Player
+     */
     public Player(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -37,10 +41,18 @@ public class Player extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * Method to add new artifact to player equipment
+     * @param artifact artifact to add
+     */
     public void addArtifact(AbstractArtifact artifact) {
         artifacts.addFirst(new ArtifactItem(artifact));
     }
 
+    /**
+     * Gets view model of current player artifacts
+     * @return view model of current player artifacts
+     */
     public String getArtifactsLog() {
         StringBuilder builder = new StringBuilder();
 
@@ -52,6 +64,9 @@ public class Player extends AbstractGameParticipant {
         return builder.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'P';

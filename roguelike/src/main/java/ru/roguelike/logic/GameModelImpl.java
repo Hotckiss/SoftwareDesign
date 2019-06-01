@@ -208,8 +208,8 @@ public class GameModelImpl implements GameModel {
                 }
                 break;
             case UP:
-                if (isValidPosition(pos.top())) {
-                    to = pos.top();
+                if (isValidPosition(pos.up())) {
+                    to = pos.up();
                 }
                 break;
             case DOWN:

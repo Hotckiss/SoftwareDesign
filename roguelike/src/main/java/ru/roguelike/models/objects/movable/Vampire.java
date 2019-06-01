@@ -14,6 +14,10 @@ import java.io.IOException;
  * Has less health, but regenerates some part of lost health after damage.
  */
 public class Vampire extends AbstractGameParticipant {
+    /**
+     * Constructs new Vampire on specified position
+     * @param position position to add Vampire
+     */
     public Vampire(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -30,11 +34,17 @@ public class Vampire extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'V';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

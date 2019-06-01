@@ -7,6 +7,10 @@ import ru.roguelike.models.objects.base.AbstractGameParticipant;
  * Represents a simple mob.
  */
 public class SimpleMob extends AbstractGameParticipant {
+    /**
+     * Constructs new SimpleMob on specified position
+     * @param position position to add SimpleMob
+     */
     public SimpleMob(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -23,6 +27,9 @@ public class SimpleMob extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'S';

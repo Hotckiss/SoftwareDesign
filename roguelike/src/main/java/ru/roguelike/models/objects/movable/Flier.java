@@ -15,6 +15,10 @@ import java.io.IOException;
  * Has less help than simple mob.
  */
 public class Flier extends AbstractGameParticipant {
+    /**
+     * Constructs new Flier on specified position
+     * @param position position to add Flier
+     */
     public Flier(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -31,11 +35,17 @@ public class Flier extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'F';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

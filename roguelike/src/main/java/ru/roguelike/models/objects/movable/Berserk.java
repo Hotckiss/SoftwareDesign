@@ -14,6 +14,10 @@ import java.io.IOException;
  * Mob, who has higher physical damage but less health.
  */
 public class Berserk extends AbstractGameParticipant {
+    /**
+     * Constructs new Berserk on specified position
+     * @param position position to add Berserk
+     */
     public Berserk(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -30,11 +34,17 @@ public class Berserk extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'B';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

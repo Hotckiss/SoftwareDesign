@@ -14,6 +14,10 @@ import java.io.IOException;
  * to do freeze damage.
  */
 public class Yeti extends AbstractGameParticipant {
+    /**
+     * Constructs new Yeti on specified position
+     * @param position position to add Yeti
+     */
     public Yeti(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -30,11 +34,17 @@ public class Yeti extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'Y';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

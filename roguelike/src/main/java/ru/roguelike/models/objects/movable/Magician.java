@@ -14,6 +14,10 @@ import java.io.IOException;
  * Has small physical damage, but can strike only with fire.
  */
 public class Magician extends AbstractGameParticipant {
+    /**
+     * Constructs new Magician on specified position
+     * @param position position to add Magician
+     */
     public Magician(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -30,11 +34,17 @@ public class Magician extends AbstractGameParticipant {
         this.freezeCount = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'M';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {
