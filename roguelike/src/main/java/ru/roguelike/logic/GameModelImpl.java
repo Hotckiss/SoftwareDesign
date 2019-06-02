@@ -27,7 +27,6 @@ public class GameModelImpl implements GameModel {
     private FinalKey key;
     private List<AbstractGameParticipant> mobs;
     private List<AbstractArtifact> artifacts;
-    private List<String> gameLog = new ArrayList<>();
     private boolean isFinished = false;
     private boolean showHelpScreen = false;
     private boolean loadMapFromFile = false;
@@ -155,7 +154,6 @@ public class GameModelImpl implements GameModel {
 
         if (!player.isAlive()) {
             RoguelikeLogger.INSTANCE.log_info("Lose");
-            gameLog.add("You lose!");
             if (isSavedGameEqualToCurrent && isFinished) {
                 GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
                 //saverAndLoader.deleteGame();
@@ -221,8 +219,6 @@ public class GameModelImpl implements GameModel {
                 attack(participant, opponent);
                 if (opponent.isAlive()) {
                     return;
-                } else {
-                    gameLog.add("You have killed mob!");
                 }
             }
         }
@@ -241,7 +237,6 @@ public class GameModelImpl implements GameModel {
             if (key.getPosition().getX() == to.getX() && key.getPosition().getY() == to.getY()) {
                 player.addArtifact(key);
                 isFinished = true;
-                gameLog.add("Player gets a key and wins");
             }
         }
 
@@ -270,10 +265,8 @@ public class GameModelImpl implements GameModel {
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
         if (attacker instanceof Player && !(defender instanceof Player)) {
-            gameLog.add("Player attacks mob!");
             attacker.hit(defender);
         } else if (!(attacker instanceof Player) && defender instanceof Player) {
-            gameLog.add("Mob attacks player!");
             attacker.hit(defender);
         }
     }
