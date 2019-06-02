@@ -11,6 +11,10 @@ import ru.roguelike.models.objects.base.AbstractMob;
  * Represents a simple mob.
  */
 public class SimpleMob extends AbstractMob {
+    /**
+     * Constructs new SimpleMob on specified position
+     * @param position position to add SimpleMob
+     */
     public SimpleMob(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -30,6 +34,9 @@ public class SimpleMob extends AbstractMob {
         this.mobStrategy = defaultStrategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'S';

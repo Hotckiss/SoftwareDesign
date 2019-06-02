@@ -15,6 +15,9 @@ import java.util.List;
 public class AggressiveStrategy extends AbstractStrategy {
     private AbstractStrategy defaultStrategy = new RandomStrategy();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<List<AbstractGameObject>> field = model.getField();
@@ -22,7 +25,7 @@ public class AggressiveStrategy extends AbstractStrategy {
         int y = position.getY();
 
         if (x - 1 >= 0 && field.get(x - 1).get(y) instanceof Player) {
-            return Move.TOP;
+            return Move.UP;
         }
 
         if (x + 1 < field.size() && field.get(x + 1).get(y) instanceof Player) {

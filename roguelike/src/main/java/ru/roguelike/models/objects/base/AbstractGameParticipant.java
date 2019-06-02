@@ -20,42 +20,72 @@ import java.util.Random;
  * player or mob).
  */
 public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
-    //фулл хп
+    /**
+     * Full health of participant
+     */
     protected int fullHealth;
-    //остаток хп
+    /**
+     * Current health of participant
+     */
     protected int health;
-    //урон обычный
+    /**
+     * Physical damage of participant
+     */
     protected int physicalDamage;
-    //урон огнем в ход при нанесении
+    /**
+     * Fire damage of participant
+     */
     protected int fireDamage;
-    //шанс заморозить
+    /**
+     * Freeze chance of participant
+     */
     protected double freezeProbability;
-    //шанс поджечь
+    /**
+     * Fire chance of participant
+     */
     protected double fireProbability;
-    // множитель физ урона
+    /**
+     * Physical damage multiplier of participant
+     */
     protected double physicalDamageMultiplier;
-    //множитель огненного урона
+    /**
+     * Fire damage multiplier of participant
+     */
     protected double fireDamageMultiplier;
-    //восстанавливает хп в ход
+    /**
+     * Current health regeneration of participant each turn
+     */
     protected int regeneration;
-    // self freeze turns count
+    /**
+     * Freezed turns count
+     */
     protected int freezeCount;
-    // self fire turns count
+    /**
+     * Fired turns count
+     */
     protected int fireCount;
-    // fire damage per turn to self
+    /**
+     * Damage taken from fire each turn
+     */
     protected int fireValue;
 
+    /**
+     * Expirience of game participant
+     */
     protected int experience;
-    public void hit(AbstractGameParticipant opponent) {
-        Random random = new Random();
 
+    /**
+     * Method that hits opponent
+     * @param opponent opponent to hit
+     */
+    public void hit(AbstractGameParticipant opponent) {
         opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
         // opponent freezed
-        if (random.nextDouble() < freezeProbability) {
+        if (Math.random() < freezeProbability) {
             opponent.freezeCount = 3;
         }
         // opponent fired
-        if (random.nextDouble() < fireProbability) {
+        if (Math.random() < fireProbability) {
             opponent.fireCount = 3;
             opponent.fireValue = (int)(fireDamageMultiplier * fireDamage);
         }
@@ -68,14 +98,23 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         experience += opponent.getExperience();
     }
 
+    /**
+     * Method that regenerates participant after turn
+     */
     public void regenerate() {
         health = Math.min(fullHealth, health + regeneration);
     }
 
+    /**
+     * Method that decrease freeze of player
+     */
     public void freezeStep() {
         freezeCount = Math.max(0, freezeCount - 1);
     }
 
+    /**
+     * Method that decrease fire health of player
+     */
     public void fireStep() {
         if (fireCount > 0) {
             health = (int) (Math.max(0, health - fireValue));
@@ -83,10 +122,18 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
     }
 
+    /**
+     * Indicates that participant is alive
+     * @return true if participant is alive false otherwise
+     */
     public boolean isAlive() {
         return health > 0;
     }
 
+    /**
+     * Method to get participant health
+     * @return current health of participant
+     */
     public int getHealth() {
         return health;
     }
@@ -206,6 +253,13 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         regeneration -= artifact.regenerationBonus;
     }
 
+    /**
+     * Returns preferred move for participant
+     * @param keyStroke an input from user
+     * @param model a current game model
+     * @return preferred move
+     * @throws IOException if can not read move from input
+     */
     @Override
     public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
         if (freezeCount > 0) {

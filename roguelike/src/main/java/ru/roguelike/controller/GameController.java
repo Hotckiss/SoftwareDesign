@@ -18,6 +18,11 @@ public class GameController {
     private GameModel game;
     private ConsoleView view;
 
+    /**
+     * Creates new game controller with specified model
+     * @param model game model
+     * @param view game view
+     */
     public GameController(@NotNull GameModel model, @NotNull ConsoleView view) {
         this.game = model;
         this.view = view;

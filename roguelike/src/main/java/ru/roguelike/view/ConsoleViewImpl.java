@@ -23,6 +23,9 @@ public class ConsoleViewImpl implements ConsoleView {
     private List<String> log = new ArrayList<>();
     private Screen gameScreen;
 
+    /**
+     * Constructs new console view of game
+     */
     public ConsoleViewImpl() {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         Terminal terminal;

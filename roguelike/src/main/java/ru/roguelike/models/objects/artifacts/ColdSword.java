@@ -7,6 +7,10 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
  * In addition to physical damage can freeze the opponent.
  */
 public class ColdSword extends AbstractArtifact {
+    /**
+     * Constructs new cold sword artifact on specified position
+     * @param position artifact position
+     */
     public ColdSword(Position position) {
         this.position = position;
         this.isAvailable = true;

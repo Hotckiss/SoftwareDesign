@@ -17,10 +17,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Map loader. Loads file from specified file
+ */
 public class FromFileGenerator implements GameGenerator {
     private boolean ifFileExist = true;
     private List<String> mapFromFile = new ArrayList<>();
 
+    /**
+     * Creates new map generator with specified path
+     * @param fileName path to file with map
+     */
     public FromFileGenerator(String fileName) {
         BufferedReader reader;
 
@@ -38,10 +45,17 @@ public class FromFileGenerator implements GameGenerator {
         }
     }
 
+    /**
+     * Creates empty generator
+     */
     public FromFileGenerator() {
         ifFileExist = false;
     }
 
+    /**
+     * Generates map from file
+     * @return generated map
+     */
     @Override
     public GameModel generate() {
         if (!ifFileExist) {
@@ -126,6 +140,12 @@ public class FromFileGenerator implements GameGenerator {
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
 
+    /**
+     * Generates artifact by id
+     * @param c artifact id
+     * @param position artifact position
+     * @return artifact
+     */
     public AbstractArtifact getArtifactFromChar(char c, Position position) {
         switch (c) {
             case 'c':
@@ -145,6 +165,12 @@ public class FromFileGenerator implements GameGenerator {
         return null;
     }
 
+    /**
+     * Generates mob by id
+     * @param c mob id
+     * @param position mob position
+     * @return mob
+     */
     public AbstractGameParticipant getMobFromChar(char c, Position position) {
         switch (c) {
             case 'B':
