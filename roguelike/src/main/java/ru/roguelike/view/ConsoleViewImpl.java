@@ -7,6 +7,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.info.GameInfo;
 
 import java.io.IOException;
@@ -38,8 +39,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
             gameScreen.startScreen();
         } catch (IOException e) {
-            //TODO: handle
-            e.printStackTrace();
+            RoguelikeLogger.INSTANCE.log_error(e.getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             gameScreen.refresh();
         } catch (IOException e) {
-            e.printStackTrace();
+            RoguelikeLogger.INSTANCE.log_error(e.getMessage());
         }
 
         return getFileName(gameScreen.getCursorPosition());
@@ -202,8 +202,7 @@ public class ConsoleViewImpl implements ConsoleView {
         try {
             gameScreen.refresh();
         } catch (IOException e) {
-            //TODO:
-            e.printStackTrace();
+            RoguelikeLogger.INSTANCE.log_error(e.getMessage());
         }
     }
 
