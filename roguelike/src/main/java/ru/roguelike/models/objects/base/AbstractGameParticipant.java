@@ -23,39 +23,39 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
     /**
      * Full health of participant
      */
-    protected int fullHealth;
+    private int fullHealth;
     /**
      * Current health of participant
      */
-    protected int health;
+    private int health;
     /**
      * Physical damage of participant
      */
-    protected int physicalDamage;
+    private int physicalDamage;
     /**
      * Fire damage of participant
      */
-    protected int fireDamage;
+    private int fireDamage;
     /**
      * Freeze chance of participant
      */
-    protected double freezeProbability;
+    private double freezeProbability;
     /**
      * Fire chance of participant
      */
-    protected double fireProbability;
+    private double fireProbability;
     /**
      * Physical damage multiplier of participant
      */
-    protected double physicalDamageMultiplier;
+    private double physicalDamageMultiplier;
     /**
      * Fire damage multiplier of participant
      */
-    protected double fireDamageMultiplier;
+    private double fireDamageMultiplier;
     /**
      * Current health regeneration of participant each turn
      */
-    protected int regeneration;
+    private int regeneration;
     /**
      * Freeze turns count
      */
@@ -72,7 +72,7 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
     /**
      * Experience of game participant
      */
-    protected int experience;
+    private int experience;
 
     public AbstractGameParticipant(Position position,
                                    int fullHealth,

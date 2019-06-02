@@ -62,7 +62,7 @@ public class Mob extends AbstractGameParticipant {
 
     @Override
     public int getExperience() {
-        if (health == 0) {
+        if (!isAlive()) {
             return experienceCostKill;
         }
 
