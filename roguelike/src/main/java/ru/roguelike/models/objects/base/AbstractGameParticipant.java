@@ -5,8 +5,10 @@ import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
+import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.logic.strategies.ConfusedStrategyDecorator;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
+import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.view.UserInputProvider;
@@ -55,7 +57,7 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
      */
     protected int regeneration;
     /**
-     * Freezed turns count
+     * Freeze turns count
      */
     protected int freezeCount;
     /**
@@ -68,17 +70,41 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
     private int fireValue;
 
     /**
-     * Expirience of game participant
+     * Experience of game participant
      */
     protected int experience;
 
+    public AbstractGameParticipant(Position position,
+                                   int fullHealth,
+                                   int physicalDamage,
+                                   int fireDamage,
+                                   double freezeProbability,
+                                   double fireProbability,
+                                   double physicalDamageMultiplier,
+                                   double fireDamageMultiplier,
+                                   int regeneration,
+                                   Character alias) {
+        this.position = position;
+        this.fullHealth = fullHealth;
+        this.health = fullHealth;
+        this.physicalDamage = physicalDamage;
+        this.fireDamage = fireDamage;
+        this.freezeProbability = freezeProbability;
+        this.fireProbability = fireProbability;
+        this.physicalDamageMultiplier = physicalDamageMultiplier;
+        this.fireDamageMultiplier = fireDamageMultiplier;
+        this.regeneration = regeneration;
+        this.alias = alias;
+        this.freezeCount = 0;
+        this.experience = 0;
+    }
     /**
      * Method that hits opponent
      * @param opponent opponent to hit
      */
     public void hit(AbstractGameParticipant opponent) {
         opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
-        // opponent freezed
+        // opponent freeze
         if (Math.random() < freezeProbability) {
             opponent.freezeCount = 3;
         }

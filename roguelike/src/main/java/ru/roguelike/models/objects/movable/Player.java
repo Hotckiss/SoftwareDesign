@@ -25,20 +25,17 @@ public class Player extends AbstractGameParticipant {
      * @param position position to add Player
      */
     public Player(Position position) {
-        this.position = position;
+        super(position,
+                100,
+                20,
+                5,
+                0,
+                0,
+                1,
+                1,
+                5,
+                'P');
         this.isAvailable = false;
-
-        this.fullHealth = 100;
-        this.health = 100;
-        this.physicalDamage = 20;
-        this.fireDamage = 5;
-        this.freezeProbability = 0;
-        this.fireProbability = 0;
-        this.physicalDamageMultiplier = 1;
-        this.fireDamageMultiplier = 1;
-        this.regeneration = 5;
-        this.experience = 0;
-        this.freezeCount = 0;
     }
 
     /**

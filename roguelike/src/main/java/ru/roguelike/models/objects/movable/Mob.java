@@ -34,25 +34,21 @@ public class Mob extends AbstractGameParticipant {
                int experienceCostKill,
                AbstractStrategy defaultStrategy,
                Character alias) {
-        this.position = position;
+        super(position,
+                fullHealth,
+                physicalDamage,
+                fireDamage,
+                freezeProbability,
+                fireProbability,
+                physicalDamageMultiplier,
+                fireDamageMultiplier,
+                regeneration,
+                alias);
         this.isAvailable = false;
-
-        this.fullHealth = fullHealth;
-        this.health = fullHealth;
-        this.physicalDamage = physicalDamage;
-        this.fireDamage = fireDamage;
-        this.freezeProbability = freezeProbability;
-        this.fireProbability = fireProbability;
-        this.physicalDamageMultiplier = physicalDamageMultiplier;
-        this.fireDamageMultiplier = fireDamageMultiplier;
-        this.regeneration = regeneration;
-        this.freezeCount = 0;
         this.defaultStrategy = defaultStrategy;
-        this.experience = 0;
         this.mobStrategy = defaultStrategy;
         this.experienceCostHit = experienceCostHit;
         this.experienceCostKill = experienceCostKill;
-        this.alias = alias;
     }
 
     @Override
