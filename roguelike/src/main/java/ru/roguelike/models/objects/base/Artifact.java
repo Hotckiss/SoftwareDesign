@@ -39,6 +39,22 @@ public class Artifact extends AbstractGameObject {
      */
     protected boolean isTaken = false;
 
+    public Artifact(int restoringHealth,
+                    int regenerationBonus,
+                    double fireProbabilityBonus,
+                    double freezeProbabilityBonus,
+                    double physicalDamageMultiplierBonus,
+                    double fireDamageMultiplierBonus,
+                    Character alias) {
+        this.restoringHealth = restoringHealth;
+        this.regenerationBonus = regenerationBonus;
+        this.fireProbabilityBonus = fireProbabilityBonus;
+        this.freezeProbabilityBonus = freezeProbabilityBonus;
+        this.physicalDamageMultiplierBonus = physicalDamageMultiplierBonus;
+        this.fireDamageMultiplierBonus = fireDamageMultiplierBonus;
+        this.alias = alias;
+    }
+
     /**
      * Takes this artifact on player
      */
