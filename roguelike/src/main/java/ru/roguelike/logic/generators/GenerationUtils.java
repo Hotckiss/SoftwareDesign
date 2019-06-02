@@ -1,9 +1,14 @@
 package ru.roguelike.logic.generators;
 
 import org.jetbrains.annotations.NotNull;
+import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
+import ru.roguelike.logic.strategies.implementations.CowardStrategy;
+import ru.roguelike.logic.strategies.implementations.PassiveStrategy;
+import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.base.Mob;
 import ru.roguelike.models.objects.movable.*;
 
 /**
@@ -102,19 +107,103 @@ public class GenerationUtils {
     public static AbstractGameParticipant makeMob(@NotNull Character alias, Position position) {
         switch (alias) {
             case 'B':
-                return new Berserk(position);
+                return new Mob(position,
+                        30,
+                        40,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        0,
+                        4,
+                        30,
+                        new AggressiveStrategy(),
+                        alias);
             case 'F':
-                return new Flier(position);
+                return new Mob(position,
+                        10,
+                        20,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        0,
+                        2,
+                        7,
+                        new CowardStrategy(),
+                        alias);
             case 'M' :
-                return new Magician(position);
+                return new Mob(position,
+                        20,
+                        40,
+                        0,
+                        0,
+                        1,
+                        1,
+                        1,
+                        15,
+                        6,
+                        30,
+                        new AggressiveStrategy(),
+                        alias);
             case 'S':
-                return new SimpleMob(position);
+                return new Mob(position,
+                        50,
+                        20,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        0,
+                        3,
+                        18,
+                        new RandomStrategy(),
+                        alias);
             case 'V':
-                return new Vampire(position);
+                return new Mob(position,
+                        40,
+                        10,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        10,
+                        1,
+                        10,
+                        new PassiveStrategy(),
+                        alias);
             case 'Y':
-                return new Yeti(position);
+                return new Mob(position,
+                        50,
+                        15,
+                        0,
+                        0.4,
+                        0,
+                        1,
+                        1,
+                        10,
+                        6,
+                        25,
+                        new PassiveStrategy(),
+                        alias);
             default:
-                return new SimpleMob(position);
+                return new Mob(position,
+                        50,
+                        20,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        0,
+                        3,
+                        18,
+                        new RandomStrategy(),
+                        alias);
         }
     }
 }

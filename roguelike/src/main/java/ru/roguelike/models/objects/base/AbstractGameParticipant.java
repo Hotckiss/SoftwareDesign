@@ -87,8 +87,8 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
             opponent.fireValue = (int)(fireDamageMultiplier * fireDamage);
         }
 
-        if (opponent instanceof AbstractMob) {
-            AbstractMob mob = (AbstractMob)opponent;
+        if (opponent instanceof Mob) {
+            Mob mob = (Mob)opponent;
             mob.mobStrategy = new ConfusedStrategyDecorator(mob.defaultStrategy, 3);
         }
 

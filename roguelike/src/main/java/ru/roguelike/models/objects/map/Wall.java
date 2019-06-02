@@ -15,13 +15,6 @@ public class Wall extends AbstractGameObject {
     public Wall(Position position) {
         this.position = position;
         this.isAvailable = false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return '#';
+        this.alias = '#';
     }
 }

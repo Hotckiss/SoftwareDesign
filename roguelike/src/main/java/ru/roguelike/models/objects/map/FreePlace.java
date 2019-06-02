@@ -15,13 +15,6 @@ public class FreePlace extends AbstractGameObject {
     public FreePlace(Position position) {
         this.position = position;
         this.isAvailable = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return '.';
+        this.alias = '.';
     }
 }

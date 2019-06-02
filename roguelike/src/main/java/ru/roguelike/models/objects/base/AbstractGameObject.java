@@ -18,6 +18,19 @@ public abstract class AbstractGameObject implements Drawable, Positionable {
     protected boolean isAvailable;
 
     /**
+     * Drawing alias
+     */
+    protected Character alias;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Character getDrawingFigure() {
+        return alias;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

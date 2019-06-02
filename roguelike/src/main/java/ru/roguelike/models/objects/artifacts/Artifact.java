@@ -34,10 +34,6 @@ public class Artifact extends AbstractGameObject {
     private double fireDamageMultiplierBonus;
 
     /**
-     * Fire damage improvement multiplier value
-     */
-    private Character alias;
-    /**
      * Flag of taking this artifact
      */
     private boolean isTaken = false;
