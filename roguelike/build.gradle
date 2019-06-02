@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'com.google.protobuf' version '0.8.8'
+    id 'idea'
+    id 'application'
 }
 
 group 'ru.roguelike'
@@ -8,20 +11,54 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    google()
+    jcenter()
     mavenCentral()
+    mavenLocal()
 }
+
+def grpcVersion = '1.+'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
     compile group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.0.1'
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    testImplementation "io.grpc:grpc-testing:${grpcVersion}"
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'ru.roguelike.Main'
+protobuf {
+    protoc { artifact = 'com.google.protobuf:protoc:3.7.1' }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
     }
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
     }
 }
+
+startScripts.enabled = false
+
+task roguelikeServer(type: CreateStartScripts) {
+    mainClassName = 'ru.roguelike.RoguelikeServer'
+    applicationName = 'roguelike-server'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = startScripts.classpath
+}
+
+task roguelikeClient(type: CreateStartScripts) {
+    mainClassName = 'ru.roguelike.RoguelikeClient'
+    applicationName = 'roguelike-client'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = startScripts.classpath
+}
+
+applicationDistribution.into('bin') {
+    from(roguelikeServer)
+    from(roguelikeClient)
+    fileMode = 0755
+}
+
+    

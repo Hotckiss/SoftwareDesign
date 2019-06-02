@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ru.roguelike";
+option java_outer_classname = "RoguelikeProto";
+option objc_class_prefix = "RL";
+
+package roguelike;
+
+service ConnectionSetUpper {
+    rpc Communicate (stream PlayerRequest) returns (stream ServerReply) {}
+}
+
+message PlayerRequest {
+    string sessionName = 1;
+    bytes action = 2;
+}
+
+message ServerReply {
+    string playerId = 1;
+    string sessions = 2;
+    bytes model = 3;
+    string errorMessage = 4;
+}
