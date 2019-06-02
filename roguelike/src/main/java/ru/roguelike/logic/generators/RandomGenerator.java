@@ -20,8 +20,8 @@ import java.util.Random;
  * Generates a random field for a new game.
  */
 public class RandomGenerator implements GameGenerator {
-    private static String[] mobsIds = {"ber", "simple", "flier", "mag", "vam", "yeti"};
-    private static String[] artifactsIds = {"csword", "fsword", "fgoblet", "hw", "rp", "sb"};
+    private static Character[] mobsIds = {'B', 'F', 'M', 'S', 'V', 'Y'};
+    private static Character[] artifactsIds = {'c', 'g', 'f', 'h', 'r', 's'};
 
     private double wallsProbability;
     private int mobsCount;
@@ -66,8 +66,8 @@ public class RandomGenerator implements GameGenerator {
 
         while (totalMobs < mobsCount) {
             Position position = generateRandomPosition(random);
-            String id = mobsIds[random.nextInt(mobsIds.length)];
-            AbstractGameParticipant mob = makeMobForId(id, position);
+            Character alias = mobsIds[random.nextInt(mobsIds.length)];
+            AbstractGameParticipant mob = makeMobForId(alias, position);
             mobs.add(mob);
             field.get(position.getX()).set(position.getY(), mob);
             totalMobs++;
@@ -75,8 +75,8 @@ public class RandomGenerator implements GameGenerator {
 
         while (totalArtifacts < artifactsCount) {
             Position position = generateRandomPosition(random);
-            String id = artifactsIds[random.nextInt(artifactsIds.length)];
-            AbstractArtifact artifact = makeArtifactForId(id, position);
+            Character alias = artifactsIds[random.nextInt(artifactsIds.length)];
+            AbstractArtifact artifact = makeArtifactForId(alias, position);
             artifacts.add(artifact);
             field.get(position.getX()).set(position.getY(), artifact);
             totalArtifacts++;
@@ -95,24 +95,24 @@ public class RandomGenerator implements GameGenerator {
 
     /**
      * Generates artifact by id
-     * @param id artifact id
+     * @param alias artifact id
      * @param position artifact position
      * @return artifact
      */
     @NotNull
-    private AbstractArtifact makeArtifactForId(@NotNull String id, Position position) {
-        switch (id) {
-            case "csword":
+    private AbstractArtifact makeArtifactForId(@NotNull Character alias, Position position) {
+        switch (alias) {
+            case 'c':
                 return new ColdSword(position);
-            case "fsword":
-                return new FireSword(position);
-            case "fgoblet":
+            case 'g':
                 return new FireGoblet(position);
-            case "hw":
+            case 'f':
+                return new FireSword(position);
+            case 'h':
                 return new HealthWater(position);
-            case "rp":
+            case 'r':
                 return new RegenerationPotion(position);
-            case "sb":
+            case 's':
                 return new SpeedBoots(position);
             default:
                 return new HealthWater(position);
@@ -121,24 +121,24 @@ public class RandomGenerator implements GameGenerator {
 
     /**
      * Generates mob by id
-     * @param id mob id
+     * @param alias mob id
      * @param position mob position
      * @return mob
      */
     @NotNull
-    private AbstractGameParticipant makeMobForId(@NotNull String id, Position position) {
-        switch (id) {
-            case "ber":
+    private AbstractGameParticipant makeMobForId(@NotNull Character alias, Position position) {
+        switch (alias) {
+            case 'B':
                 return new Berserk(position);
-            case "simple":
-                return new SimpleMob(position);
-            case "flier":
+            case 'F':
                 return new Flier(position);
-            case "mag":
+            case 'M' :
                 return new Magician(position);
-            case "vam":
+            case 'S':
+                return new SimpleMob(position);
+            case 'V':
                 return new Vampire(position);
-            case "yeti":
+            case 'Y':
                 return new Yeti(position);
             default:
                 return new SimpleMob(position);
