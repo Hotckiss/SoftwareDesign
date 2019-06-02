@@ -1,12 +1,12 @@
 package ru.roguelike.models.objects.artifacts;
 
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 
 /**
  * Doubles the fire damage of the participant.
  */
-public class FireGoblet extends AbstractArtifact {
+public class FireGoblet extends Artifact {
     /**
      * Constructs new fire goblet artifact on specified position
      * @param position artifact position
@@ -21,13 +21,6 @@ public class FireGoblet extends AbstractArtifact {
         this.freezeProbabilityBonus = 0;
         this.physicalDamageMultiplierBonus = 0;
         this.fireDamageMultiplierBonus = 1.0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return 'g';
+        this.alias = 'g';
     }
 }

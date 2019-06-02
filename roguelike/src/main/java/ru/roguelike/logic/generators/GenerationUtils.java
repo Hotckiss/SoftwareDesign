@@ -3,7 +3,7 @@ package ru.roguelike.logic.generators;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.*;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.movable.*;
 
@@ -18,7 +18,7 @@ public class GenerationUtils {
      * @return artifact
      */
     @NotNull
-    public static AbstractArtifact makeArtifact(@NotNull Character alias, Position position) {
+    public static Artifact makeArtifact(@NotNull Character alias, Position position) {
         switch (alias) {
             case 'c':
                 return new ColdSword(position);

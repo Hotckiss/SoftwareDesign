@@ -4,7 +4,7 @@ package ru.roguelike.models.objects.base;
  * Represents an element of the game (artifact), which is placed on board and
  * can be collected by player or mob.
  */
-public abstract class AbstractArtifact extends AbstractGameObject {
+public class Artifact extends AbstractGameObject {
     /**
      * Health restore value of artifact
      */
@@ -29,6 +29,11 @@ public abstract class AbstractArtifact extends AbstractGameObject {
      * Fire damage improvement multiplier value
      */
     protected double fireDamageMultiplierBonus;
+
+    /**
+     * Fire damage improvement multiplier value
+     */
+    protected Character alias;
     /**
      * Flag of taking this artifact
      */
@@ -47,5 +52,13 @@ public abstract class AbstractArtifact extends AbstractGameObject {
      */
     public boolean taken() {
         return isTaken;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Character getDrawingFigure() {
+        return alias;
     }
 }

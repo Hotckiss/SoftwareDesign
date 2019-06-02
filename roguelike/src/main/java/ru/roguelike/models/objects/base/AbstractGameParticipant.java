@@ -227,7 +227,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      *
      * @param artifact is an artifact to be collected.
      */
-    public void enableArtifact(@NotNull AbstractArtifact artifact) {
+    public void enableArtifact(@NotNull Artifact artifact) {
         health = Math.min(fullHealth, health + artifact.restoringHealth);
         fireDamageMultiplier += artifact.fireDamageMultiplierBonus;
         fireProbability += artifact.fireProbabilityBonus;
@@ -241,7 +241,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      *
      * @param artifact is an artifact to be disabled.
      */
-    public void disableArtifact(@NotNull AbstractArtifact artifact) {
+    public void disableArtifact(@NotNull Artifact artifact) {
         fireDamageMultiplier -= artifact.fireDamageMultiplierBonus;
         fireProbability -= artifact.fireProbabilityBonus;
         freezeProbability -= artifact.freezeProbabilityBonus;

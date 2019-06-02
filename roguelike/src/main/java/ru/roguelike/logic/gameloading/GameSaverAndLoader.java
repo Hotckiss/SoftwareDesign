@@ -3,12 +3,10 @@ package ru.roguelike.logic.gameloading;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.logic.generators.FromFileGenerator;
-import ru.roguelike.logic.generators.GameGenerator;
 import ru.roguelike.logic.generators.GenerationUtils;
-import ru.roguelike.logic.generators.RandomGenerator;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
@@ -19,7 +17,6 @@ import ru.roguelike.view.Drawable;
 import java.io.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameSaverAndLoader {
@@ -83,7 +80,7 @@ public class GameSaverAndLoader {
         Player player = null;
         FinalKey key = null;
         List<AbstractGameParticipant> mobs = new ArrayList<>();
-        List<AbstractArtifact> artifacts = new ArrayList<>();
+        List<Artifact> artifacts = new ArrayList<>();
 
         List<String> mapFromFile = new ArrayList<>();
         FromFileGenerator generator = new FromFileGenerator();
@@ -118,7 +115,7 @@ public class GameSaverAndLoader {
                         case 'h':
                         case 'r':
                         case 's':
-                            AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
+                            Artifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
                             artifacts.add(artifact);
                             lineList.add(artifact);
                             break;
@@ -146,7 +143,7 @@ public class GameSaverAndLoader {
             ArrayDeque<Player.ArtifactItem> artifactItems = new ArrayDeque<>();
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
-                AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
+                Artifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
                 artifactItems.add(new Player.ArtifactItem(artifact));
             }
 

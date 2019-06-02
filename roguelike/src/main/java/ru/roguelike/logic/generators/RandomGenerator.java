@@ -5,7 +5,7 @@ import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.*;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
@@ -46,7 +46,7 @@ public class RandomGenerator implements GameGenerator {
         Player player;
         FinalKey key;
         List<AbstractGameParticipant> mobs = new ArrayList<>();
-        List<AbstractArtifact> artifacts = new ArrayList<>();
+        List<Artifact> artifacts = new ArrayList<>();
 
         Random random = new Random();
 
@@ -76,7 +76,7 @@ public class RandomGenerator implements GameGenerator {
         while (totalArtifacts < artifactsCount) {
             Position position = generateRandomPosition(random);
             Character alias = artifactsIds[random.nextInt(artifactsIds.length)];
-            AbstractArtifact artifact = GenerationUtils.makeArtifact(alias, position);
+            Artifact artifact = GenerationUtils.makeArtifact(alias, position);
             artifacts.add(artifact);
             field.get(position.getX()).set(position.getY(), artifact);
             totalArtifacts++;

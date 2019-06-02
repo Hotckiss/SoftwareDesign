@@ -5,7 +5,7 @@ import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.*;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
@@ -67,7 +67,7 @@ public class FromFileGenerator implements GameGenerator {
         Player player = null;
         FinalKey key = null;
         List<AbstractGameParticipant> mobs = new ArrayList<>();
-        List<AbstractArtifact> artifacts = new ArrayList<>();
+        List<Artifact> artifacts = new ArrayList<>();
 
         int n = mapFromFile.size();
         if (n == 0) {
@@ -127,7 +127,7 @@ public class FromFileGenerator implements GameGenerator {
                     case 'h':
                     case 'r':
                     case 's':
-                        AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
+                        Artifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
                         artifacts.add(artifact);
                         field.get(i).add(artifact);
                         break;

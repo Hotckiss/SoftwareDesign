@@ -1,9 +1,9 @@
 package ru.roguelike.models.objects.artifacts;
 
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 
-public class FireSword extends AbstractArtifact {
+public class FireSword extends Artifact {
     /**
      * Constructs new fire sword artifact on specified position
      * @param position artifact position
@@ -18,13 +18,6 @@ public class FireSword extends AbstractArtifact {
         this.freezeProbabilityBonus = 0;
         this.physicalDamageMultiplierBonus = 0;
         this.fireDamageMultiplierBonus = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return 'f';
+        this.alias = 'f';
     }
 }

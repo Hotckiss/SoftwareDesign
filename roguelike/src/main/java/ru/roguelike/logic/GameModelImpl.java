@@ -5,7 +5,7 @@ import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
@@ -25,7 +25,7 @@ public class GameModelImpl implements GameModel {
     private Player player;
     private FinalKey key;
     private List<AbstractGameParticipant> mobs;
-    private List<AbstractArtifact> artifacts;
+    private List<Artifact> artifacts;
     private boolean isFinished = false;
     private boolean showHelpScreen = false;
     private boolean loadMapFromFile = false;
@@ -37,7 +37,7 @@ public class GameModelImpl implements GameModel {
                          Player player,
                          FinalKey key,
                          List<AbstractGameParticipant> mobs,
-                         List<AbstractArtifact> artifacts) {
+                         List<Artifact> artifacts) {
         this.fieldModel = fieldModel;
         this.player = player;
         this.key = key;
@@ -223,7 +223,7 @@ public class GameModelImpl implements GameModel {
         }
 
         if (participant instanceof Player) {
-            for (AbstractArtifact artifact : artifacts) {
+            for (Artifact artifact : artifacts) {
                 if (artifact.getPosition().getX() == to.getX() &&
                         artifact.getPosition().getY() == to.getY() &&
                         !artifact.taken()) {
@@ -328,7 +328,7 @@ public class GameModelImpl implements GameModel {
         return key;
     }
 
-    public List<AbstractArtifact> getArtifacts() {
+    public List<Artifact> getArtifacts() {
         return artifacts;
     }
 

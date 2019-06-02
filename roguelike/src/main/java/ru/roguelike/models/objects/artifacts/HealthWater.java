@@ -1,12 +1,12 @@
 package ru.roguelike.models.objects.artifacts;
 
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 
 /**
  * Regenerates a health of the participant.
  */
-public class HealthWater extends AbstractArtifact {
+public class HealthWater extends Artifact {
     /**
      * Constructs new health water artifact on specified position
      * @param position artifact position
@@ -21,13 +21,6 @@ public class HealthWater extends AbstractArtifact {
         this.freezeProbabilityBonus = 0;
         this.physicalDamageMultiplierBonus = 0;
         this.fireDamageMultiplierBonus = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return 'h';
+        this.alias = 'h';
     }
 }

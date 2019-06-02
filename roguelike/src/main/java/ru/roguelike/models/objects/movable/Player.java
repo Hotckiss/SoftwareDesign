@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.Wall;
@@ -45,7 +45,7 @@ public class Player extends AbstractGameParticipant {
      * Method to add new artifact to player equipment
      * @param artifact artifact to add
      */
-    public void addArtifact(AbstractArtifact artifact) {
+    public void addArtifact(Artifact artifact) {
         artifacts.addFirst(new ArtifactItem(artifact));
     }
 
@@ -138,15 +138,15 @@ public class Player extends AbstractGameParticipant {
     }
 
     public static class ArtifactItem {
-        private AbstractArtifact item;
+        private Artifact item;
         private boolean isEquipped;
 
-        public ArtifactItem(AbstractArtifact artifact) {
+        public ArtifactItem(Artifact artifact) {
             item = artifact;
             isEquipped = false;
         }
 
-        public AbstractArtifact getItem() {
+        public Artifact getItem() {
             return item;
         }
 

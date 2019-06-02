@@ -1,14 +1,14 @@
 package ru.roguelike.models.objects.artifacts;
 
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractArtifact;
+import ru.roguelike.models.objects.base.Artifact;
 
 //TODO: multi-movement logic
 
 /**
  * Allows to make two actions in one move.
  */
-public class SpeedBoots extends AbstractArtifact {
+public class SpeedBoots extends Artifact {
     /**
      * Constructs new speed boots artifact on specified position
      * @param position artifact position
@@ -23,13 +23,6 @@ public class SpeedBoots extends AbstractArtifact {
         this.freezeProbabilityBonus = 0;
         this.physicalDamageMultiplierBonus = 0;
         this.fireDamageMultiplierBonus = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Character getDrawingFigure() {
-        return 's';
+        this.alias = 's';
     }
 }
