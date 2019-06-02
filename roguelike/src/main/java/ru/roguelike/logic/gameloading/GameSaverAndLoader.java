@@ -4,6 +4,7 @@ import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.logic.generators.FromFileGenerator;
 import ru.roguelike.logic.generators.GameGenerator;
+import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.logic.generators.RandomGenerator;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
@@ -117,7 +118,7 @@ public class GameSaverAndLoader {
                         case 'h':
                         case 'r':
                         case 's':
-                            AbstractArtifact artifact = generator.getArtifactFromChar(c, new Position(i, j));
+                            AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
                             artifacts.add(artifact);
                             lineList.add(artifact);
                             break;
@@ -145,7 +146,7 @@ public class GameSaverAndLoader {
             ArrayDeque<Player.ArtifactItem> artifactItems = new ArrayDeque<>();
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
-                AbstractArtifact artifact = generator.getArtifactFromChar(c, new Position(-1, -1));
+                AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
                 artifactItems.add(new Player.ArtifactItem(artifact));
             }
 
@@ -185,7 +186,7 @@ public class GameSaverAndLoader {
                 y = Integer.parseInt(coords[1]);
 
                 char c = mapFromFile.get(x).charAt(y);
-                AbstractGameParticipant mob = generator.getMobFromChar(c, new Position(x, y));
+                AbstractGameParticipant mob = GenerationUtils.makeMob(c, new Position(x, y));
 
                 line = reader.readLine();
                 setFeatures(mob, line);

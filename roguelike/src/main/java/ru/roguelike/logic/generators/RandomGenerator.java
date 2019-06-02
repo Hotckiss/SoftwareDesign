@@ -67,7 +67,7 @@ public class RandomGenerator implements GameGenerator {
         while (totalMobs < mobsCount) {
             Position position = generateRandomPosition(random);
             Character alias = mobsIds[random.nextInt(mobsIds.length)];
-            AbstractGameParticipant mob = makeMobForId(alias, position);
+            AbstractGameParticipant mob = GenerationUtils.makeMob(alias, position);
             mobs.add(mob);
             field.get(position.getX()).set(position.getY(), mob);
             totalMobs++;
@@ -76,7 +76,7 @@ public class RandomGenerator implements GameGenerator {
         while (totalArtifacts < artifactsCount) {
             Position position = generateRandomPosition(random);
             Character alias = artifactsIds[random.nextInt(artifactsIds.length)];
-            AbstractArtifact artifact = makeArtifactForId(alias, position);
+            AbstractArtifact artifact = GenerationUtils.makeArtifact(alias, position);
             artifacts.add(artifact);
             field.get(position.getX()).set(position.getY(), artifact);
             totalArtifacts++;
@@ -91,58 +91,6 @@ public class RandomGenerator implements GameGenerator {
         field.get(position.getX()).set(position.getY(), key);
 
         return new GameModelImpl(field, player, key, mobs, artifacts);
-    }
-
-    /**
-     * Generates artifact by id
-     * @param alias artifact id
-     * @param position artifact position
-     * @return artifact
-     */
-    @NotNull
-    private AbstractArtifact makeArtifactForId(@NotNull Character alias, Position position) {
-        switch (alias) {
-            case 'c':
-                return new ColdSword(position);
-            case 'g':
-                return new FireGoblet(position);
-            case 'f':
-                return new FireSword(position);
-            case 'h':
-                return new HealthWater(position);
-            case 'r':
-                return new RegenerationPotion(position);
-            case 's':
-                return new SpeedBoots(position);
-            default:
-                return new HealthWater(position);
-        }
-    }
-
-    /**
-     * Generates mob by id
-     * @param alias mob id
-     * @param position mob position
-     * @return mob
-     */
-    @NotNull
-    private AbstractGameParticipant makeMobForId(@NotNull Character alias, Position position) {
-        switch (alias) {
-            case 'B':
-                return new Berserk(position);
-            case 'F':
-                return new Flier(position);
-            case 'M' :
-                return new Magician(position);
-            case 'S':
-                return new SimpleMob(position);
-            case 'V':
-                return new Vampire(position);
-            case 'Y':
-                return new Yeti(position);
-            default:
-                return new SimpleMob(position);
-        }
     }
 
     /**

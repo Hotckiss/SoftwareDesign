@@ -117,7 +117,7 @@ public class FromFileGenerator implements GameGenerator {
                     case 'S':
                     case 'V':
                     case 'Y':
-                        AbstractGameParticipant mob = getMobFromChar(c, new Position(i, j));
+                        AbstractGameParticipant mob = GenerationUtils.makeMob(c, new Position(i, j));
                         mobs.add(mob);
                         field.get(i).add(mob);
                         break;
@@ -127,7 +127,7 @@ public class FromFileGenerator implements GameGenerator {
                     case 'h':
                     case 'r':
                     case 's':
-                        AbstractArtifact artifact = getArtifactFromChar(c, new Position(i, j));
+                        AbstractArtifact artifact = GenerationUtils.makeArtifact(c, new Position(i, j));
                         artifacts.add(artifact);
                         field.get(i).add(artifact);
                         break;
@@ -138,55 +138,5 @@ public class FromFileGenerator implements GameGenerator {
         }
 
         return new GameModelImpl(field, player, key, mobs, artifacts);
-    }
-
-    /**
-     * Generates artifact by id
-     * @param c artifact id
-     * @param position artifact position
-     * @return artifact
-     */
-    public AbstractArtifact getArtifactFromChar(char c, Position position) {
-        switch (c) {
-            case 'c':
-                return new ColdSword(position);
-            case 'g':
-                return new FireGoblet(position);
-            case 'f':
-                return new FireSword(position);
-            case 'h':
-                return new HealthWater(position);
-            case 'r':
-                return new RegenerationPotion(position);
-            case 's':
-                return new SpeedBoots(position);
-        }
-
-        return null;
-    }
-
-    /**
-     * Generates mob by id
-     * @param c mob id
-     * @param position mob position
-     * @return mob
-     */
-    public AbstractGameParticipant getMobFromChar(char c, Position position) {
-        switch (c) {
-            case 'B':
-                return new Berserk(position);
-            case 'F':
-                return new Flier(position);
-            case 'M' :
-                return new Magician(position);
-            case 'S':
-                return new SimpleMob(position);
-            case 'V':
-                return new Vampire(position);
-            case 'Y':
-                return new Yeti(position);
-        }
-
-        return null;
     }
 }
