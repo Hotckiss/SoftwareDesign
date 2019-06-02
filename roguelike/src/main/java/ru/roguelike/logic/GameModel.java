@@ -23,11 +23,6 @@ public interface GameModel {
     boolean finished();
 
     /**
-     * @return a figures to draw on board.
-     */
-    List<List<Drawable>> makeDrawable();
-
-    /**
      * @return a general info about the game
      */
     List<String> getInfo();
@@ -91,8 +86,6 @@ public interface GameModel {
      * @param error
      */
     GameModel startGameFromSelection(String selection, String error) throws Exception;
-
-    List<List<AbstractGameObject>> getFieldModel();
 
     boolean isSavedGameEqualToCurrent();
 

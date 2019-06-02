@@ -77,14 +77,6 @@ public class GameModelImpl implements GameModel {
      * {@inheritDoc}
      */
     @Override
-    public List<List<Drawable>> makeDrawable() {
-        return (List) fieldModel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<String> getInfo() {
         List<String> info = new ArrayList<>();
         info.add("Game INFO:");
@@ -334,10 +326,6 @@ public class GameModelImpl implements GameModel {
     @Override
     public String[] getStartMenuOptions() {
         return startMenuOptions;
-    }
-
-    public List<List<AbstractGameObject>> getFieldModel() {
-        return fieldModel;
     }
 
     public Player getPlayer() {

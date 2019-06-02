@@ -31,6 +31,6 @@ public class LoadMapCommand implements Command {
         }
         GameModel model = controller.getGame();
         view.clear();
-        view.draw(model.makeDrawable(), model.getInfo(), model.getLog());
+        view.draw(model.getField(), model.getInfo(), model.getLog());
     }
 }

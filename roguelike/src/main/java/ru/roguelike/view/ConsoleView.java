@@ -21,7 +21,7 @@ public interface ConsoleView {
      * @param info   is a general info about possible actions.
      * @param log    is a current game log.
      */
-    void draw(List<List<Drawable>> figure, List<String> info, List<String> log)
+    <T extends Drawable> void draw(List<List<T>> figure, List<String> info, List<String> log)
             throws IOException;
 
     /**

@@ -130,7 +130,7 @@ public class ConsoleViewImpl implements ConsoleView {
      * {@inheritDoc}
      */
     @Override
-    public void draw(List<List<Drawable>> figures, List<String> info,
+    public <T extends Drawable> void draw(List<List<T>> figures, List<String> info,
                   List<String> log) throws IOException {
         figures.forEach(figuresRow -> field.add(mapRow(figuresRow)));
         this.info = info;
@@ -219,7 +219,7 @@ public class ConsoleViewImpl implements ConsoleView {
         }
     }
 
-    private List<Character> mapRow(List<Drawable> row) {
+    private <T extends Drawable> List<Character> mapRow(List<T> row) {
         List<Character> result = new ArrayList<>();
 
         row.forEach(drawable -> result.add(drawable.getDrawingFigure()));

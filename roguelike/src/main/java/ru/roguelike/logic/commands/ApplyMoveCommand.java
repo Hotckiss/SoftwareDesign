@@ -26,6 +26,6 @@ public class ApplyMoveCommand implements Command {
     public void execute() throws IOException {
         model.makeMove(keyStroke);
         view.clear();
-        view.draw(model.makeDrawable(), model.getInfo(), model.getLog());
+        view.draw(model.getField(), model.getInfo(), model.getLog());
     }
 }

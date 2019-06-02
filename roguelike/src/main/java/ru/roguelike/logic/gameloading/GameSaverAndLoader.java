@@ -27,7 +27,7 @@ public class GameSaverAndLoader {
     public void saveGame(GameModel game) throws FileNotFoundException {
         clearFile(savedGameFile);
 
-        List<List<Drawable>> fieldModel = game.makeDrawable();
+        List<List<AbstractGameObject>> fieldModel = game.getField();
         Player player = game.getPlayer();
         FinalKey key = game.getKey();
         List<AbstractGameParticipant> mobs = game.getMobs();
@@ -37,7 +37,7 @@ public class GameSaverAndLoader {
         int m = fieldModel.get(0).size();
         appendToFile(savedGameFile, n + " " + m + "\n");
 
-        for (List<Drawable> line : fieldModel) {
+        for (List<AbstractGameObject> line : fieldModel) {
             StringBuilder builder = new StringBuilder();
             for (Drawable drawable : line) {
                 builder.append(drawable.getDrawingFigure());
