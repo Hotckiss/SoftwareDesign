@@ -2,7 +2,6 @@ package ru.roguelike.view;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextCharacter;
-import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -67,10 +66,10 @@ public class ConsoleViewImpl implements ConsoleView {
         gameScreen.refresh();
 
         while (true) {
-            KeyStroke keyStroke = gameScreen.readInput();
+            UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-            if (keyStroke.getCharacter() != null) {
-                Character character = keyStroke.getCharacter();
+            if (provider.getCharacter() != null) {
+                Character character = provider.getCharacter();
 
                 if (Character.isDigit(character)) {
                     int num = character - '0';
@@ -121,7 +120,6 @@ public class ConsoleViewImpl implements ConsoleView {
      */
     @Override
     public void clear() {
-        //TODO: clear logs if needed (do not clear game log)
         field.clear();
     }
 
@@ -140,14 +138,14 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     private String getFileName(TerminalPosition cursorPosition) throws IOException {
-        KeyStroke keyStroke = gameScreen.readInput();
+        UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
         StringBuilder fileName = new StringBuilder();
 
-        while (keyStroke.getKeyType() != KeyType.Enter) {
-            if (keyStroke.getCharacter() != null && keyStroke.getKeyType() != KeyType.Backspace) {
-                fileName.append(keyStroke.getCharacter());
+        while (!provider.isEnter()) {
+            if (provider.getCharacter() != null && !provider.isBackspace()) {
+                fileName.append(provider.getCharacter());
                 gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
-                        new TextCharacter(keyStroke.getCharacter()));
+                        new TextCharacter(provider.getCharacter()));
                 gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
                         cursorPosition.getRow()));
                 cursorPosition = gameScreen.getCursorPosition();
@@ -158,7 +156,7 @@ public class ConsoleViewImpl implements ConsoleView {
                     e.printStackTrace();
                 }
             }
-            keyStroke = gameScreen.readInput();
+            provider = new UserInputProviderImpl(gameScreen.readInput());
         }
         
         return fileName.toString();

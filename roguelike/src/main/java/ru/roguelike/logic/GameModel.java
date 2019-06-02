@@ -1,14 +1,11 @@
 package ru.roguelike.logic;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import org.jetbrains.annotations.NotNull;
-import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractArtifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.movable.Player;
-import ru.roguelike.view.Drawable;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,10 +37,10 @@ public interface GameModel {
     /**
      * Takes an input from user and makes a corresponding move.
      *
-     * @param keyStroke is
+     * @param provider is
      * @throws IOException if it occurs
      */
-    void makeMove(KeyStroke keyStroke) throws IOException;
+    void makeMove(UserInputProvider provider) throws IOException;
 
     /**
      * @return true if "loading map from file" mode is on

@@ -1,10 +1,7 @@
 package ru.roguelike.models.objects.movable;
 
-import ru.roguelike.logic.strategies.AbstractStrategy;
-import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.base.AbstractMob;
 
 /**

@@ -1,6 +1,6 @@
 package ru.roguelike.logic;
 
-import com.googlecode.lanterna.input.KeyStroke;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import java.io.IOException;
  */
 public interface Movable {
     /**
-     * @param keyStroke an input from user
+     * @param provider an input from user
      * @param model     a current game model
      * @return corresponding move
      * @throws IOException if it occurs
      */
-    Move move(KeyStroke keyStroke, GameModel model) throws IOException;
+    Move move(UserInputProvider provider, GameModel model) throws IOException;
 }

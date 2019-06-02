@@ -1,6 +1,5 @@
 package ru.roguelike.logic;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
@@ -11,7 +10,7 @@ import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
 import ru.roguelike.models.objects.movable.Player;
-import ru.roguelike.view.Drawable;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,15 +137,15 @@ public class GameModelImpl implements GameModel {
      * {@inheritDoc}
      */
     @Override
-    public void makeMove(@NotNull KeyStroke keyStroke) throws IOException {
-        Move playerMove = player.move(keyStroke, this);
+    public void makeMove(@NotNull UserInputProvider provider) throws IOException {
+        Move playerMove = player.move(provider, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(player, playerMove);
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
         for (AbstractGameParticipant mob : mobs) {
-            Move to = mob.move(keyStroke, this);
+            Move to = mob.move(provider, this);
             RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
                     + " " + mob.getPosition().getY());
             applyMove(mob, to);

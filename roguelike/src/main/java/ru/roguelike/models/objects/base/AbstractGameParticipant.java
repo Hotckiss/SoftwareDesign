@@ -1,6 +1,5 @@
 package ru.roguelike.models.objects.base;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
@@ -8,12 +7,9 @@ import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.ConfusedStrategyDecorator;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
-import ru.roguelike.models.objects.map.Wall;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Represents participant of the game (in current implementation it can
@@ -255,13 +251,13 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
     /**
      * Returns preferred move for participant
-     * @param keyStroke an input from user
+     * @param provider an input from user
      * @param model a current game model
      * @return preferred move
      * @throws IOException if can not read move from input
      */
     @Override
-    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+    public Move move(UserInputProvider provider, GameModel model) throws IOException {
         if (freezeCount > 0) {
             return Move.NONE;
         }

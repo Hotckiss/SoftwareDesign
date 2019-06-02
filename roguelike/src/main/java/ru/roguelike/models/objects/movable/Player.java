@@ -1,7 +1,5 @@
 package ru.roguelike.models.objects.movable;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
@@ -10,6 +8,7 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.Wall;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -88,13 +87,9 @@ public class Player extends AbstractGameParticipant {
      */
     @Override
     @NotNull
-    public Move move(@NotNull KeyStroke keyStroke, GameModel model) throws
+    public Move move(@NotNull UserInputProvider provider, GameModel model) throws
             IOException {
         if (freezeCount > 0) {
-            return Move.NONE;
-        }
-
-        if (keyStroke.getKeyType() == KeyType.Escape) {
             return Move.NONE;
         }
 
@@ -102,12 +97,11 @@ public class Player extends AbstractGameParticipant {
         int x = position.getX();
         int y = position.getY();
 
-        if (keyStroke.getCharacter() == null) {
+        if (provider.getCharacter() == null) {
             return Move.NONE;
         }
 
-        //TODO: apply artifact better
-        switch (keyStroke.getCharacter()) {
+        switch (provider.getCharacter()) {
             case 'w':
                 return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.UP : Move.NONE;
             case 'a':

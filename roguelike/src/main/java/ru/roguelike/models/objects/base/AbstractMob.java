@@ -1,10 +1,9 @@
 package ru.roguelike.models.objects.base;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import ru.roguelike.logic.ExpirienceProvider;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.AbstractStrategy;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 
@@ -18,7 +17,7 @@ public abstract class AbstractMob extends AbstractGameParticipant {
     protected AbstractStrategy defaultStrategy;
 
     @Override
-    public Move move(KeyStroke keyStroke, GameModel model) throws IOException {
+    public Move move(UserInputProvider provider, GameModel model) throws IOException {
         if (freezeCount > 0) {
             return Move.NONE;
         }

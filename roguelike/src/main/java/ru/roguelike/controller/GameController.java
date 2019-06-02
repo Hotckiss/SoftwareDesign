@@ -1,6 +1,5 @@
 package ru.roguelike.controller;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,6 +7,8 @@ import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.commands.*;
 import ru.roguelike.view.ConsoleView;
+import ru.roguelike.view.UserInputProvider;
+import ru.roguelike.view.UserInputProviderImpl;
 
 import java.io.IOException;
 
@@ -81,24 +82,24 @@ public class GameController {
         void makeAction() throws IOException {
             Screen screen = GameController.this.view.getScreen();
             screen.refresh();
-            KeyStroke keyStroke = screen.readInput();
-            RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
-            Command command = createCommand(keyStroke);
+            UserInputProvider provider = new UserInputProviderImpl(screen.readInput());
+            RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
+            Command command = createCommand(provider);
             if (command != null) {
                 command.execute();
             }
         }
 
         /**
-         * @param keyStroke is input fromm user
+         * @param provider is input from user
          * @return an instance of command corresponding to user's input
          */
         @Nullable
-        private Command createCommand(@NotNull KeyStroke keyStroke) {
-            if (keyStroke.getCharacter() == null) {
+        private Command createCommand(@NotNull UserInputProvider provider) {
+            if (provider.getCharacter() == null) {
                 return null;
             }
-            switch (keyStroke.getCharacter()) {
+            switch (provider.getCharacter()) {
                 case 'l':
                     return new LoadMapCommand(GameController.this.view,
                             GameController.this);
@@ -110,7 +111,7 @@ public class GameController {
                 case 'v':
                     return new SaveGameCommand(GameController.this.game);
                 default:
-                    return new ApplyMoveCommand(keyStroke,
+                    return new ApplyMoveCommand(provider,
                             GameController.this.game, GameController.this.view);
             }
         }

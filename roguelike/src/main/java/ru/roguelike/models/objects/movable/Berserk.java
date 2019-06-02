@@ -1,16 +1,8 @@
 package ru.roguelike.models.objects.movable;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.Move;
-import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.logic.strategies.implementations.AggressiveStrategy;
-import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.base.AbstractMob;
-
-import java.io.IOException;
 
 /**
  * Mob, who has higher physical damage but less health.

@@ -1,9 +1,8 @@
 package ru.roguelike.logic.commands;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.ConsoleView;
+import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 
@@ -11,20 +10,20 @@ import java.io.IOException;
  * Applies player's move and redraws a field.
  */
 public class ApplyMoveCommand implements Command {
-    private final KeyStroke keyStroke;
+    private final UserInputProvider provider;
     private final GameModel model;
     private final ConsoleView view;
 
-    public ApplyMoveCommand(KeyStroke keyStroke, GameModel
+    public ApplyMoveCommand(UserInputProvider provider, GameModel
             model, ConsoleView view) {
-        this.keyStroke = keyStroke;
+        this.provider = provider;
         this.model = model;
         this.view = view;
     }
 
     @Override
     public void execute() throws IOException {
-        model.makeMove(keyStroke);
+        model.makeMove(provider);
         view.clear();
         view.draw(model.getField(), model.getInfo(), model.getLog());
     }
