@@ -208,13 +208,12 @@ public class GameModelImpl implements GameModel {
                 }
                 break;
         }
-        if (pos.getY() == to.getY() && pos.getX() == to.getX()) {
+        if (pos.equals(to)) {
             return;
         }
 
         for (AbstractGameParticipant opponent : mobs) {
-            if (opponent.getPosition().getX() == to.getX() &&
-                    opponent.getPosition().getY() == to.getY()) {
+            if (to.equals(opponent.getPosition())) {
                 attack(participant, opponent);
                 if (opponent.isAlive()) {
                     return;
@@ -224,8 +223,7 @@ public class GameModelImpl implements GameModel {
 
         if (participant instanceof Player) {
             for (Artifact artifact : artifacts) {
-                if (artifact.getPosition().getX() == to.getX() &&
-                        artifact.getPosition().getY() == to.getY() &&
+                if (to.equals(artifact.getPosition()) &&
                         !artifact.taken()) {
                     player.addArtifact(artifact);
                     artifact.take();
@@ -233,15 +231,14 @@ public class GameModelImpl implements GameModel {
                 }
             }
 
-            if (key.getPosition().getX() == to.getX() && key.getPosition().getY() == to.getY()) {
+            if (to.equals(key.getPosition())) {
                 player.addArtifact(key);
                 isFinished = true;
             }
         }
 
 
-        if (player.getPosition().getX() == to.getX() &&
-                player.getPosition().getY() == to.getY()) {
+        if (to.equals(player.getPosition())) {
             attack(participant, player);
             if (player.isAlive()) {
                 return;
