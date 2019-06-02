@@ -1,4 +1,7 @@
-package ru.roguelike.models.objects.base;
+package ru.roguelike.models.objects.artifacts;
+
+import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.base.AbstractGameObject;
 
 /**
  * Represents an element of the game (artifact), which is placed on board and
@@ -8,44 +11,48 @@ public class Artifact extends AbstractGameObject {
     /**
      * Health restore value of artifact
      */
-    protected int restoringHealth;
+    private int restoringHealth;
     /**
      * Regeneration value of artifact each turn
      */
-    protected int regenerationBonus;
+    private int regenerationBonus;
     /**
      * Fire chance improvement value
      */
-    protected double fireProbabilityBonus;
+    private double fireProbabilityBonus;
     /**
      * Cold chance improvement value
      */
-    protected double freezeProbabilityBonus;
+    private double freezeProbabilityBonus;
     /**
      * Physical damage improvement multiplier value
      */
-    protected double physicalDamageMultiplierBonus;
+    private double physicalDamageMultiplierBonus;
     /**
      * Fire damage improvement multiplier value
      */
-    protected double fireDamageMultiplierBonus;
+    private double fireDamageMultiplierBonus;
 
     /**
      * Fire damage improvement multiplier value
      */
-    protected Character alias;
+    private Character alias;
     /**
      * Flag of taking this artifact
      */
-    protected boolean isTaken = false;
+    private boolean isTaken = false;
 
-    public Artifact(int restoringHealth,
+    public Artifact(Position position,
+                    boolean isAvailable,
+                    int restoringHealth,
                     int regenerationBonus,
                     double fireProbabilityBonus,
                     double freezeProbabilityBonus,
                     double physicalDamageMultiplierBonus,
                     double fireDamageMultiplierBonus,
                     Character alias) {
+        this.position = position;
+        this.isAvailable = isAvailable;
         this.restoringHealth = restoringHealth;
         this.regenerationBonus = regenerationBonus;
         this.fireProbabilityBonus = fireProbabilityBonus;
@@ -76,5 +83,29 @@ public class Artifact extends AbstractGameObject {
     @Override
     public Character getDrawingFigure() {
         return alias;
+    }
+
+    public int getRestoringHealth() {
+        return restoringHealth;
+    }
+
+    public int getRegenerationBonus() {
+        return regenerationBonus;
+    }
+
+    public double getFireProbabilityBonus() {
+        return fireProbabilityBonus;
+    }
+
+    public double getFreezeProbabilityBonus() {
+        return freezeProbabilityBonus;
+    }
+
+    public double getPhysicalDamageMultiplierBonus() {
+        return physicalDamageMultiplierBonus;
+    }
+
+    public double getFireDamageMultiplierBonus() {
+        return fireDamageMultiplierBonus;
     }
 }

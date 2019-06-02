@@ -1,7 +1,7 @@
 package ru.roguelike.logic;
 
 import ru.roguelike.models.objects.artifacts.FinalKey;
-import ru.roguelike.models.objects.base.Artifact;
+import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.movable.Player;

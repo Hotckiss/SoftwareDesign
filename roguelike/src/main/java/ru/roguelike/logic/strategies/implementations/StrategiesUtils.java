@@ -1,7 +1,7 @@
 package ru.roguelike.logic.strategies.implementations;
 
 import org.jetbrains.annotations.NotNull;
-import ru.roguelike.models.objects.base.Artifact;
+import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.map.Wall;
 import ru.roguelike.models.objects.movable.Player;

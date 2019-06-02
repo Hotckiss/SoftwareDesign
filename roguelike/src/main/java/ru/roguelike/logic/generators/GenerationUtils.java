@@ -2,8 +2,7 @@ package ru.roguelike.logic.generators;
 
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.artifacts.*;
-import ru.roguelike.models.objects.base.Artifact;
+import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.movable.*;
 
@@ -21,19 +20,75 @@ public class GenerationUtils {
     public static Artifact makeArtifact(@NotNull Character alias, Position position) {
         switch (alias) {
             case 'c':
-                return new ColdSword(position);
+                return new Artifact(position,
+                        true,
+                        0,
+                        0,
+                        0,
+                        0.2,
+                        0,
+                        0,
+                        alias);
             case 'g':
-                return new FireGoblet(position);
+                return new Artifact(position,
+                        true,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.0,
+                        alias);
             case 'f':
-                return new FireSword(position);
+                return new Artifact(position,
+                        true,
+                        0,
+                        0,
+                        0.25,
+                        0,
+                        0,
+                        0,
+                        alias);
             case 'h':
-                return new HealthWater(position);
+                return new Artifact(position,
+                        true,
+                        50,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        alias);
             case 'r':
-                return new RegenerationPotion(position);
+                return new Artifact(position,
+                        true,
+                        30,
+                        5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        alias);
             case 's':
-                return new SpeedBoots(position);
+                return new Artifact(position,
+                        true,
+                        30,
+                        5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        alias);
             default:
-                return new HealthWater(position);
+                return new Artifact(position,
+                        true,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        alias);
         }
     }
 

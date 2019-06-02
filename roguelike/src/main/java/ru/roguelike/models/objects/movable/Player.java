@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
-import ru.roguelike.models.objects.base.Artifact;
+import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.Wall;

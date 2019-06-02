@@ -7,6 +7,7 @@ import ru.roguelike.logic.Movable;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.ConfusedStrategyDecorator;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
+import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
@@ -228,12 +229,12 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      * @param artifact is an artifact to be collected.
      */
     public void enableArtifact(@NotNull Artifact artifact) {
-        health = Math.min(fullHealth, health + artifact.restoringHealth);
-        fireDamageMultiplier += artifact.fireDamageMultiplierBonus;
-        fireProbability += artifact.fireProbabilityBonus;
-        freezeProbability += artifact.freezeProbabilityBonus;
-        physicalDamageMultiplier += artifact.physicalDamageMultiplierBonus;
-        regeneration += artifact.regenerationBonus;
+        health = Math.min(fullHealth, health + artifact.getRestoringHealth());
+        fireDamageMultiplier += artifact.getFireDamageMultiplierBonus();
+        fireProbability += artifact.getFireProbabilityBonus();
+        freezeProbability += artifact.getFreezeProbabilityBonus();
+        physicalDamageMultiplier += artifact.getPhysicalDamageMultiplierBonus();
+        regeneration += artifact.getRegenerationBonus();
     }
 
     /**
@@ -242,11 +243,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
      * @param artifact is an artifact to be disabled.
      */
     public void disableArtifact(@NotNull Artifact artifact) {
-        fireDamageMultiplier -= artifact.fireDamageMultiplierBonus;
-        fireProbability -= artifact.fireProbabilityBonus;
-        freezeProbability -= artifact.freezeProbabilityBonus;
-        physicalDamageMultiplier -= artifact.physicalDamageMultiplierBonus;
-        regeneration -= artifact.regenerationBonus;
+        fireDamageMultiplier -= artifact.getFireDamageMultiplierBonus();
+        fireProbability -= artifact.getFireProbabilityBonus();
+        freezeProbability -= artifact.getFreezeProbabilityBonus();
+        physicalDamageMultiplier -= artifact.getPhysicalDamageMultiplierBonus();
+        regeneration -= artifact.getRegenerationBonus();
     }
 
     /**
