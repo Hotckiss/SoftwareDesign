@@ -7,6 +7,10 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
  * If the player collects this item, he wins.
  */
 public class FinalKey extends AbstractArtifact {
+    /**
+     * Constructs new final key artifact on specified position
+     * @param position artifact position
+     */
     public FinalKey(Position position) {
         this.position = position;
         this.isAvailable = false;

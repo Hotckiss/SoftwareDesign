@@ -16,6 +16,10 @@ import java.io.IOException;
  * Has less help than simple mob.
  */
 public class Flier extends AbstractMob {
+    /**
+     * Constructs new Flier on specified position
+     * @param position position to add Flier
+     */
     public Flier(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -34,6 +38,9 @@ public class Flier extends AbstractMob {
         this.mobStrategy = defaultStrategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'F';

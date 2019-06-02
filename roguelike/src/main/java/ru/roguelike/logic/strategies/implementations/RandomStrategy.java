@@ -14,6 +14,10 @@ import java.util.Random;
  * Random allowed movement
  */
 public class RandomStrategy extends AbstractStrategy {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();
@@ -24,7 +28,7 @@ public class RandomStrategy extends AbstractStrategy {
         int y = position.getY();
 
         if (x - 1 >= 0 && StrategiesUtils.availableForMob(field, x - 1, y)) {
-            availableMoves.add(Move.TOP);
+            availableMoves.add(Move.UP);
         }
 
         if (x + 1 < field.size() && StrategiesUtils.availableForMob(field, x + 1, y)) {

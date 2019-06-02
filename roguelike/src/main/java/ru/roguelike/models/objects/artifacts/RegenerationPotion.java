@@ -8,6 +8,10 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
  * of regeneration.
  */
 public class RegenerationPotion extends AbstractArtifact {
+    /**
+     * Constructs new regeneration potion artifact on specified position
+     * @param position artifact position
+     */
     public RegenerationPotion(Position position) {
         this.position = position;
         this.isAvailable = true;

@@ -16,6 +16,10 @@ import java.io.IOException;
  * Has less health, but regenerates some part of lost health after damage.
  */
 public class Vampire extends AbstractMob {
+    /**
+     * Constructs new Vampire on specified position
+     * @param position position to add Vampire
+     */
     public Vampire(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -34,6 +38,9 @@ public class Vampire extends AbstractMob {
         this.mobStrategy = defaultStrategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'V';

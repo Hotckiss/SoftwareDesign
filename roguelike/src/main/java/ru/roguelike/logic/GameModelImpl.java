@@ -132,22 +132,22 @@ public class GameModelImpl implements GameModel {
         RoguelikeLogger.INSTANCE.log_info("Input from user: " + keyStroke.getCharacter());
 
         if (keyStroke.getCharacter() != null) {
-            if (keyStroke.getCharacter().equals('h')) {
-                showHelpScreen = true;
-            }
-            if (keyStroke.getCharacter().equals('r')) {
-                showHelpScreen = false;
-            }
-            if (keyStroke.getCharacter().equals('l')) {
-                loadMapFromFile = true;
+            switch (keyStroke.getCharacter()) {
+                case 'r':
+                    showHelpScreen = false;
+                    return;
+                case 'l':
+                    loadMapFromFile = true;
+                    return;
+                case 'h':
+                    showHelpScreen = true;
+                    return;
+                default:
+                    break;
             }
         }
 
-        if (loadMapFromFile) {
-            return;
-        }
-
-        if (showHelpScreen) {
+        if (loadMapFromFile || showHelpScreen) {
             return;
         }
 
@@ -207,9 +207,9 @@ public class GameModelImpl implements GameModel {
                     to = pos.right();
                 }
                 break;
-            case TOP:
-                if (isValidPosition(pos.top())) {
-                    to = pos.top();
+            case UP:
+                if (isValidPosition(pos.up())) {
+                    to = pos.up();
                 }
                 break;
             case DOWN:
@@ -236,7 +236,9 @@ public class GameModelImpl implements GameModel {
 
         if (participant instanceof Player) {
             for (AbstractArtifact artifact : artifacts) {
-                if (artifact.getPosition().getX() == to.getX() && artifact.getPosition().getY() == to.getY() && !artifact.taken()) {
+                if (artifact.getPosition().getX() == to.getX() &&
+                        artifact.getPosition().getY() == to.getY() &&
+                        !artifact.taken()) {
                     player.addArtifact(artifact);
                     artifact.take();
                     break;
@@ -267,7 +269,10 @@ public class GameModelImpl implements GameModel {
     }
 
     private boolean isValidPosition(@NotNull Position position) {
-        return position.getX() >= 0 && position.getY() >= 0 && position.getX() < fieldModel.size() && position.getY() < fieldModel.get(0).size();
+        return position.getX() >= 0 &&
+                position.getY() >= 0 &&
+                position.getX() < fieldModel.size() &&
+                position.getY() < fieldModel.get(0).size();
     }
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
@@ -280,26 +285,47 @@ public class GameModelImpl implements GameModel {
         }
     }
 
+    /**
+     * Returns flag of showing help screen
+     * @return show help flag
+     */
     public boolean isShowHelpScreen() {
         return showHelpScreen;
     }
 
+    /**
+     * Sets flag of showing help screen
+     */
     public void setShowHelpScreen(boolean showHelpScreen) {
         this.showHelpScreen = showHelpScreen;
     }
 
+    /**
+     * Returns flag of loading map from file
+     * @return loading map from file flag
+     */
     public boolean isLoadMapFromFile() {
         return loadMapFromFile;
     }
 
+    /**
+     * Sets flag of loading map from file
+     */
     public void setLoadMapFromFile(boolean loadMapFromFile) {
         this.loadMapFromFile = loadMapFromFile;
     }
 
+    /**
+     * Returns flag of error loading map from file
+     * @return loading map from file error flag
+     */
     public boolean isErrorWhileLoadingMap() {
         return errorWhileLoadingMap;
     }
 
+    /**
+     * Sets error flag of loading map from file
+     */
     public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
         this.errorWhileLoadingMap = errorWhileLoadingMap;
     }

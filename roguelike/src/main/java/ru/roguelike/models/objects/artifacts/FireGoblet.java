@@ -7,6 +7,10 @@ import ru.roguelike.models.objects.base.AbstractArtifact;
  * Doubles the fire damage of the participant.
  */
 public class FireGoblet extends AbstractArtifact {
+    /**
+     * Constructs new fire goblet artifact on specified position
+     * @param position artifact position
+     */
     public FireGoblet(Position position) {
         this.position = position;
         this.isAvailable = true;

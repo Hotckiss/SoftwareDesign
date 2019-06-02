@@ -16,6 +16,10 @@ import java.io.IOException;
  * Mob, who has higher physical damage but less health.
  */
 public class Berserk extends AbstractMob {
+    /**
+     * Constructs new Berserk on specified position
+     * @param position position to add Berserk
+     */
     public Berserk(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -34,6 +38,9 @@ public class Berserk extends AbstractMob {
         this.mobStrategy = defaultStrategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'B';

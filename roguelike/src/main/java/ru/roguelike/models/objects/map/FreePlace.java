@@ -8,11 +8,18 @@ import ru.roguelike.models.objects.base.AbstractGameObject;
  */
 public class FreePlace extends AbstractGameObject {
 
+    /**
+     * Constructs new free place on specified position
+     * @param position position to add free place
+     */
     public FreePlace(Position position) {
         this.position = position;
         this.isAvailable = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return '.';

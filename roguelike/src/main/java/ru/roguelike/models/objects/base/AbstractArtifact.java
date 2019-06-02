@@ -5,24 +5,46 @@ package ru.roguelike.models.objects.base;
  * can be collected by player or mob.
  */
 public abstract class AbstractArtifact extends AbstractGameObject {
-    //сколько воостановит здоровья
+    /**
+     * Health restore value of artifact
+     */
     protected int restoringHealth;
-    //сколько добавит к регенерации
+    /**
+     * Regeneration value of artifact each turn
+     */
     protected int regenerationBonus;
-    //сколько добавит шанса к нанесению урона огнем
+    /**
+     * Fire chance improvement value
+     */
     protected double fireProbabilityBonus;
-    //сколько добавит шанса к заморозке
+    /**
+     * Cold chance improvement value
+     */
     protected double freezeProbabilityBonus;
-    //насколько увеличит множитель урона
+    /**
+     * Physical damage improvement multiplier value
+     */
     protected double physicalDamageMultiplierBonus;
-    //насколько увеличит множитель урона огнем
+    /**
+     * Fire damage improvement multiplier value
+     */
     protected double fireDamageMultiplierBonus;
+    /**
+     * Flag of taking this artifact
+     */
     protected boolean isTaken = false;
 
+    /**
+     * Takes this artifact on player
+     */
     public void take() {
         isTaken = true;
     }
 
+    /**
+     * Indicates that this artifact is taken
+     * @return true if artifact is taken false otherwise
+     */
     public boolean taken() {
         return isTaken;
     }

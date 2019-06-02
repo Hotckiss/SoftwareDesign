@@ -16,6 +16,10 @@ import java.io.IOException;
  * to do freeze damage.
  */
 public class Yeti extends AbstractMob {
+    /**
+     * Constructs new Yeti on specified position
+     * @param position position to add Yeti
+     */
     public Yeti(Position position) {
         this.position = position;
         this.isAvailable = false;
@@ -34,6 +38,9 @@ public class Yeti extends AbstractMob {
         this.mobStrategy = defaultStrategy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Character getDrawingFigure() {
         return 'Y';
