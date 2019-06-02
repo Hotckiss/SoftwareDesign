@@ -17,7 +17,7 @@ import java.io.IOException;
  * Represents participant of the game (in current implementation it can
  * player or mob).
  */
-public abstract class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
+public class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
     /**
      * Full health of participant
      */
@@ -265,6 +265,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
         }
 
         return new RandomStrategy().preferredMove(position, model);
+    }
+
+    @Override
+    public int getExperience() {
+        return experience;
     }
 
     public int getLevel() {
