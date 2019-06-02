@@ -61,11 +61,11 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
     /**
      * Fired turns count
      */
-    protected int fireCount;
+    private int fireCount;
     /**
      * Damage taken from fire each turn
      */
-    protected int fireValue;
+    private int fireValue;
 
     /**
      * Expirience of game participant
