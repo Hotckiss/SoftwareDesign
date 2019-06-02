@@ -9,6 +9,7 @@ import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
@@ -260,9 +261,8 @@ public class GameModelImpl implements GameModel {
     }
 
     private void attack(AbstractGameParticipant attacker, AbstractGameParticipant defender) {
-        if (attacker instanceof Player && !(defender instanceof Player)) {
-            attacker.hit(defender);
-        } else if (!(attacker instanceof Player) && defender instanceof Player) {
+        if ((attacker instanceof Player && defender instanceof Mob) ||
+                (defender instanceof Player && attacker instanceof Mob)) {
             attacker.hit(defender);
         }
     }
