@@ -1,9 +1,10 @@
-package ru.roguelike.models.objects.base;
+package ru.roguelike.models.objects.movable;
 
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
@@ -13,9 +14,9 @@ import java.io.IOException;
  */
 public class Mob extends AbstractGameParticipant {
     // current mob strategy
-    protected AbstractStrategy mobStrategy;
+    private AbstractStrategy mobStrategy;
     // default mob strategy
-    protected AbstractStrategy defaultStrategy;
+    private AbstractStrategy defaultStrategy;
 
     private int experienceCostHit;
     private int experienceCostKill;
@@ -70,5 +71,17 @@ public class Mob extends AbstractGameParticipant {
         }
 
         return experienceCostHit;
+    }
+
+    public AbstractStrategy getDefaultStrategy() {
+        return defaultStrategy;
+    }
+
+    public AbstractStrategy getMobStrategy() {
+        return mobStrategy;
+    }
+
+    public void setMobStrategy(AbstractStrategy mobStrategy) {
+        this.mobStrategy = mobStrategy;
     }
 }

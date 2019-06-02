@@ -8,8 +8,7 @@ import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
-import ru.roguelike.models.objects.base.Mob;
-import ru.roguelike.models.objects.movable.*;
+import ru.roguelike.models.objects.movable.Mob;
 
 /**
  * Common utils for objects generation
@@ -188,7 +187,7 @@ public class GenerationUtils {
                         10,
                         6,
                         25,
-                        new PassiveStrategy(),
+                        new AggressiveStrategy(),
                         alias);
             default:
                 return new Mob(position,

@@ -8,6 +8,7 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.ConfusedStrategyDecorator;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.objects.artifacts.Artifact;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
@@ -89,7 +90,7 @@ public abstract class AbstractGameParticipant extends AbstractGameObject impleme
 
         if (opponent instanceof Mob) {
             Mob mob = (Mob)opponent;
-            mob.mobStrategy = new ConfusedStrategyDecorator(mob.defaultStrategy, 3);
+            mob.setMobStrategy(new ConfusedStrategyDecorator(mob.getDefaultStrategy(), 3));
         }
 
         experience += opponent.getExperience();
