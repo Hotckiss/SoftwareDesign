@@ -47,7 +47,7 @@ public class ConsoleViewImpl implements ConsoleView {
      * @return user selection in the menu
      */
     @Override
-    public String showMenu(String[] menuOptions, String error) throws IOException {
+    public String showMenu(String[] menuOptions) throws IOException {
         gameScreen.clear();
 
         drawOnIthLine(0, "Menu:");
@@ -56,10 +56,6 @@ public class ConsoleViewImpl implements ConsoleView {
         for (String option : menuOptions) {
             drawOnIthLine(lineNum + 1, option + " - Press " + lineNum);
             lineNum++;
-        }
-
-        if (error != null) {
-            drawOnIthLine(menuOptions.length + 4, error);
         }
 
         gameScreen.refresh();
@@ -167,11 +163,6 @@ public class ConsoleViewImpl implements ConsoleView {
     @Override
     public Screen getScreen() {
         return gameScreen;
-    }
-
-    @Override
-    public String showMenu(String[] menuOptions) throws IOException {
-        return null;
     }
 
     private void drawInner() {

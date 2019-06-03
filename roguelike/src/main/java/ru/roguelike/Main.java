@@ -16,10 +16,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, IOException {
         RoguelikeLogger.INSTANCE.log_info("Launching game");
         ConsoleView cv = new ConsoleViewImpl();
-        GameGenerator generator = new RandomGenerator(15, 15, 0.15, 5, 5);
-        GameModel game = generator.generate();
         RoguelikeLogger.INSTANCE.log_info("Game generated");
-        GameController controller = new GameController(game, cv);
-        controller.runGame();
+        GameController controller = new GameController(cv);
+        controller.selectMode();
     }
 }

@@ -31,7 +31,6 @@ public class GameModelImpl implements GameModel {
     private boolean showHelpScreen = false;
     private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
-    private String[] startMenuOptions = {"Start new game", "Load saved game"};
     private boolean isSavedGameEqualToCurrent = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
@@ -45,24 +44,6 @@ public class GameModelImpl implements GameModel {
         this.mobs = mobs;
         this.artifacts = artifacts;
     }
-
-    @Override
-    public GameModel startGameFromSelection(String selection, String error) throws Exception {
-        switch (selection) {
-            case "Start new game":
-                return this;
-            case "Load saved game":
-                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
-                GameModel newGame = saverAndLoader.loadGame();
-                if (newGame == null) {
-                    throw new Exception("There is not any saved games!");
-                }
-                return newGame;
-        }
-
-        return null;
-    }
-
 
     /**
      * {@inheritDoc}
@@ -310,11 +291,6 @@ public class GameModelImpl implements GameModel {
      */
     public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
         this.errorWhileLoadingMap = errorWhileLoadingMap;
-    }
-
-    @Override
-    public String[] getStartMenuOptions() {
-        return startMenuOptions;
     }
 
     public Player getPlayer() {

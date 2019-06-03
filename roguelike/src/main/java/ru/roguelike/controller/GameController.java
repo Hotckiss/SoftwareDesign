@@ -6,6 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.commands.*;
+import ru.roguelike.logic.gameloading.GameSaverAndLoader;
+import ru.roguelike.logic.generators.GameGenerator;
+import ru.roguelike.logic.generators.RandomGenerator;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
 import ru.roguelike.view.UserInputProviderImpl;
@@ -16,16 +19,15 @@ import java.io.IOException;
  * Controls the game process.
  */
 public class GameController {
-    private GameModel game;
+    private static String[] startMenuOptions = {"Start new game", "Load saved game", "Start online game"};
+    private GameModel game = null;
     private ConsoleView view;
 
     /**
      * Creates new game controller with specified model
-     * @param model game model
      * @param view game view
      */
-    public GameController(@NotNull GameModel model, @NotNull ConsoleView view) {
-        this.game = model;
+    public GameController(@NotNull ConsoleView view) {
         this.view = view;
     }
 
@@ -37,25 +39,14 @@ public class GameController {
         return game;
     }
 
-    /**
-     * Starts the game process
-     *
-     * @throws IOException if it occurs during user's input reading.
-     */
-    public void runGame() throws IOException {
-        RoguelikeLogger.INSTANCE.log_info("Game started");
-
-        String[] menuOptions = game.getStartMenuOptions();
-        String error = null;
-
+    public void selectMode() throws IOException {
         while (true) {
-            String selection = view.showMenu(menuOptions, error);
-            error = null;
+            String selection = view.showMenu(startMenuOptions);
             GameModel newGame = null;
             try {
-                newGame = game.startGameFromSelection(selection, error);
+                newGame = startGameFromSelection(selection);
             } catch (Exception e) {
-                error = e.getMessage();
+                RoguelikeLogger.INSTANCE.log_error(e.getMessage());
             }
 
             if (newGame != null) {
@@ -63,6 +54,31 @@ public class GameController {
                 break;
             }
         }
+
+        runGame();
+    }
+
+    private GameModel startGameFromSelection(String selection) throws Exception {
+        switch (selection) {
+            case "Start new game":
+                GameGenerator generator = new RandomGenerator(15, 15, 0.15, 5, 5);
+                return generator.generate();
+            case "Load saved game":
+                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
+                GameModel newGame = saverAndLoader.loadGame();
+                if (newGame == null) {
+                    throw new Exception("There is not any saved games!");
+                }
+                return newGame;
+            case "Start online game":
+                break;
+        }
+
+        return null;
+    }
+
+    private void runGame() throws IOException {
+        RoguelikeLogger.INSTANCE.log_info("Game started");
         Invoker invoker = new Invoker();
         while (!game.finished()) {
             invoker.makeAction();
@@ -106,13 +122,14 @@ public class GameController {
                 case 'h':
                     return new ShowHelpScreenCommand(GameController.this.view);
                 case 'r':
-                    return new HideHelpScreenCommand(GameController.this
-                            .game, GameController.this.view);
+                    return new HideHelpScreenCommand(GameController.this.game,
+                            GameController.this.view);
                 case 'v':
                     return new SaveGameCommand(GameController.this.game);
                 default:
                     return new ApplyMoveCommand(provider,
-                            GameController.this.game, GameController.this.view);
+                            GameController.this.game,
+                            GameController.this.view);
             }
         }
     }

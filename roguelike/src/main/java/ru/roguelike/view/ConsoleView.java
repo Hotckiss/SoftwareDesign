@@ -44,8 +44,6 @@ public interface ConsoleView {
      */
     String getMapFileName() throws IOException;
 
-    String showMenu(String[] menuOptions, String error) throws IOException;
-
     /**
      * Draws help screen.
      */

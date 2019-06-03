@@ -61,13 +61,6 @@ public interface GameModel {
      */
     void setLoadMapFromFile(boolean loadMapFromFile);
 
-    /**
-     * Returns an array of start menu options
-     *
-     * @return an array of start menu options
-     */
-    String[] getStartMenuOptions();
-
     List<AbstractGameParticipant> getMobs();
 
     List<Artifact> getArtifacts();
@@ -75,14 +68,6 @@ public interface GameModel {
     FinalKey getKey();
 
     Player getPlayer();
-
-    /**
-     * Starts the game in the desired way.
-     *
-     * @param selection user menu selection
-     * @param error
-     */
-    GameModel startGameFromSelection(String selection, String error) throws Exception;
 
     boolean isSavedGameEqualToCurrent();
 
