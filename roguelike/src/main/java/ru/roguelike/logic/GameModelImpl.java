@@ -95,7 +95,7 @@ public class GameModelImpl implements GameModel {
         List<String> gameSituation = new ArrayList<>();
 
         gameSituation.add("Health: " + player.getHealth() +
-                " Exp: " + player.exp() + " Level: " +
+                " Exp: " + player.getExperience() + " Level: " +
                 player.getLevel() + " Items: " + player.getArtifactsLog());
 
         StringBuilder mobsHealth = new StringBuilder();

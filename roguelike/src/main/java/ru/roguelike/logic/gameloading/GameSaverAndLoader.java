@@ -47,7 +47,7 @@ public class GameSaverAndLoader {
         // PLAYER INFO
         Position position = player.getPosition();
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
-        appendToFile(savedGameFile,  player.exp() + "\n");
+        appendToFile(savedGameFile,  player.getExperience() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
         ArrayDeque<Player.ArtifactItem> artifactItems = player.getArtifacts();
         boolean isEquipped = false;
