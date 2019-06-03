@@ -88,27 +88,8 @@ public class ConsoleViewImpl implements ConsoleView {
         gameScreen.refresh();
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
-        StringBuilder serverInfo = new StringBuilder();
 
-        while (!provider.isEnter()) {
-            if (provider.getCharacter() != null && !provider.isBackspace()) {
-                serverInfo.append(provider.getCharacter());
-                gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
-                        new TextCharacter(provider.getCharacter()));
-                gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
-                        cursorPosition.getRow()));
-                cursorPosition = gameScreen.getCursorPosition();
-
-                try {
-                    gameScreen.refresh();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            provider = new UserInputProviderImpl(gameScreen.readInput());
-        }
-
-        System.out.println(serverInfo.toString());
+        System.out.println(inputLine(cursorPosition, provider));
     }
 
     @Override
@@ -135,7 +116,9 @@ public class ConsoleViewImpl implements ConsoleView {
             RoguelikeLogger.INSTANCE.log_error(e.getMessage());
         }
 
-        return getFileName(gameScreen.getCursorPosition());
+        UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
+
+        return inputLine(gameScreen.getCursorPosition(), provider);
     }
 
     private void drawOnIthLine(int line, String text) {
@@ -166,13 +149,11 @@ public class ConsoleViewImpl implements ConsoleView {
         drawInner();
     }
 
-    private String getFileName(TerminalPosition cursorPosition) throws IOException {
-        UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
-        StringBuilder fileName = new StringBuilder();
-
+    private String inputLine(TerminalPosition cursorPosition, UserInputProvider provider) throws IOException {
+        StringBuilder result = new StringBuilder();
         while (!provider.isEnter()) {
             if (provider.getCharacter() != null && !provider.isBackspace()) {
-                fileName.append(provider.getCharacter());
+                result.append(provider.getCharacter());
                 gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
                         new TextCharacter(provider.getCharacter()));
                 gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
@@ -187,10 +168,9 @@ public class ConsoleViewImpl implements ConsoleView {
             }
             provider = new UserInputProviderImpl(gameScreen.readInput());
         }
-        
-        return fileName.toString();
-    }
 
+        return result.toString();
+    }
     /**
      * {@inheritDoc}
      */
