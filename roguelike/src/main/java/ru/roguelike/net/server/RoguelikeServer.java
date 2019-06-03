@@ -1,20 +1,14 @@
 package ru.roguelike.net.server;
 
-import com.google.protobuf.ByteString;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import org.jetbrains.annotations.NotNull;
 import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
-import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.commands.Command;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -29,9 +23,13 @@ public class RoguelikeServer {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         int port = 22228;
+        System.out.println("Start creating server");
         RoguelikeServer server = new RoguelikeServer(port);
+        System.out.println("Starting server....");
         server.start();
+        System.out.println("Server started....");
         server.blockUntilShutdown();
+        System.out.println("Shutdown...");
     }
 
     private void start() throws IOException {
@@ -87,6 +85,7 @@ public class RoguelikeServer {
 
                 @Override
                 public void onNext(PlayerRequest request) {
+                    System.out.println("sssssssssssssssss");
                     // player request to list all sessions list
                     if (request.getSessionName().equals("list")) {
                         Set<String> allGames = manager.getAllGames();
