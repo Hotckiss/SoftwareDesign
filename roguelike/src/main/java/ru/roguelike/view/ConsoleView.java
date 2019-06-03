@@ -1,6 +1,7 @@
 package ru.roguelike.view;
 
 import com.googlecode.lanterna.screen.Screen;
+import ru.roguelike.logic.MenuOption;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +35,7 @@ public interface ConsoleView {
      *
      * @return user selection in the menu
      */
-    String showMenu(String[] menuOptions) throws IOException;
+    MenuOption showMenu() throws IOException;
 
     /**
      * Takes a file name from user.

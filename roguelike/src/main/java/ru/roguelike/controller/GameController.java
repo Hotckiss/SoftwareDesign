@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
+import ru.roguelike.logic.MenuOption;
 import ru.roguelike.logic.commands.*;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.logic.generators.GameGenerator;
@@ -19,7 +20,6 @@ import java.io.IOException;
  * Controls the game process.
  */
 public class GameController {
-    private static String[] startMenuOptions = {"Start new game", "Load saved game", "Start online game"};
     private GameModel game = null;
     private ConsoleView view;
 
@@ -41,7 +41,7 @@ public class GameController {
 
     public void selectMode() throws IOException {
         while (true) {
-            String selection = view.showMenu(startMenuOptions);
+            MenuOption selection = view.showMenu();
             GameModel newGame = null;
             try {
                 newGame = startGameFromSelection(selection);
@@ -58,19 +58,19 @@ public class GameController {
         runGame();
     }
 
-    private GameModel startGameFromSelection(String selection) throws Exception {
+    private GameModel startGameFromSelection(MenuOption selection) throws Exception {
         switch (selection) {
-            case "Start new game":
+            case NEW_GAME:
                 GameGenerator generator = new RandomGenerator(15, 15, 0.15, 5, 5);
                 return generator.generate();
-            case "Load saved game":
+            case LOAD_GAME:
                 GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
                 GameModel newGame = saverAndLoader.loadGame();
                 if (newGame == null) {
                     throw new Exception("There is not any saved games!");
                 }
                 return newGame;
-            case "Start online game":
+            case ONLINE_GAME:
                 break;
         }
 

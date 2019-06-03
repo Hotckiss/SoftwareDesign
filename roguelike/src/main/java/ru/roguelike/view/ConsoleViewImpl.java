@@ -8,6 +8,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.info.GameInfo;
+import ru.roguelike.logic.MenuOption;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,14 +48,15 @@ public class ConsoleViewImpl implements ConsoleView {
      * @return user selection in the menu
      */
     @Override
-    public String showMenu(String[] menuOptions) throws IOException {
+    public MenuOption showMenu() throws IOException {
         gameScreen.clear();
 
         drawOnIthLine(0, "Menu:");
         int lineNum = 1;
+        final MenuOption[] availableOptions = MenuOption.values();
 
-        for (String option : menuOptions) {
-            drawOnIthLine(lineNum + 1, option + " - Press " + lineNum);
+        for (MenuOption option : availableOptions) {
+            drawOnIthLine(lineNum + 1, option.getAlias() + " - Press " + lineNum);
             lineNum++;
         }
 
@@ -69,8 +71,8 @@ public class ConsoleViewImpl implements ConsoleView {
                 if (Character.isDigit(character)) {
                     int num = character - '0';
 
-                    if (0 < num && num <= menuOptions.length) {
-                        return menuOptions[num - 1];
+                    if (0 < num && num <= availableOptions.length) {
+                        return availableOptions[num - 1];
                     }
                 }
             }
