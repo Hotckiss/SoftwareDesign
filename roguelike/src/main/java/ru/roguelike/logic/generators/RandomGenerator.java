@@ -68,9 +68,7 @@ public class RandomGenerator implements GameGenerator {
             Position position = generateRandomPosition(random);
 
             AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
-
-            if (!(curObject.getClass().equals(FreePlace.class) ||
-                    curObject.getClass().equals(Wall.class))) {
+            if (!curObject.getClass().equals(FreePlace.class)) {
                 continue;
             }
 
@@ -85,9 +83,7 @@ public class RandomGenerator implements GameGenerator {
             Position position = generateRandomPosition(random);
 
             AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
-
-            if (!(curObject.getClass().equals(FreePlace.class) ||
-                    curObject.getClass().equals(Wall.class))) {
+            if (!curObject.getClass().equals(FreePlace.class)) {
                 continue;
             }
 
@@ -98,13 +94,31 @@ public class RandomGenerator implements GameGenerator {
             totalArtifacts++;
         }
 
-        Position position = generateRandomPosition(random);
-        player = new Player(position);
-        field.get(position.getX()).set(position.getY(), player);
+        while (true) {
+            Position position = generateRandomPosition(random);
 
-        position = generateRandomPosition(random);
-        key = new FinalKey(position);
-        field.get(position.getX()).set(position.getY(), key);
+            AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
+            if (!curObject.getClass().equals(FreePlace.class)) {
+                continue;
+            }
+
+            player = new Player(position);
+            field.get(position.getX()).set(position.getY(), player);
+            break;
+        }
+
+        while (true) {
+            Position position = generateRandomPosition(random);
+
+            AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
+            if (!curObject.getClass().equals(FreePlace.class)) {
+                continue;
+            }
+
+            key = new FinalKey(position);
+            field.get(position.getX()).set(position.getY(), key);
+            break;
+        }
 
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
