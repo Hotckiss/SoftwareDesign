@@ -10,6 +10,7 @@ import ru.roguelike.logic.commands.*;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.logic.generators.GameGenerator;
 import ru.roguelike.logic.generators.RandomGenerator;
+import ru.roguelike.net.client.RoguelikeClient;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
 import ru.roguelike.view.UserInputProviderImpl;
@@ -70,14 +71,14 @@ public class GameController {
         runGame();
     }
 
-    private void processOnlineGame() throws IOException {
+    private void processOnlineGame() throws IOException, InterruptedException {
         String serverInfo = view.showOnlineMenu();
         String[] parts = serverInfo.split(" ");
         String host = parts[0];
         Integer port = Integer.parseInt(parts[1]);
 
-        System.out.println(host);
-        System.out.println(port);
+        RoguelikeClient client = new RoguelikeClient(host, port);
+        client.start();
     }
 
     private void runGame() throws IOException {

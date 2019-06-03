@@ -17,15 +17,13 @@ public class RoguelikeClient {
     private StreamObserver<PlayerRequest> communicator;
     private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
     private boolean isListLastOperation = false;
-    private Scanner input;
 
-    public RoguelikeClient(String host, Integer port, Scanner input) {
+    public RoguelikeClient(String host, Integer port) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
         this.stub = ConnectionSetUpperGrpc.newStub(channel);
         this.communicator = stub.communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
-        this.input = input;
     }
 
     private void connect(String name) {
@@ -69,11 +67,11 @@ public class RoguelikeClient {
         }
     }
 
-    void start() {
+    public void start() {
         boolean sessionIsChosen = false;
         while (!sessionIsChosen) {
             System.out.println("Please enter 'list' command to list sessions or enter session name");
-            String inputCommand = input.nextLine();
+            String inputCommand = "list"; //input.nextLine();
             if (inputCommand.equals("list")) {
                 list();
                 try {
@@ -103,17 +101,5 @@ public class RoguelikeClient {
         //while (!isFinished) {
         //    ;
         //}
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
-        RoguelikeClient client = new RoguelikeClient("localhost", 22228, scanner);
-
-
-        try {
-            client.start();
-        } finally {
-            client.shutdown();
-        }
     }
 }
