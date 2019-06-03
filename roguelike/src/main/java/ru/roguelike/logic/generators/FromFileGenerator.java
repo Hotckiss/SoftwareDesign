@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * Map loader. Loads file from specified file
  */
-public class  FromFileGenerator implements GameGenerator {
+public class FromFileGenerator implements GameGenerator {
     private boolean ifFileExist = true;
     private List<String> mapFromFile = new ArrayList<>();
 
