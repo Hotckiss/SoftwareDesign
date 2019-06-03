@@ -1,12 +1,16 @@
 package ru.roguelike.net.client;
 
+import com.googlecode.lanterna.screen.Screen;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.ServerReply;
+import ru.roguelike.view.UserInputProvider;
+import ru.roguelike.view.UserInputProviderImpl;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,13 +21,15 @@ public class RoguelikeClient {
     private StreamObserver<PlayerRequest> communicator;
     private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
     private boolean isListLastOperation = false;
+    private Screen gameScreen;
 
-    public RoguelikeClient(String host, Integer port) {
+    public RoguelikeClient(String host, Integer port, Screen gameScreen) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
         this.stub = ConnectionSetUpperGrpc.newStub(channel);
         this.communicator = stub.communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
+        this.gameScreen = gameScreen;
     }
 
     private void connect(String name) {
@@ -67,35 +73,30 @@ public class RoguelikeClient {
         }
     }
 
-    public void start() {
+    public void start() throws IOException {
         boolean sessionIsChosen = false;
-        while (!sessionIsChosen) {
-            System.out.println("Please enter 'list' command to list sessions or enter session name");
-            String inputCommand = "list"; //input.nextLine();
-            if (inputCommand.equals("list")) {
-                list();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                connect(inputCommand);
-                Thread threadToReadInput = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //while (!isGameInitialized.get()) {
-                        //    continue;
-                        //}
-                        //while (!isFinished) {
-                        //    Controller.makeOnlineTurn(view!!, communicatorRef.get());
-                        //}
-                    }
-                });
+        list();
 
-                threadToReadInput.start();
-                sessionIsChosen = true;
-            }
+        while (!sessionIsChosen) {
+            UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
+            String inputCommand = provider.getCharacter().toString();
+            System.out.println(inputCommand);
+
+            connect(inputCommand);
+            Thread threadToReadInput = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //while (!isGameInitialized.get()) {
+                    //    continue;
+                    //}
+                    //while (!isFinished) {
+                    //    Controller.makeOnlineTurn(view!!, communicatorRef.get());
+                    //}
+                }
+            });
+
+            threadToReadInput.start();
+            sessionIsChosen = true;
         }
         System.out.println("Finished");
         //while (!isFinished) {

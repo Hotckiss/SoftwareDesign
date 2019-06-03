@@ -77,7 +77,7 @@ public class GameController {
         String host = parts[0];
         Integer port = Integer.parseInt(parts[1]);
 
-        RoguelikeClient client = new RoguelikeClient(host, port);
+        RoguelikeClient client = new RoguelikeClient(host, port, view.getScreen());
         client.start();
     }
 
