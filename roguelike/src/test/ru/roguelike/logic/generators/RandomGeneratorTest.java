@@ -2,6 +2,7 @@ package ru.roguelike.logic.generators;
 
 import org.junit.Test;
 import ru.roguelike.logic.GameModel;
+import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.view.Drawable;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public class RandomGeneratorTest {
 
         int numMobs = 0, numArtifacts = 0, numPlayers = 0, numKeys = 0;
 
-        for (List<Drawable> drawableList : model.makeDrawable()) {
+        for (List<AbstractGameObject> drawableList : model.getField()) {
             for (Drawable drawable : drawableList) {
                 Character c = drawable.getDrawingFigure();
 

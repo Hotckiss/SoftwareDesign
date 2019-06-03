@@ -2,6 +2,7 @@ package ru.roguelike.logic.generators;
 
 import org.junit.Test;
 import ru.roguelike.logic.GameModel;
+import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.view.Drawable;
 
 import java.io.*;
@@ -20,7 +21,7 @@ public class FromFileGeneratorTest {
             GameModel model = generator.generate();
 
             StringBuilder actualField = new StringBuilder();
-            for (List<Drawable> drawableList : model.makeDrawable()) {
+            for (List<AbstractGameObject> drawableList : model.getField()) {
                 for (Drawable drawable : drawableList) {
                     actualField.append(drawable.getDrawingFigure());
                 }
