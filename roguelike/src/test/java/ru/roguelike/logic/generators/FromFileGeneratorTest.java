@@ -4,6 +4,7 @@ import org.junit.Test;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.view.Drawable;
+import ru.roguelike.Utils;
 
 import java.io.*;
 import java.util.List;
@@ -29,27 +30,9 @@ public class FromFileGeneratorTest {
                 actualField.append("\n");
             }
 
-            String expectedField = readFileAsString(fileName);
+            String expectedField = Utils.readFileAsString(fileName);
 
             assertEquals(expectedField, actualField.toString());
         }
-    }
-
-    public static String readFileAsString(String fileName) throws IOException {
-        InputStream is = new FileInputStream(fileName);
-        BufferedReader buf = new BufferedReader(new InputStreamReader(is));
-        String line = buf.readLine();
-        StringBuilder sb = new StringBuilder();
-        while(line != null){
-            sb.append(line).append("\n");
-            line = buf.readLine();
-        }
-
-        String fileAsString = sb.toString();
-
-        is.close();
-        buf.close();
-
-        return fileAsString;
     }
 }
