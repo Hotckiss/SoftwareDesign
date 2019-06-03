@@ -63,6 +63,10 @@ public class GameController {
                 break;
             }
         }
+
+        view.clear();
+        view.draw(game.getField(), game.getInfo(), game.getLog());
+
         Invoker invoker = new Invoker();
         while (!game.finished()) {
             invoker.makeAction();
