@@ -40,7 +40,7 @@ public interface ConsoleView {
     /**
      * Shows online menu
      */
-    void showOnlineMenu() throws IOException;
+    String showOnlineMenu() throws IOException;
 
     /**
      * Takes a file name from user.

@@ -80,7 +80,7 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     @Override
-    public void showOnlineMenu() throws IOException {
+    public String showOnlineMenu() throws IOException {
         gameScreen.clear();
         drawOnIthLine(0, "Input host and port in following format: <host> <port>");
         TerminalPosition cursorPosition = new TerminalPosition(0, 1);
@@ -89,7 +89,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-        System.out.println(inputLine(cursorPosition, provider));
+        return inputLine(cursorPosition, provider);
     }
 
     @Override

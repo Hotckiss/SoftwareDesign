@@ -71,7 +71,13 @@ public class GameController {
     }
 
     private void processOnlineGame() throws IOException {
-        view.showOnlineMenu();
+        String serverInfo = view.showOnlineMenu();
+        String[] parts = serverInfo.split(" ");
+        String host = parts[0];
+        Integer port = Integer.parseInt(parts[1]);
+
+        System.out.println(host);
+        System.out.println(port);
     }
 
     private void runGame() throws IOException {
