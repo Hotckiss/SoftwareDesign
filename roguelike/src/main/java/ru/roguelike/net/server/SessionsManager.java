@@ -9,6 +9,8 @@ import ru.roguelike.logic.generators.RandomGenerator;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SessionsManager {
     // sessionID -> game
@@ -44,5 +46,9 @@ public class SessionsManager {
 
     public GameModel getGameById(@NotNull String sessionId) {
         return games.getOrDefault(sessionId, new RandomGenerator(15, 15, 0.15, 5, 5).generate());
+    }
+
+    public Set<String> getAllGames() {
+        return  games.keySet();
     }
 }
