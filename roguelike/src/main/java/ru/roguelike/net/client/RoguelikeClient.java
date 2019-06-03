@@ -7,6 +7,7 @@ import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.ServerReply;
 
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -16,13 +17,15 @@ public class RoguelikeClient {
     private StreamObserver<PlayerRequest> communicator;
     private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
     private boolean isListLastOperation = false;
+    private Scanner input;
 
-    public RoguelikeClient(String host, Integer port) {
+    public RoguelikeClient(String host, Integer port, Scanner input) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
         this.stub = ConnectionSetUpperGrpc.newStub(channel);
         this.communicator = stub.communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
+        this.input = input;
     }
 
     private void connect(String name) {
@@ -70,9 +73,8 @@ public class RoguelikeClient {
         boolean sessionIsChosen = false;
         while (!sessionIsChosen) {
             System.out.println("Please enter 'list' command to list sessions or enter session name");
-            //TODO: read
-            String input = "list";
-            if (input.equals("list")) {
+            String inputCommand = input.nextLine();
+            if (inputCommand.equals("list")) {
                 list();
                 try {
                     Thread.sleep(1000);
@@ -80,7 +82,7 @@ public class RoguelikeClient {
                     e.printStackTrace();
                 }
             } else {
-                connect(input);
+                connect(inputCommand);
                 Thread threadToReadInput = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -97,14 +99,17 @@ public class RoguelikeClient {
                 sessionIsChosen = true;
             }
         }
-
+        System.out.println("Finished");
         //while (!isFinished) {
         //    ;
         //}
     }
 
     public static void main(String[] args) throws InterruptedException {
-        RoguelikeClient client = new RoguelikeClient("localhost", 22228);
+        Scanner scanner = new Scanner(System.in);
+        RoguelikeClient client = new RoguelikeClient("localhost", 22228, scanner);
+
+
         try {
             client.start();
         } finally {
