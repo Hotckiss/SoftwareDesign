@@ -82,10 +82,33 @@ public class ConsoleViewImpl implements ConsoleView {
     @Override
     public void showOnlineMenu() throws IOException {
         gameScreen.clear();
-
         drawOnIthLine(0, "Input host and port in following format: <host> <port>");
-
+        TerminalPosition cursorPosition = new TerminalPosition(0, 1);
+        gameScreen.setCursorPosition(cursorPosition);
         gameScreen.refresh();
+
+        UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
+        StringBuilder serverInfo = new StringBuilder();
+
+        while (!provider.isEnter()) {
+            if (provider.getCharacter() != null && !provider.isBackspace()) {
+                serverInfo.append(provider.getCharacter());
+                gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
+                        new TextCharacter(provider.getCharacter()));
+                gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
+                        cursorPosition.getRow()));
+                cursorPosition = gameScreen.getCursorPosition();
+
+                try {
+                    gameScreen.refresh();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            provider = new UserInputProviderImpl(gameScreen.readInput());
+        }
+
+        System.out.println(serverInfo.toString());
     }
 
     @Override
