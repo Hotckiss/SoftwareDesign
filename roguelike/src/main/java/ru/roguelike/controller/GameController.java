@@ -40,6 +40,14 @@ public class GameController {
         return game;
     }
 
+    public UserInputProvider getInputForChar() throws IOException {
+        return new UserInputProviderImpl(view.getScreen().readInput());
+    }
+
+    public void showSessionsList(String sessionsList) throws IOException {
+        view.showSessionsList(sessionsList);
+    }
+
     public void selectMode() throws IOException {
         while (true) {
             MenuOption selection = view.showMenu();
@@ -77,7 +85,7 @@ public class GameController {
         String host = parts[0];
         Integer port = Integer.parseInt(parts[1]);
 
-        RoguelikeClient client = new RoguelikeClient(host, port, view.getScreen());
+        RoguelikeClient client = new RoguelikeClient(host, port, this);
         client.start();
     }
 

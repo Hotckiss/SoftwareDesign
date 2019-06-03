@@ -93,6 +93,18 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     @Override
+    public void showSessionsList(String sessionsList) throws IOException {
+        gameScreen.clear();
+        drawOnIthLine(0, "Available sessionsIds:");
+        String[] sessions = sessionsList.split("\n");
+        for (int i = 0; i < sessions.length; i++) {
+            drawOnIthLine(i + 1, sessions[i]);
+        }
+        gameScreen.setCursorPosition(new TerminalPosition(0, sessions.length + 1));
+        gameScreen.refresh();
+    }
+
+    @Override
     public void drawHelpScreen() {
         drawInfo(GameInfo.getInfo());
     }

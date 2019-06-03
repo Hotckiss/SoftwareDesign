@@ -6,7 +6,9 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.ServerReply;
+import ru.roguelike.controller.GameController;
 import ru.roguelike.view.UserInputProvider;
 import ru.roguelike.view.UserInputProviderImpl;
 
@@ -21,15 +23,15 @@ public class RoguelikeClient {
     private StreamObserver<PlayerRequest> communicator;
     private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
     private boolean isListLastOperation = false;
-    private Screen gameScreen;
+    private final GameController controller;
 
-    public RoguelikeClient(String host, Integer port, Screen gameScreen) {
+    public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
         this.stub = ConnectionSetUpperGrpc.newStub(channel);
         this.communicator = stub.communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
-        this.gameScreen = gameScreen;
+        this.controller = controller;
     }
 
     private void connect(String name) {
@@ -58,7 +60,11 @@ public class RoguelikeClient {
             }
 
             if (isListLastOperation) {
-                System.out.println(value.getSessions());
+                try {
+                    controller.showSessionsList(value.getSessions());
+                } catch (IOException e) {
+                    RoguelikeLogger.INSTANCE.log_error(e.getMessage());
+                }
             }
         }
 
@@ -78,8 +84,7 @@ public class RoguelikeClient {
         list();
 
         while (!sessionIsChosen) {
-            UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
-            String inputCommand = provider.getCharacter().toString();
+            String inputCommand = controller.getInputForChar().getCharacter().toString();
             System.out.println(inputCommand);
 
             connect(inputCommand);

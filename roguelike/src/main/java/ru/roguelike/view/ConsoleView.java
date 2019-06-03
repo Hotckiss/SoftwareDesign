@@ -42,6 +42,8 @@ public interface ConsoleView {
      */
     String showOnlineMenu() throws IOException;
 
+    void showSessionsList(String sessionsList) throws IOException;
+
     /**
      * Takes a file name from user.
      *
