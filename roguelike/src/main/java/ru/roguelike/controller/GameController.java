@@ -44,7 +44,19 @@ public class GameController {
             MenuOption selection = view.showMenu();
             GameModel newGame = null;
             try {
-                newGame = startGameFromSelection(selection);
+                switch (selection) {
+                    case NEW_GAME:
+                        GameGenerator generator = new RandomGenerator(15, 15, 0.15, 5, 5);
+                        newGame = generator.generate();
+                        break;
+                    case LOAD_GAME:
+                        GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
+                        newGame = saverAndLoader.loadGame();
+                        break;
+                    case ONLINE_GAME:
+                        processOnlineGame();
+                        break;
+                }
             } catch (Exception e) {
                 RoguelikeLogger.INSTANCE.log_error(e.getMessage());
             }
@@ -58,26 +70,15 @@ public class GameController {
         runGame();
     }
 
-    private GameModel startGameFromSelection(MenuOption selection) throws Exception {
-        switch (selection) {
-            case NEW_GAME:
-                GameGenerator generator = new RandomGenerator(15, 15, 0.15, 5, 5);
-                return generator.generate();
-            case LOAD_GAME:
-                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
-                GameModel newGame = saverAndLoader.loadGame();
-                if (newGame == null) {
-                    throw new Exception("There is not any saved games!");
-                }
-                return newGame;
-            case ONLINE_GAME:
-                break;
-        }
-
-        return null;
+    private void processOnlineGame() throws IOException {
+        view.showOnlineMenu();
     }
 
     private void runGame() throws IOException {
+        //force redraw after selection
+        view.clear();
+        view.draw(game.getField(), game.getInfo(), game.getLog());
+
         RoguelikeLogger.INSTANCE.log_info("Game started");
         Invoker invoker = new Invoker();
         while (!game.finished()) {

@@ -80,6 +80,15 @@ public class ConsoleViewImpl implements ConsoleView {
     }
 
     @Override
+    public void showOnlineMenu() throws IOException {
+        gameScreen.clear();
+
+        drawOnIthLine(0, "Input host and port in following format: <host> <port>");
+
+        gameScreen.refresh();
+    }
+
+    @Override
     public void drawHelpScreen() {
         drawInfo(GameInfo.getInfo());
     }

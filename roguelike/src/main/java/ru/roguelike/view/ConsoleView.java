@@ -38,6 +38,11 @@ public interface ConsoleView {
     MenuOption showMenu() throws IOException;
 
     /**
+     * Shows online menu
+     */
+    void showOnlineMenu() throws IOException;
+
+    /**
      * Takes a file name from user.
      *
      * @return a file name from which a map will be loaded.
