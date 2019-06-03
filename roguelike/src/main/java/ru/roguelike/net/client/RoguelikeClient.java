@@ -25,6 +25,9 @@ public class RoguelikeClient {
     private boolean isListLastOperation = false;
     private final GameController controller;
 
+    private boolean isFinished = false;
+    private final Object lock = new Object();
+
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
@@ -79,7 +82,7 @@ public class RoguelikeClient {
         }
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         boolean sessionIsChosen = false;
         list();
 
@@ -103,9 +106,11 @@ public class RoguelikeClient {
             threadToReadInput.start();
             sessionIsChosen = true;
         }
-        System.out.println("Finished");
-        //while (!isFinished) {
-        //    ;
-        //}
+
+        while (!isFinished) {
+            synchronized(lock) {
+                lock.wait();
+            }
+        }
     }
 }
