@@ -28,7 +28,6 @@ public class GameModelImpl implements GameModel {
     private List<AbstractGameParticipant> mobs;
     private List<Artifact> artifacts;
     private boolean isFinished = false;
-    private boolean showHelpScreen = false;
     private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
     private boolean isSavedGameEqualToCurrent = false;
@@ -43,76 +42,6 @@ public class GameModelImpl implements GameModel {
         this.key = key;
         this.mobs = mobs;
         this.artifacts = artifacts;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean finished() {
-        return isFinished;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getInfo() {
-        List<String> info = new ArrayList<>();
-        info.add("Game INFO:");
-        info.add("P - player, k - key to win");
-        info.add("Press h for more info");
-        info.add("Press l for loading map from file, v for saving game");
-        info.add("");
-
-        return info;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<String> getLog() {
-        List<String> gameSituation = new ArrayList<>();
-
-        gameSituation.add("Health: " + player.getHealth() +
-                " Exp: " + player.exp() + " Level: " +
-                player.getLevel() + " Items: " + player.getArtifactsLog());
-
-        StringBuilder mobsHealth = new StringBuilder();
-        mobsHealth.append("Mobs' health: ");
-
-        for (AbstractGameParticipant mob : mobs) {
-            mobsHealth.append(String.valueOf(mob.getHealth()));
-            mobsHealth.append(" ");
-        }
-
-        gameSituation.add(mobsHealth.toString());
-
-        if (!player.isAlive() && isFinished) {
-            gameSituation.add("You lose!");
-        }
-
-        if (player.isAlive() && isFinished) {
-            gameSituation.add("You win!");
-        }
-        RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
-
-
-        if (errorWhileLoadingMap) {
-            gameSituation.add("Error while loading map!");
-            errorWhileLoadingMap = false;
-        }
-
-        return gameSituation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<List<AbstractGameObject>> getField() {
-        return fieldModel;
     }
 
     /**
@@ -249,21 +178,6 @@ public class GameModelImpl implements GameModel {
     }
 
     /**
-     * Returns flag of showing help screen
-     * @return show help flag
-     */
-    public boolean isShowHelpScreen() {
-        return showHelpScreen;
-    }
-
-    /**
-     * Sets flag of showing help screen
-     */
-    public void setShowHelpScreen(boolean showHelpScreen) {
-        this.showHelpScreen = showHelpScreen;
-    }
-
-    /**
      * Returns flag of loading map from file
      * @return loading map from file flag
      */
@@ -276,14 +190,6 @@ public class GameModelImpl implements GameModel {
      */
     public void setLoadMapFromFile(boolean loadMapFromFile) {
         this.loadMapFromFile = loadMapFromFile;
-    }
-
-    /**
-     * Returns flag of error loading map from file
-     * @return loading map from file error flag
-     */
-    public boolean isErrorWhileLoadingMap() {
-        return errorWhileLoadingMap;
     }
 
     /**
@@ -315,5 +221,75 @@ public class GameModelImpl implements GameModel {
 
     public void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent) {
         isSavedGameEqualToCurrent = savedGameEqualToCurrent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getLog() {
+        List<String> gameSituation = new ArrayList<>();
+
+        gameSituation.add("Health: " + player.getHealth() +
+                " Exp: " + player.exp() + " Level: " +
+                player.getLevel() + " Items: " + player.getArtifactsLog());
+
+        StringBuilder mobsHealth = new StringBuilder();
+        mobsHealth.append("Mobs' health: ");
+
+        for (AbstractGameParticipant mob : mobs) {
+            mobsHealth.append(String.valueOf(mob.getHealth()));
+            mobsHealth.append(" ");
+        }
+
+        gameSituation.add(mobsHealth.toString());
+
+        if (!player.isAlive() && isFinished) {
+            gameSituation.add("You lose!");
+        }
+
+        if (player.isAlive() && isFinished) {
+            gameSituation.add("You win!");
+        }
+        RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
+
+
+        if (errorWhileLoadingMap) {
+            gameSituation.add("Error while loading map!");
+            errorWhileLoadingMap = false;
+        }
+
+        return gameSituation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<List<AbstractGameObject>> getField() {
+        return fieldModel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean finished() {
+        return isFinished;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getInfo() {
+        List<String> info = new ArrayList<>();
+        info.add("Game INFO:");
+        info.add("P - player, k - key to win");
+        info.add("Press h for more info");
+        info.add("Press l for loading map from file, v for saving game");
+        info.add("");
+
+        return info;
     }
 }
