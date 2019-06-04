@@ -147,6 +147,7 @@ public class RoguelikeServer {
                         }
 
                         String errorMessage = null;
+                        //model.makeMove();
                         /*try {
                             Action.fromByteArray(value.action.toByteArray()).execute(model)
                         } catch (e: FailedLoadException) {
