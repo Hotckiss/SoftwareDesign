@@ -20,51 +20,36 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 public class RoguelikeServer {
-    private int port;
-    private Server server = null;
+    private Server server;
     private SessionsManager manager = new SessionsManager();
 
     public RoguelikeServer(int port) {
-        this.port = port;
+        server = ServerBuilder.forPort(port)
+                .addService(new RoguelikeService())
+                .build();
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
         int port = 22228;
-        System.out.println("Start creating server");
-        RoguelikeServer server = new RoguelikeServer(port);
-        System.out.println("Starting server....");
-        server.start();
-        System.out.println("Server started....");
-        server.blockUntilShutdown();
-        System.out.println("Shutdown...");
-    }
-
-    private void start() throws IOException {
-        server = ServerBuilder.forPort(port)
-                .addService(new RoguelikeService())
-                .build()
-                .start();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.err.println("*** shutting down gRPC server since JVM is shutting down");
-                stop();
-                System.err.println("*** server shut down");
+        if (args.length == 1) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                RoguelikeLogger.INSTANCE.log_info("Invalid port. Using default: 22228");
             }
-        }));
+        }
+        
+        RoguelikeServer server = new RoguelikeServer(port);
+        server.start();
+        server.awaitTermination();
     }
 
-    private void stop() {
-        if (server != null) {
-            server.shutdown();
-        }
+    public void start() throws IOException {
+        server.start();
     }
 
-    private void blockUntilShutdown() throws InterruptedException {
-        if (server != null) {
-            server.awaitTermination();
-        }
+    public void awaitTermination() throws InterruptedException {
+        server.awaitTermination();
     }
 
     private class RoguelikeService extends RoguelikeServiceGrpc.RoguelikeServiceImplBase {
