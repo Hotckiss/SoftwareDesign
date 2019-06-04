@@ -73,7 +73,11 @@ public class GameModelImpl implements GameModel {
             }
         }
 
-        players.put(id, new Player(available.get(new Random().nextInt(available.size()))));
+        Position position = available.get(new Random().nextInt(available.size()));
+        Player newPlayer = new Player(position);
+
+        players.put(id, newPlayer);
+        fieldModel.get(position.getX()).set(position.getY(), newPlayer);
 
         return id;
     }
@@ -87,6 +91,7 @@ public class GameModelImpl implements GameModel {
         Integer id = generateId();
 
         players.put(id, newPlayer);
+        fieldModel.get(newPlayer.getPosition().getX()).set(newPlayer.getPosition().getY(), newPlayer);
 
         return id;
     }
@@ -154,6 +159,8 @@ public class GameModelImpl implements GameModel {
         } else {
             isFinished = isAllPlayersDied();
         }
+
+        nextActivePlayer();
     }
 
     private void applyMove(@NotNull AbstractGameParticipant participant, @NotNull
