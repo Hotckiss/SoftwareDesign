@@ -26,7 +26,7 @@ public class GameSaverAndLoader {
         clearFile(savedGameFile);
 
         List<List<AbstractGameObject>> fieldModel = game.getField();
-        Player player = game.getPlayer();
+        Player player = game.getActivePlayer();
         FinalKey key = game.getKey();
         List<AbstractGameParticipant> mobs = game.getMobs();
 

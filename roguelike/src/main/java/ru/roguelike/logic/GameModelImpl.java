@@ -2,7 +2,6 @@ package ru.roguelike.logic;
 
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
-import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.artifacts.Artifact;
@@ -14,7 +13,6 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,18 +37,6 @@ public class GameModelImpl implements GameModel {
         Map<Integer, Player> players = new HashMap<>();
         players.put(0, player);
 
-        this.fieldModel = fieldModel;
-        this.players = players;
-        this.key = key;
-        this.mobs = mobs;
-        this.artifacts = artifacts;
-    }
-
-    public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
-                         Map<Integer, Player> players,
-                         FinalKey key,
-                         List<AbstractGameParticipant> mobs,
-                         List<Artifact> artifacts) {
         this.fieldModel = fieldModel;
         this.players = players;
         this.key = key;
@@ -126,7 +112,7 @@ public class GameModelImpl implements GameModel {
         nextActivePlayer();
     }
 
-    public Player getPlayer() {
+    public Player getActivePlayer() {
         return players.get(getActivePlayerId());
     }
 
@@ -143,7 +129,7 @@ public class GameModelImpl implements GameModel {
             return;
         }
 
-        Player currentPlayer = getPlayer();
+        Player currentPlayer = getActivePlayer();
         Move playerMove = currentPlayer.move(provider, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(currentPlayer, playerMove);
@@ -229,7 +215,7 @@ public class GameModelImpl implements GameModel {
             }
         }
 
-        Player currentPlayer = getPlayer();
+        Player currentPlayer = getActivePlayer();
         if (participant instanceof Player) {
             for (Artifact artifact : artifacts) {
                 if (to.equals(artifact.getPosition()) &&
@@ -294,7 +280,7 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<String> getLog() {
         List<String> gameSituation = new ArrayList<>();
-        Player currentPlayer = getPlayer();
+        Player currentPlayer = getActivePlayer();
 
         gameSituation.add("Health: " + currentPlayer.getHealth() +
                 " Exp: " + currentPlayer.exp() + " Level: " +

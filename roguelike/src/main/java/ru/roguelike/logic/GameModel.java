@@ -49,7 +49,7 @@ public interface GameModel extends Serializable {
 
     FinalKey getKey();
 
-    Player getPlayer();
+    Player getActivePlayer();
 
     Integer addPlayer(Player newPlayer);
     void nextActivePlayer();

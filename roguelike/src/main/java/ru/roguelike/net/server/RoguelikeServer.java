@@ -151,7 +151,7 @@ public class RoguelikeServer {
                     } else if (!request.getAction().isEmpty()){
                         System.out.println(request.getAction());
                         GameModel model = manager.getGameById(sessionName);
-                        System.out.println(model.getPlayer().getPosition().getX());
+                        System.out.println(model.getActivePlayer().getPosition().getX());
                         System.out.println("----------");
                         System.out.println(playerId);
                         System.out.println(model.getActivePlayerId());
@@ -167,7 +167,7 @@ public class RoguelikeServer {
                             errorMessage = e.getMessage();
                         }
                         manager.setGameById(sessionName, model);
-                        System.out.println(model.getPlayer().getPosition().getX());
+                        System.out.println(model.getActivePlayer().getPosition().getX());
                         if (errorMessage != null) {
                             sendErrorsMessage(errorMessage, responseObserver);
                         } else {
