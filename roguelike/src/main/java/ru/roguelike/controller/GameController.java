@@ -90,18 +90,26 @@ public class GameController {
 
         RoguelikeClient client = new RoguelikeClient(host, port, this);
         client.start();
+        System.exit(0);
     }
 
     public void makeOnlineTurn(StreamObserver<PlayerRequest> observer) throws IOException {
         Screen screen = GameController.this.view.getScreen();
         screen.refresh();
         UserInputProvider provider = new UserInputProviderImpl(screen.readInput());
+
+        if (provider.isEscape()) {
+            observer.onCompleted();
+            return;
+        }
+
         RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
         if (provider.getCharacter() == null) {
             return;
         }
 
         String turn = provider.getCharacter().toString();
+
         if ("wasdqe".contains(turn)) {
             observer.onNext(PlayerRequest.newBuilder().setAction(turn).build());
         }
