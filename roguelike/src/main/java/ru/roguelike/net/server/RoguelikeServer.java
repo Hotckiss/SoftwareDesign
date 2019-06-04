@@ -4,6 +4,7 @@ import com.google.protobuf.ByteString;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import org.jetbrains.annotations.NotNull;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.RoguelikeServiceGrpc;
@@ -38,7 +39,7 @@ public class RoguelikeServer {
                 RoguelikeLogger.INSTANCE.log_info("Invalid port. Using default: 22228");
             }
         }
-        
+
         RoguelikeServer server = new RoguelikeServer(port);
         server.start();
         server.awaitTermination();
@@ -53,12 +54,9 @@ public class RoguelikeServer {
     }
 
     private class RoguelikeService extends RoguelikeServiceGrpc.RoguelikeServiceImplBase {
-        private void sendModelToAllPlayers(String sessionName, ServerReply.Builder responseBuilder) {
-            if (responseBuilder == null) {
-                responseBuilder = ServerReply.newBuilder();
-            }
-
-            GameModel model = manager.getGameById(sessionName);
+        private void updateClientsWithModel(@NotNull String sessionId,
+                                            @NotNull ServerReply.Builder response) {
+            GameModel model = manager.getGameById(sessionId);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutput out;
@@ -72,92 +70,78 @@ public class RoguelikeServer {
                 try {
                     bos.close();
                 } catch (IOException ex) {
-                    // ignore close exception
+                    RoguelikeLogger.INSTANCE.log_info(ex.getMessage());
                 }
             }
 
-            responseBuilder.setModel(ByteString.copyFrom(bos.toByteArray()));
+            response.setModel(ByteString.copyFrom(bos.toByteArray()));
 
-            ServerReply response = responseBuilder.build();
-            for (StreamObserver<ServerReply> client: manager.getGameClients(sessionName)) {
-                client.onNext(response);
+            ServerReply responseReady = response.build();
+            for (StreamObserver<ServerReply> client: manager.getGameClients(sessionId)) {
+                client.onNext(responseReady);
             }
-        }
-
-        private void sendErrorsMessage(String errorMessage, StreamObserver<ServerReply> client) {
-            ServerReply response = ServerReply.newBuilder().setErrorMessage(errorMessage).build();
-            client.onNext(response);
         }
 
         @Override
         public StreamObserver<PlayerRequest> communicate(StreamObserver<ServerReply> responseObserver) {
             return new StreamObserver<PlayerRequest>() {
                 private Integer playerId = null;
-                private String sessionName = null;
+                private String sessionId = null;
 
                 @Override
                 public void onNext(PlayerRequest request) {
+                    ServerReply.Builder response = ServerReply.newBuilder();
+
                     // player request to list all sessions list
                     if (request.getSessionId().equals("list")) {
-                        System.out.println("LIST");
                         Set<String> allGames = manager.getAllGames();
+
                         StringJoiner joiner = new StringJoiner("\n");
                         for (String id: allGames) {
                             joiner.add(id);
                         }
 
                         String list = joiner.toString();
-                        ServerReply response = ServerReply
-                                .newBuilder()
-                                .setSessionsList(list)
-                                .build();
-                        responseObserver.onNext(response);
-                    } else if(sessionName == null) { // if no sessions was associated to this player
-                        System.out.println("NEW PLAYER CHOOSE SESSION");
-                        ServerReply.Builder builder = ServerReply.newBuilder();
+                        if (allGames.isEmpty()) {
+                            list = "No sessions. Create new game!";
+                        }
+
+                        responseObserver.onNext(response.setSessionsList(list).build());
+                    } else if(sessionId == null) { // if no sessions was associated to this player
+
                         // get player input session
-                        sessionName = request.getSessionId();
+                        sessionId = request.getSessionId();
                         // add to game or create
-                        manager.addClientToGame(sessionName, responseObserver);
+                        manager.addClientToGame(sessionId, responseObserver);
 
                         // add player to game and return his identifier
-                        GameModel model = manager.getGameById(sessionName);
-                        if (model == null) {
+                        GameModel model = manager.getGameById(sessionId);
+                        if (model == null) { // create new game
                             model = new RandomGenerator(15, 15, 0.15, 5, 5).generate();
                             playerId = 0;
                         } else {
                             playerId = model.addPlayerRandom();
                         }
 
-                        manager.setGameById(sessionName, model);
-                        builder.setPlayerId(playerId.toString());
+                        manager.setGameById(sessionId, model);
+                        response.setPlayerId(playerId.toString());
 
-                        sendModelToAllPlayers(sessionName, builder);
+                        updateClientsWithModel(sessionId, response);
                     } else if (!request.getAction().isEmpty()){
-                        System.out.println(request.getAction());
-                        GameModel model = manager.getGameById(sessionName);
-                        System.out.println(model.getActivePlayer().getPosition().getX());
-                        System.out.println("----------");
-                        System.out.println(playerId);
-                        System.out.println(model.getActivePlayerId());
-                        System.out.println("----------");
-                        if (!playerId.equals(model.getActivePlayerId())) {
+                        GameModel model = manager.getGameById(sessionId);
+                        if (!playerId.equals(model.getActivePlayerId())) { // not players turn
                             return;
                         }
 
-                        String errorMessage = null;
                         try {
                             model.makeMove(new StringStreamInputProviderImpl(request.getAction()));
                         } catch (IOException e) {
-                            errorMessage = e.getMessage();
+                            responseObserver.onNext(ServerReply.newBuilder().setErrorMessage(e.getMessage()).build());
+                            return;
                         }
-                        manager.setGameById(sessionName, model);
-                        System.out.println(model.getActivePlayer().getPosition().getX());
-                        if (errorMessage != null) {
-                            sendErrorsMessage(errorMessage, responseObserver);
-                        } else {
-                            sendModelToAllPlayers(sessionName, null);
-                        }
+
+                        manager.setGameById(sessionId, model);
+                        updateClientsWithModel(sessionId, response);
                     }
                 }
 
@@ -168,11 +152,11 @@ public class RoguelikeServer {
 
                 @Override
                 public void onCompleted() {
-                    GameModel model = manager.getGameById(sessionName);
+                    GameModel model = manager.getGameById(sessionId);
                     model.removePlayer(playerId);
-                    manager.setGameById(sessionName, model);
-                    manager.removeClient(sessionName, responseObserver);
-                    sendModelToAllPlayers(sessionName, null);
+                    manager.setGameById(sessionId, model);
+                    manager.removeClient(sessionId, responseObserver);
+                    updateClientsWithModel(sessionId, ServerReply.newBuilder());
                 }
             };
         }
