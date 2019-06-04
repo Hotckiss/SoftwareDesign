@@ -42,6 +42,11 @@ public interface ConsoleView {
      */
     String showOnlineMenu() throws IOException;
 
+    /**
+     * Displays list of sessions from server
+     * @param sessionsList sessions to list
+     * @throws IOException if any I/O error occurred
+     */
     void showSessionsList(String sessionsList) throws IOException;
 
     /**

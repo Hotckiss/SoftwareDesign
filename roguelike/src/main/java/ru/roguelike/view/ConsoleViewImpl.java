@@ -80,6 +80,9 @@ public class ConsoleViewImpl implements ConsoleView {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String showOnlineMenu() throws IOException {
         gameScreen.clear();
@@ -93,6 +96,9 @@ public class ConsoleViewImpl implements ConsoleView {
         return InputUtils.inputLine(cursorPosition, provider, gameScreen);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSessionsList(String sessionsList) throws IOException {
         gameScreen.clear();
@@ -105,11 +111,17 @@ public class ConsoleViewImpl implements ConsoleView {
         gameScreen.refresh();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void drawHelpScreen() {
         drawInfo(GameInfo.getInfo());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getMapFileName() throws IOException {
         TerminalPosition startCursorPosition = gameScreen.getCursorPosition();
