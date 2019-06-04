@@ -13,7 +13,6 @@ import ru.roguelike.logic.commands.*;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.logic.generators.GameGenerator;
 import ru.roguelike.logic.generators.RandomGenerator;
-import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.net.client.RoguelikeClient;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
@@ -25,6 +24,7 @@ import java.io.IOException;
  * Controls the game process.
  */
 public class GameController {
+    private static final String AVAILABLE_ONLINE_ACTIONS = "wasdqe";
     private GameModel game = null;
     private ConsoleView view;
 
@@ -36,23 +36,45 @@ public class GameController {
         this.view = view;
     }
 
+    /**
+     * Setter for game model
+     * @param game new game
+     */
     public void setGame(GameModel game) {
         this.game = game;
     }
 
+    /**
+     * Getter for game model
+     * @return current game
+     */
     public GameModel getGame() {
         return game;
     }
 
+    /**
+     * Method to read line from console view
+     * @return resulting line
+     * @throws IOException if any I/O error occurred
+     */
     public String getLine() throws IOException {
         UserInputProvider provider = new UserInputProviderImpl(view.getScreen().readInput());
         return InputUtils.inputLine(view.getScreen().getCursorPosition(), provider, view.getScreen());
     }
 
+    /**
+     * Method to output available sessions from server
+     * @param sessionsList available sessions
+     * @throws IOException if any I/O error occurred
+     */
     public void showSessionsList(String sessionsList) throws IOException {
         view.showSessionsList(sessionsList);
     }
 
+    /**
+     * Method to select game mode
+     * @throws IOException if any I/O error occurred
+     */
     public void selectMode() throws IOException {
         while (true) {
             MenuOption selection = view.showMenu();
@@ -84,17 +106,11 @@ public class GameController {
         runGame();
     }
 
-    private void processOnlineGame() throws IOException, InterruptedException {
-        String serverInfo = view.showOnlineMenu();
-        String[] parts = serverInfo.split(" ");
-        String host = parts[0];
-        Integer port = Integer.parseInt(parts[1]);
-
-        RoguelikeClient client = new RoguelikeClient(host, port, this);
-        client.start();
-
-    }
-
+    /**
+     * Method to process turn online. Error turns will be ignored by server
+     * @param observer client requests stream
+     * @throws IOException if any I/O error occurred
+     */
     public void makeOnlineTurn(StreamObserver<PlayerRequest> observer) throws IOException {
         Screen screen = GameController.this.view.getScreen();
         screen.refresh();
@@ -113,15 +129,30 @@ public class GameController {
 
         String turn = provider.getCharacter().toString();
 
-        if ("wasdqe".contains(turn)) {
+        if (AVAILABLE_ONLINE_ACTIONS.contains(turn)) {
             observer.onNext(PlayerRequest.newBuilder().setAction(turn).build());
         }
     }
 
+    /**
+     * Method to force redraw game model that was received from server
+     * @param playerId id of player to display info
+     * @throws IOException if any I/O error occurred
+     */
     public void updateOnlineGame(Integer playerId) throws IOException {
         //force redraw after selection
         view.clear();
         view.draw(game.getField(), game.getInfo(), game.getLog(playerId));
+    }
+
+    private void processOnlineGame() throws IOException, InterruptedException {
+        String serverInfo = view.showOnlineMenu();
+        String[] parts = serverInfo.split(" ");
+        String host = parts[0];
+        Integer port = Integer.parseInt(parts[1]);
+
+        RoguelikeClient client = new RoguelikeClient(host, port, this);
+        client.start();
     }
 
     private void runGame() throws IOException {

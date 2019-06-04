@@ -120,6 +120,10 @@ public class GameModelImpl implements GameModel {
         return players.get(id);
     }
 
+    /**
+     * Returns ID of player making turn
+     * @return active player id
+     */
     public Integer getActivePlayerId() {
         return new ArrayList<>(players.keySet()).get(activePlayerIndex);
     }
