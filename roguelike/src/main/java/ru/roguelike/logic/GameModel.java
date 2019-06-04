@@ -43,23 +43,11 @@ public interface GameModel {
     void makeMove(UserInputProvider provider) throws IOException;
 
     /**
-     * @return true if "loading map from file" mode is on
-     */
-    boolean isLoadMapFromFile();
-
-    /**
      * Sets true if there was an error while loading map
      *
      * @param errorWhileLoadingMap true if there was an error while loading map
      */
     void setErrorWhileLoadingMap(boolean errorWhileLoadingMap);
-
-    /**
-     * Sets true if "loading map from file" mode is on
-     *
-     * @param loadMapFromFile is true if "loading map from file" mode is on
-     */
-    void setLoadMapFromFile(boolean loadMapFromFile);
 
     List<AbstractGameParticipant> getMobs();
 

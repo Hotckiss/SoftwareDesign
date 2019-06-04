@@ -28,7 +28,6 @@ public class GameModelImpl implements GameModel {
     private List<AbstractGameParticipant> mobs;
     private List<Artifact> artifacts;
     private boolean isFinished = false;
-    private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
@@ -170,21 +169,6 @@ public class GameModelImpl implements GameModel {
                 (defender instanceof Player && attacker instanceof Mob)) {
             attacker.hit(defender);
         }
-    }
-
-    /**
-     * Returns flag of loading map from file
-     * @return loading map from file flag
-     */
-    public boolean isLoadMapFromFile() {
-        return loadMapFromFile;
-    }
-
-    /**
-     * Sets flag of loading map from file
-     */
-    public void setLoadMapFromFile(boolean loadMapFromFile) {
-        this.loadMapFromFile = loadMapFromFile;
     }
 
     /**
