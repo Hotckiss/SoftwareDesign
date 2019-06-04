@@ -19,6 +19,7 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RoguelikeClient {
@@ -28,7 +29,7 @@ public class RoguelikeClient {
     private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
     private boolean isListLastOperation = false;
     private final GameController controller;
-
+    private AtomicBoolean isGameInitialized = new AtomicBoolean(false);
     private boolean isFinished = false;
     private final Object lock = new Object();
     private GameModel clientModel = null;
@@ -84,6 +85,9 @@ public class RoguelikeClient {
             try {
                 in = new ObjectInputStream(bis);
                 Object o = in.readObject();
+                if (clientModel == null) {
+                    isGameInitialized.set(true);
+                }
                 clientModel = (GameModel)o;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -122,6 +126,10 @@ public class RoguelikeClient {
         @Override
         public void onCompleted() {
             System.out.println("Finish");
+            synchronized(lock) {
+                isFinished = true;
+                lock.notifyAll();
+            }
         }
     }
 
@@ -134,15 +142,15 @@ public class RoguelikeClient {
             System.out.println(inputCommand);
 
             connect(inputCommand);
-            Thread threadToReadInput = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //while (!isGameInitialized.get()) {
-                    //    continue;
-                    //}
-                    //while (!isFinished) {
-                    //    Controller.makeOnlineTurn(view!!, communicatorRef.get());
-                    //}
+            Thread threadToReadInput = new Thread(() -> {
+                while (!isGameInitialized.get()) {
+                }
+                while (!isFinished) {
+                    try {
+                        controller.makeOnlineTurn(communicatorRef.get());
+                    } catch (IOException e) {
+                        RoguelikeLogger.INSTANCE.log_error(e.getMessage());
+                    }
                 }
             });
 

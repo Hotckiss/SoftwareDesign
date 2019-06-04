@@ -1,8 +1,10 @@
 package ru.roguelike.controller;
 
 import com.googlecode.lanterna.screen.Screen;
+import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.MenuOption;
@@ -10,6 +12,7 @@ import ru.roguelike.logic.commands.*;
 import ru.roguelike.logic.gameloading.GameSaverAndLoader;
 import ru.roguelike.logic.generators.GameGenerator;
 import ru.roguelike.logic.generators.RandomGenerator;
+import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.net.client.RoguelikeClient;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
@@ -87,6 +90,22 @@ public class GameController {
 
         RoguelikeClient client = new RoguelikeClient(host, port, this);
         client.start();
+    }
+
+    public void makeOnlineTurn(StreamObserver<PlayerRequest> observer) throws IOException {
+        Screen screen = GameController.this.view.getScreen();
+        screen.refresh();
+        UserInputProvider provider = new UserInputProviderImpl(screen.readInput());
+        RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
+        if (provider.getCharacter() == null) {
+            return;
+        }
+
+        String turn = provider.getCharacter().toString();
+        System.out.println("GET");
+        if ("wasd".contains(turn)) {
+            observer.onNext(PlayerRequest.newBuilder().setAction(turn).build());
+        }
     }
 
     public void updateOnlineGame() throws IOException {

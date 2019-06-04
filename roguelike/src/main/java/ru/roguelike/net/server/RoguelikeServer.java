@@ -135,12 +135,12 @@ public class RoguelikeServer {
 
                         // add player to game and return his identifier
                         GameModel model = manager.getGameById(sessionName);
-                        Integer playerId = model.addPlayerRandom();
+                        playerId = model.addPlayerRandom();
                         builder.setPlayerId(playerId.toString());
 
                         sendModelToAllPlayers(sessionName, builder);
                     } else if (!request.getAction().isEmpty()){
-                        
+                        System.out.println(request.getAction());
                         GameModel model = manager.getGameById(sessionName);
                         if (!playerId.equals(model.getActivePlayerId())) {
                             return;
