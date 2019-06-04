@@ -58,19 +58,46 @@ public class GameModelImpl implements GameModel {
     }
 
     /**
+     * Add random player to game. Returns id
+     * @return player id
+     */
+    public Integer addPlayerRandom() {
+        Integer id = generateId();
+        List<Position> available = new ArrayList<>();
+
+        for (int i = 0; i < fieldModel.size(); i++) {
+            for (int j = 0; j < fieldModel.get(i).size(); j++) {
+                if (fieldModel.get(i).get(j) instanceof FreePlace) {
+                    available.add(fieldModel.get(i).get(j).getPosition());
+                }
+            }
+        }
+
+        players.put(id, new Player(available.get(new Random().nextInt(available.size()))));
+
+        return id;
+    }
+
+    /**
      * Add player to game. Returns id
      * @param newPlayer player to add
      * @return player id
      */
     public Integer addPlayer(@NotNull Player newPlayer) {
+        Integer id = generateId();
+
+        players.put(id, newPlayer);
+
+        return id;
+    }
+
+    private Integer generateId() {
         Integer id = 0;
         try {
             id = Collections.max(players.keySet()) + 1;
         } catch (NoSuchElementException e) {
             RoguelikeLogger.INSTANCE.log_info(e.getMessage());
         }
-
-        players.put(id, newPlayer);
 
         return id;
     }
