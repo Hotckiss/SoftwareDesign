@@ -43,14 +43,14 @@ protobuf {
 startScripts.enabled = false
 
 task roguelikeServer(type: CreateStartScripts) {
-    mainClassName = 'ru.roguelike.RoguelikeServer'
+    mainClassName = 'ru.roguelike.net.server.RoguelikeServer'
     applicationName = 'roguelike-server'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = startScripts.classpath
 }
 
 task roguelikeClient(type: CreateStartScripts) {
-    mainClassName = 'ru.roguelike.RoguelikeClient'
+    mainClassName = 'ru.roguelike.Main'
     applicationName = 'roguelike-client'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = startScripts.classpath
@@ -58,7 +58,7 @@ task roguelikeClient(type: CreateStartScripts) {
 
 task serverJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'ru.hse.spb.server.RoguelikeServerApplicationKt'
+        attributes 'Main-Class': 'ru.roguelike.net.server.RoguelikeServer'
     }
 
     from {
@@ -72,7 +72,7 @@ task serverJar(type: Jar) {
 
 task clientJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'ru.hse.spb.client.RoguelikeClientApplicationKt'
+        attributes 'Main-Class': 'ru.roguelike.Main'
     }
 
     from {
