@@ -135,7 +135,7 @@ public class Player extends AbstractGameParticipant implements Serializable {
         this.artifacts = artifacts;
     }
 
-    public static class ArtifactItem {
+    public static class ArtifactItem implements Serializable {
         private Artifact item;
         private boolean isEquipped;
 
