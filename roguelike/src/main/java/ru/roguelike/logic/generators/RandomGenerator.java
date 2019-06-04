@@ -83,12 +83,17 @@ public class RandomGenerator implements GameGenerator {
         }
 
         Position position = generateRandomPosition(random);
-        player = new Player(position);
-        field.get(position.getX()).set(position.getY(), player);
-
-        position = generateRandomPosition(random);
         key = new FinalKey(position);
         field.get(position.getX()).set(position.getY(), key);
+
+        Position positionPlayer = generateRandomPosition(random);
+        // no same positions for player and key
+        while (positionPlayer.equals(position)) {
+            positionPlayer = generateRandomPosition(random);
+        }
+
+        player = new Player(positionPlayer);
+        field.get(positionPlayer.getX()).set(positionPlayer.getY(), player);
 
         return new GameModelImpl(field, player, key, mobs, artifacts);
     }
