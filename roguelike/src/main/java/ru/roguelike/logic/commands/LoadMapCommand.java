@@ -6,6 +6,7 @@ import ru.roguelike.logic.generators.FromFileGenerator;
 import ru.roguelike.view.ConsoleView;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Loads map from file.
@@ -24,13 +25,20 @@ public class LoadMapCommand implements Command {
         String filename = view.getMapFileName();
         FromFileGenerator generator = new FromFileGenerator(filename);
         GameModel newModel = generator.generate();
+        String errorLoadingMapMessage = null;
         if (newModel == null) {
-            controller.getGame().setErrorWhileLoadingMap(true);
+            errorLoadingMapMessage = "Error while loading map!";
         } else {
             controller.setGame(newModel);
         }
         GameModel model = controller.getGame();
         view.clear();
-        view.draw(model.getField(), model.getInfo(), model.getLog());
+        List<String> gameLog = model.getLog();
+
+        if (errorLoadingMapMessage != null) {
+            gameLog.add(errorLoadingMapMessage);
+        }
+
+        view.draw(model.getField(), model.getInfo(), gameLog);
     }
 }

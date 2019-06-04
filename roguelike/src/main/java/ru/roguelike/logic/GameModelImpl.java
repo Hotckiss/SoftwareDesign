@@ -28,7 +28,6 @@ public class GameModelImpl implements GameModel {
     private List<AbstractGameParticipant> mobs;
     private List<Artifact> artifacts;
     private boolean isFinished = false;
-    private boolean errorWhileLoadingMap = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -171,13 +170,6 @@ public class GameModelImpl implements GameModel {
         }
     }
 
-    /**
-     * Sets error flag of loading map from file
-     */
-    public void setErrorWhileLoadingMap(boolean errorWhileLoadingMap) {
-        this.errorWhileLoadingMap = errorWhileLoadingMap;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -209,7 +201,7 @@ public class GameModelImpl implements GameModel {
         mobsHealth.append("Mobs' health: ");
 
         for (AbstractGameParticipant mob : mobs) {
-            mobsHealth.append(String.valueOf(mob.getHealth()));
+            mobsHealth.append(mob.getHealth());
             mobsHealth.append(" ");
         }
 
@@ -223,12 +215,6 @@ public class GameModelImpl implements GameModel {
             gameSituation.add("You win!");
         }
         RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
-
-
-        if (errorWhileLoadingMap) {
-            gameSituation.add("Error while loading map!");
-            errorWhileLoadingMap = false;
-        }
 
         return gameSituation;
     }

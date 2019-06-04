@@ -42,13 +42,6 @@ public interface GameModel {
      */
     void makeMove(UserInputProvider provider) throws IOException;
 
-    /**
-     * Sets true if there was an error while loading map
-     *
-     * @param errorWhileLoadingMap true if there was an error while loading map
-     */
-    void setErrorWhileLoadingMap(boolean errorWhileLoadingMap);
-
     List<AbstractGameParticipant> getMobs();
 
     List<Artifact> getArtifacts();
