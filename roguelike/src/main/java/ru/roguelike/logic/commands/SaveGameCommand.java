@@ -17,7 +17,6 @@ public class SaveGameCommand implements Command {
 
     @Override
     public void execute() throws IOException {
-        model.setSavedGameEqualToCurrent(true);
         GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
         saverAndLoader.saveGame(model);
     }

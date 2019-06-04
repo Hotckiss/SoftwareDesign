@@ -30,7 +30,6 @@ public class GameModelImpl implements GameModel {
     private boolean isFinished = false;
     private boolean loadMapFromFile = false;
     private boolean errorWhileLoadingMap = false;
-    private boolean isSavedGameEqualToCurrent = false;
 
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
@@ -64,10 +63,6 @@ public class GameModelImpl implements GameModel {
 
         if (!player.isAlive()) {
             RoguelikeLogger.INSTANCE.log_info("Lose");
-            if (isSavedGameEqualToCurrent && isFinished) {
-                GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();
-                //saverAndLoader.deleteGame();
-            }
         }
 
         for (AbstractGameParticipant mob : mobs) {
@@ -213,14 +208,6 @@ public class GameModelImpl implements GameModel {
 
     public List<AbstractGameParticipant> getMobs() {
         return mobs;
-    }
-
-    public boolean isSavedGameEqualToCurrent() {
-        return isSavedGameEqualToCurrent;
-    }
-
-    public void setSavedGameEqualToCurrent(boolean savedGameEqualToCurrent) {
-        isSavedGameEqualToCurrent = savedGameEqualToCurrent;
     }
 
     /**

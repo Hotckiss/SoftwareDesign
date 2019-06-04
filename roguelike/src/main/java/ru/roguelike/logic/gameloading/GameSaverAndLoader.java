@@ -201,7 +201,6 @@ public class GameSaverAndLoader {
         }
 
         GameModel gameModel = new GameModelImpl(field, player, key, mobs, artifacts);
-        gameModel.setSavedGameEqualToCurrent(true);
 
         return gameModel;
     }
