@@ -95,16 +95,24 @@ public class RoguelikeServer {
                         }
 
                         String list = joiner.toString();
-                        ServerReply response = ServerReply.newBuilder().setSessions(list).build();
+                        ServerReply response = ServerReply
+                                .newBuilder()
+                                .setSessions(list)
+                                .build();
                         responseObserver.onNext(response);
-                    } else if(sessionName == null) {
+                    } else if(sessionName == null) { // if no sessions was associated to this player
                         ServerReply.Builder builder = ServerReply.newBuilder();
+                        // get player input session
                         String sessionName = request.getSessionName();
+                        // add to game or create
                         manager.addClientToGame(sessionName, responseObserver);
+
+                        // add player to game and return his identifier TODO
                         GameModel model = manager.getGameById(sessionName);
                         //Integer playerId = model.addPlayer();
                         builder.setPlayerId(playerId.toString());
                     } else if (!request.getAction().isEmpty()){
+                        
                         GameModel model = manager.getGameById(sessionName);
                         //if (playerId != model.getActivePlayer()) {
                         //    return;
