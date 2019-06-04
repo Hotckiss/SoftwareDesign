@@ -300,13 +300,21 @@ public class GameModelImpl implements GameModel {
 
         gameSituation.add(mobsHealth.toString());
 
-        if (!currentPlayer.isAlive() && isFinished) {
-            gameSituation.add("You lose!");
+        if (isFinished) {
+            boolean hasKey = false;
+            for (Player.ArtifactItem artifact: currentPlayer.getArtifacts()) {
+                if (artifact.getItem() instanceof FinalKey) {
+                    hasKey = true;
+                }
+            }
+
+            if (currentPlayer.isAlive() && hasKey) {
+                gameSituation.add("You win!");
+            } else {
+                gameSituation.add("You lose!");
+            }
         }
 
-        if (currentPlayer.isAlive() && isFinished) {
-            gameSituation.add("You win!");
-        }
         RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
 
         return gameSituation;
