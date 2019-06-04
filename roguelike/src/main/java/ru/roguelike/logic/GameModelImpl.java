@@ -116,6 +116,12 @@ public class GameModelImpl implements GameModel {
     }
 
     public void removePlayer(Integer id) {
+        Player removedPlayer = players.get(id);
+        if (removedPlayer == null) {
+            return;
+        }
+
+        fieldModel.get(removedPlayer.getPosition().getX()).set(removedPlayer.getPosition().getY(), new FreePlace(removedPlayer.getPosition()));
         players.remove(id);
         nextActivePlayer();
     }

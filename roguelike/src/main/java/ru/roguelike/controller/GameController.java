@@ -90,7 +90,7 @@ public class GameController {
 
         RoguelikeClient client = new RoguelikeClient(host, port, this);
         client.start();
-        System.exit(0);
+
     }
 
     public void makeOnlineTurn(StreamObserver<PlayerRequest> observer) throws IOException {
@@ -100,6 +100,7 @@ public class GameController {
 
         if (provider.isEscape()) {
             observer.onCompleted();
+            System.exit(0);
             return;
         }
 

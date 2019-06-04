@@ -183,10 +183,11 @@ public class RoguelikeServer {
 
                 @Override
                 public void onCompleted() {
-                    System.out.println("EXIT");
-                    //manager.getGameById(sessionName).removePlayer(playerId);
+                    GameModel model = manager.getGameById(sessionName);
+                    model.removePlayer(playerId);
+                    manager.setGameById(sessionName, model);
                     manager.removeClient(sessionName, responseObserver);
-                    responseObserver.onCompleted();
+                    sendModelToAllPlayers(sessionName, null);
                 }
             };
         }
