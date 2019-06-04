@@ -4,6 +4,7 @@ import com.googlecode.lanterna.screen.Screen;
 import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.roguelike.InputUtils;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
@@ -43,8 +44,9 @@ public class GameController {
         return game;
     }
 
-    public UserInputProvider getInputForChar() throws IOException {
-        return new UserInputProviderImpl(view.getScreen().readInput());
+    public String getLine() throws IOException {
+        UserInputProvider provider = new UserInputProviderImpl(view.getScreen().readInput());
+        return InputUtils.inputLine(view.getScreen().getCursorPosition(), provider, view.getScreen());
     }
 
     public void showSessionsList(String sessionsList) throws IOException {

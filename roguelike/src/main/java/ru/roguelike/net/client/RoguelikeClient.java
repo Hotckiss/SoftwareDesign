@@ -146,7 +146,7 @@ public class RoguelikeClient {
 
         while (!gameSelected) {
             //read input session name and connect
-            String inputCommand = controller.getInputForChar().getCharacter().toString();
+            String inputCommand = controller.getLine();
             RoguelikeLogger.INSTANCE.log_info(inputCommand + " session selected");
 
             isListQuery = false;
