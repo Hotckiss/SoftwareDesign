@@ -2,9 +2,16 @@ package ru.roguelike.logic;
 
 import java.io.Serializable;
 
+/**
+ * Available game options
+ */
 public enum MenuOption implements Serializable {
     NEW_GAME, LOAD_GAME, ONLINE_GAME;
 
+    /**
+     * Menu option view model
+     * @return option view model
+     */
     public String getAlias() {
         switch (this) {
             case NEW_GAME:

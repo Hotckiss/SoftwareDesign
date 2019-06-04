@@ -29,6 +29,14 @@ public class GameModelImpl implements GameModel {
     private List<Artifact> artifacts;
     private boolean isFinished = false;
 
+    /**
+     * Creates new game model
+     * @param fieldModel game field
+     * @param player first game player
+     * @param key final key to win
+     * @param mobs list of mobs
+     * @param artifacts list of artifacts
+     */
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
                          FinalKey key,
@@ -52,10 +60,10 @@ public class GameModelImpl implements GameModel {
         Integer id = generateId();
         List<Position> available = new ArrayList<>();
 
-        for (int i = 0; i < fieldModel.size(); i++) {
-            for (int j = 0; j < fieldModel.get(i).size(); j++) {
-                if (fieldModel.get(i).get(j) instanceof FreePlace) {
-                    available.add(fieldModel.get(i).get(j).getPosition());
+        for (List<AbstractGameObject> abstractGameObjects : fieldModel) {
+            for (AbstractGameObject abstractGameObject : abstractGameObjects) {
+                if (abstractGameObject instanceof FreePlace) {
+                    available.add(abstractGameObject.getPosition());
                 }
             }
         }
@@ -70,30 +78,8 @@ public class GameModelImpl implements GameModel {
     }
 
     /**
-     * Add player to game. Returns id
-     * @param newPlayer player to add
-     * @return player id
+     * Move turn to next player method
      */
-    public Integer addPlayer(@NotNull Player newPlayer) {
-        Integer id = generateId();
-
-        players.put(id, newPlayer);
-        fieldModel.get(newPlayer.getPosition().getX()).set(newPlayer.getPosition().getY(), newPlayer);
-
-        return id;
-    }
-
-    private Integer generateId() {
-        Integer id = 0;
-        try {
-            id = Collections.max(players.keySet()) + 1;
-        } catch (NoSuchElementException e) {
-            RoguelikeLogger.INSTANCE.log_info(e.getMessage());
-        }
-
-        return id;
-    }
-
     public void nextActivePlayer() {
         if (players.keySet().isEmpty()) {
             activePlayerIndex = 0;
@@ -101,6 +87,10 @@ public class GameModelImpl implements GameModel {
         activePlayerIndex = (activePlayerIndex + 1) % players.keySet().size();
     }
 
+    /**
+     * Method to remove player that left game
+     * @param id player to remove
+     */
     public void removePlayer(Integer id) {
         Player removedPlayer = players.get(id);
         if (removedPlayer == null) {
@@ -112,16 +102,24 @@ public class GameModelImpl implements GameModel {
         nextActivePlayer();
     }
 
+    /**
+     * Get player making turn
+     * @return active player
+     */
     public Player getActivePlayer() {
         return players.get(getActivePlayerId());
     }
 
+    /**
+     * Get player by ID
+     * @return player with this id or null of player does not exist
+     */
     public Player getPlayerById(Integer id) {
         return players.get(id);
     }
 
     /**
-     * Returns ID of player making turn
+     * Get ID of player making turn
      * @return active player id
      */
     public Integer getActivePlayerId() {
@@ -178,6 +176,17 @@ public class GameModelImpl implements GameModel {
         }
 
         nextActivePlayer();
+    }
+
+    private Integer generateId() {
+        int id = 0;
+        try {
+            id = Collections.max(players.keySet()) + 1;
+        } catch (NoSuchElementException e) {
+            RoguelikeLogger.INSTANCE.log_info(e.getMessage());
+        }
+
+        return id;
     }
 
     private void applyMove(@NotNull AbstractGameParticipant participant, @NotNull
