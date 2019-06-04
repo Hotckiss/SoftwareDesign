@@ -9,9 +9,18 @@ import ru.roguelike.view.UserInputProviderImpl;
 import java.io.IOException;
 
 /**
- * Input line from terminal
+ * Input line from terminal utility
  */
 public class InputUtils {
+
+    /**
+     * Method extracting line from terminal until enter pressed
+     * @param cursorPosition start reading position
+     * @param provider input provider
+     * @param gameScreen terminal
+     * @return resulting line
+     * @throws IOException if any I/O error occurred
+     */
     public static String inputLine(TerminalPosition cursorPosition, UserInputProvider provider, Screen gameScreen) throws IOException {
         StringBuilder result = new StringBuilder();
         while (!provider.isEnter()) {
