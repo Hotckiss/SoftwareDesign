@@ -129,23 +129,27 @@ public class GameModelImpl implements GameModel {
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(currentPlayer, playerMove);
 
+        //remove burned mobs
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
-        for (AbstractGameParticipant mob : mobs) {
-            Move to = mob.move(provider, this);
-            RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
-                    + " " + mob.getPosition().getY());
-            applyMove(mob, to);
+        // mobs move each round
+        if (activePlayerIndex == players.keySet().size() - 1) {
+            for (AbstractGameParticipant mob : mobs) {
+                Move to = mob.move(provider, this);
+                RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
+                        + " " + mob.getPosition().getY());
+                applyMove(mob, to);
+            }
+
+            for (AbstractGameParticipant mob : mobs) {
+                mob.fireStep();
+                mob.regenerate();
+                mob.freezeStep();
+            }
         }
 
         if (!currentPlayer.isAlive()) {
             RoguelikeLogger.INSTANCE.log_info("Lose");
-        }
-
-        for (AbstractGameParticipant mob : mobs) {
-            mob.fireStep();
-            mob.regenerate();
-            mob.freezeStep();
         }
 
         //remove burned mobs
@@ -223,13 +227,14 @@ public class GameModelImpl implements GameModel {
             }
         }
 
-
-        if (to.equals(currentPlayer.getPosition())) {
-            attack(participant, currentPlayer);
-            if (currentPlayer.isAlive()) {
-                return;
-            } else {
-                isFinished = isAllPlayersDied();
+        for (Player player: players.values()) {
+            if (to.equals(player.getPosition())) {
+                attack(participant, player);
+                if (player.isAlive()) {
+                    return;
+                } else {
+                    isFinished = isAllPlayersDied();
+                }
             }
         }
 
