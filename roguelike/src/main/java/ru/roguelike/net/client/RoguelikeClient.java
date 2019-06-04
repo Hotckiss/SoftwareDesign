@@ -14,45 +14,55 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RoguelikeClient {
-    private ManagedChannel channel;
-    private AtomicReference<StreamObserver<PlayerRequest>> communicatorRef = new AtomicReference<>();
-    private StreamObserver<PlayerRequest> communicator;
-    private boolean isListLastOperation = false;
+    /**
+     * Communication with server class
+     */
+    private final StreamObserver<PlayerRequest> communicator;
+    /**
+     * If true, list of sessions was queried
+     */
+    private boolean isListQuery = false;
+    /**
+     * Game controller
+     */
     private final GameController controller;
-    private AtomicBoolean isGameInitialized = new AtomicBoolean(false);
+
+    /**
+     * True if prepared game model from server. AtomicBoolean for usage from inner class
+     */
+    private final AtomicBoolean didPrepareGame = new AtomicBoolean(false);
+
+    /**
+     * Finish client flag
+     */
     private boolean isFinished = false;
+
+    /**
+     * Lock to wait
+     */
     private final Object lock = new Object();
+    /**
+     * Game state
+     */
     private GameModel clientModel = null;
+    /**
+     * Player id, used to query correct info to display
+     */
     private Integer playerServerId;
 
+    /**
+     * Constructs new client connected to specified host
+     * @param host host to connect
+     * @param port port to connect
+     * @param controller game controller
+     */
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-        this.channel = channel;
         this.communicator = RoguelikeServiceGrpc.newStub(channel).communicate(new ServerResponseHandler());
-        communicatorRef.set(this.communicator);
         this.controller = controller;
-    }
-
-    private void connect(String name) {
-        System.out.println("Will try to connect to {$name} session...");
-        PlayerRequest request = PlayerRequest.newBuilder().setSessionId(name).build();
-        isListLastOperation = false;
-        communicator.onNext(request);
-    }
-
-    private void list() {
-        PlayerRequest request = PlayerRequest.newBuilder().setSessionId("list").build();
-        isListLastOperation = true;
-        communicator.onNext(request);
-    }
-
-    private void shutdown() throws InterruptedException {
-        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
     }
 
     private class ServerResponseHandler implements StreamObserver<ServerReply> {
@@ -60,10 +70,11 @@ public class RoguelikeClient {
         @Override
         public void onNext(ServerReply value) {
             if (!value.getErrorMessage().isEmpty()) {
-                System.out.println("Error on server after action");
+                RoguelikeLogger.INSTANCE.log_error(value.getErrorMessage());
+                return;
             }
 
-            if (isListLastOperation) {
+            if (isListQuery) {
                 try {
                     controller.showSessionsList(value.getSessionsList());
                 } catch (IOException e) {
@@ -78,22 +89,21 @@ public class RoguelikeClient {
             try {
                 in = new ObjectInputStream(bis);
                 Object o = in.readObject();
+                // first received model
                 if (clientModel == null) {
-                    isGameInitialized.set(true);
+                    didPrepareGame.set(true);
                     playerServerId = Integer.parseInt(value.getPlayerId());
                 }
                 clientModel = (GameModel)o;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            } catch (IOException | ClassNotFoundException e) {
+                RoguelikeLogger.INSTANCE.log_error(e.getMessage());
             } finally {
                 try {
                     if (in != null) {
                         in.close();
                     }
-                } catch (IOException ex) {
-                    // ignore close exception
+                } catch (IOException e) {
+                    RoguelikeLogger.INSTANCE.log_error(e.getMessage());
                 }
             }
 
@@ -108,12 +118,12 @@ public class RoguelikeClient {
 
         @Override
         public void onError(Throwable t) {
-
+            RoguelikeLogger.INSTANCE.log_error(t.getMessage());
         }
 
         @Override
         public void onCompleted() {
-            System.out.println("Finish");
+            RoguelikeLogger.INSTANCE.log_error("Finish game");
             synchronized(lock) {
                 isFinished = true;
                 lock.notifyAll();
@@ -121,29 +131,40 @@ public class RoguelikeClient {
         }
     }
 
+    /**
+     * Starts client and queries list of sessions.
+     * Than runs into loop of game
+     * @throws IOException if any I/O error occurred
+     * @throws InterruptedException if game thread was interrupted
+     */
     public void start() throws IOException, InterruptedException {
-        boolean sessionIsChosen = false;
-        list();
+        //query all sessions first
+        boolean gameSelected = false;
+        isListQuery = true;
+        RoguelikeLogger.INSTANCE.log_info("Query list of sessions");
+        communicator.onNext(PlayerRequest.newBuilder().setSessionId("list").build());
 
-        while (!sessionIsChosen) {
+        while (!gameSelected) {
+            //read input session name and connect
             String inputCommand = controller.getInputForChar().getCharacter().toString();
-            System.out.println(inputCommand);
+            RoguelikeLogger.INSTANCE.log_info(inputCommand + " session selected");
 
-            connect(inputCommand);
-            Thread threadToReadInput = new Thread(() -> {
-                while (!isGameInitialized.get()) {
+            isListQuery = false;
+            communicator.onNext(PlayerRequest.newBuilder().setSessionId(inputCommand).build());
+
+            new Thread(() -> {
+                while (!didPrepareGame.get()) {
                 }
                 while (!isFinished) {
                     try {
-                        controller.makeOnlineTurn(communicatorRef.get());
+                        controller.makeOnlineTurn(communicator);
                     } catch (IOException e) {
                         RoguelikeLogger.INSTANCE.log_error(e.getMessage());
                     }
                 }
-            });
+            }).start();
 
-            threadToReadInput.start();
-            sessionIsChosen = true;
+            gameSelected = true;
         }
 
         while (!isFinished) {
