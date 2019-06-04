@@ -6,6 +6,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import ru.roguelike.InputUtils;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.info.GameInfo;
 import ru.roguelike.logic.MenuOption;
@@ -89,7 +90,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-        return inputLine(cursorPosition, provider);
+        return InputUtils.inputLine(cursorPosition, provider, gameScreen);
     }
 
     @Override
@@ -130,7 +131,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-        return inputLine(gameScreen.getCursorPosition(), provider);
+        return InputUtils.inputLine(gameScreen.getCursorPosition(), provider, gameScreen);
     }
 
     private void drawOnIthLine(int line, String text) {
@@ -161,28 +162,6 @@ public class ConsoleViewImpl implements ConsoleView {
         drawInner();
     }
 
-    private String inputLine(TerminalPosition cursorPosition, UserInputProvider provider) throws IOException {
-        StringBuilder result = new StringBuilder();
-        while (!provider.isEnter()) {
-            if (provider.getCharacter() != null && !provider.isBackspace()) {
-                result.append(provider.getCharacter());
-                gameScreen.setCharacter(cursorPosition.getColumn(), cursorPosition.getRow(),
-                        new TextCharacter(provider.getCharacter()));
-                gameScreen.setCursorPosition(new TerminalPosition(cursorPosition.getColumn() + 1,
-                        cursorPosition.getRow()));
-                cursorPosition = gameScreen.getCursorPosition();
-
-                try {
-                    gameScreen.refresh();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            provider = new UserInputProviderImpl(gameScreen.readInput());
-        }
-
-        return result.toString();
-    }
     /**
      * {@inheritDoc}
      */
