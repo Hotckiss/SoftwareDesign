@@ -1,9 +1,11 @@
 package ru.roguelike.models;
 
+import java.io.Serializable;
+
 /**
  * Represents a position of object.
  */
-public class Position {
+public class Position implements Serializable {
     private int x;
     private int y;
 

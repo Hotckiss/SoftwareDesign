@@ -4,10 +4,12 @@ import ru.roguelike.logic.Positionable;
 import ru.roguelike.models.Position;
 import ru.roguelike.view.Drawable;
 
+import java.io.Serializable;
+
 /**
  * Represents an element which is present in the game.
  */
-public abstract class AbstractGameObject implements Drawable, Positionable {
+public abstract class AbstractGameObject implements Drawable, Positionable, Serializable {
     /**
      * Game object position on game field
      */

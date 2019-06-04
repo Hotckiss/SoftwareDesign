@@ -89,6 +89,12 @@ public class GameController {
         client.start();
     }
 
+    public void updateOnlineGame() throws IOException {
+        //force redraw after selection
+        view.clear();
+        view.draw(game.getField(), game.getInfo(), game.getLog());
+    }
+
     private void runGame() throws IOException {
         //force redraw after selection
         view.clear();

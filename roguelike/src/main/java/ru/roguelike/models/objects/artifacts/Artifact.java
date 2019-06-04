@@ -3,11 +3,13 @@ package ru.roguelike.models.objects.artifacts;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 
+import java.io.Serializable;
+
 /**
  * Represents an element of the game (artifact), which is placed on board and
  * can be collected by player or mob.
  */
-public class Artifact extends AbstractGameObject {
+public class Artifact extends AbstractGameObject implements Serializable {
     /**
      * Health restore value of artifact
      */

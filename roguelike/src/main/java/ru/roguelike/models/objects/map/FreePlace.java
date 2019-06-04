@@ -3,10 +3,12 @@ package ru.roguelike.models.objects.map;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 
+import java.io.Serializable;
+
 /**
  * Represents an empty cell on board.
  */
-public class FreePlace extends AbstractGameObject {
+public class FreePlace extends AbstractGameObject implements Serializable {
 
     /**
      * Constructs new free place on specified position

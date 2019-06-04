@@ -8,11 +8,12 @@ import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Class that represents mob with AI strategy
  */
-public class Mob extends AbstractGameParticipant {
+public class Mob extends AbstractGameParticipant implements Serializable {
     // current mob strategy
     private AbstractStrategy mobStrategy;
     // default mob strategy

@@ -14,12 +14,13 @@ import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Represents participant of the game (in current implementation it can
  * player or mob).
  */
-public class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider {
+public class AbstractGameParticipant extends AbstractGameObject implements Movable, ExpirienceProvider, Serializable {
     /**
      * Full health of participant
      */

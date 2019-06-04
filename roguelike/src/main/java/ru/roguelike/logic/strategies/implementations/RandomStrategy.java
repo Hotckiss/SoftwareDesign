@@ -6,6 +6,7 @@ import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
 /**
  * Random allowed movement
  */
-public class RandomStrategy extends AbstractStrategy {
+public class RandomStrategy extends AbstractStrategy implements Serializable {
 
     /**
      * {@inheritDoc}

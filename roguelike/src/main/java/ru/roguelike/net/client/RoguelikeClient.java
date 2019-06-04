@@ -9,10 +9,14 @@ import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.ServerReply;
 import ru.roguelike.controller.GameController;
+import ru.roguelike.logic.GameModel;
 import ru.roguelike.view.UserInputProvider;
 import ru.roguelike.view.UserInputProviderImpl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,6 +31,7 @@ public class RoguelikeClient {
 
     private boolean isFinished = false;
     private final Object lock = new Object();
+    private GameModel clientModel = null;
 
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
@@ -68,6 +73,44 @@ public class RoguelikeClient {
                 } catch (IOException e) {
                     RoguelikeLogger.INSTANCE.log_error(e.getMessage());
                 }
+
+                return;
+            }
+
+
+            System.out.println("TRY TO READ MODEL");
+            ByteArrayInputStream bis = new ByteArrayInputStream(value.getModel().toByteArray());
+            ObjectInput in = null;
+            try {
+                in = new ObjectInputStream(bis);
+                Object o = in.readObject();
+                clientModel = (GameModel)o;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                } catch (IOException ex) {
+                    // ignore close exception
+                }
+            }
+
+            if (clientModel == null) {
+                System.out.println("StartGame");
+                controller.setGame(clientModel);
+            } else {
+                System.out.println("ContinueGame");
+                controller.setGame(clientModel);
+            }
+
+            try {
+                controller.updateOnlineGame();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

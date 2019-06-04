@@ -6,6 +6,7 @@ import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
 /**
  * Coward strategy: not attack player in next position
  */
-public class CowardStrategy extends AbstractStrategy {
+public class CowardStrategy extends AbstractStrategy implements Serializable {
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();

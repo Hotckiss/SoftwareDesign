@@ -11,13 +11,14 @@ import ru.roguelike.models.objects.map.Wall;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.List;
 
 /**
  * Represents a player.
  */
-public class Player extends AbstractGameParticipant {
+public class Player extends AbstractGameParticipant implements Serializable {
     private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
 
     /**

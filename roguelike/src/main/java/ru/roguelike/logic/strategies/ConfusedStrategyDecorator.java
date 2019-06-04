@@ -5,10 +5,12 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
 
+import java.io.Serializable;
+
 /**
  * Confusing decoration of strategy
  */
-public class ConfusedStrategyDecorator extends AbstractStrategyDecorator {
+public class ConfusedStrategyDecorator extends AbstractStrategyDecorator implements Serializable {
     private int confusedCount;
 
     public ConfusedStrategyDecorator(AbstractStrategy decoratee, int confusedCount) {

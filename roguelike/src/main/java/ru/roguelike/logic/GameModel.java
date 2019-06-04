@@ -8,12 +8,13 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Represents a model (current state) of the game.
  */
-public interface GameModel {
+public interface GameModel extends Serializable {
     /**
      * @return if the game is finished
      */

@@ -1,14 +1,19 @@
 package ru.roguelike.net.server;
 
+import com.google.protobuf.ByteString;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -67,7 +72,24 @@ public class RoguelikeServer {
             }
 
             GameModel model = manager.getGameById(sessionName);
-            //responseBuilder.setModel(ByteString.copyFrom(model.toByteArray()));
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutput out;
+            try {
+                out = new ObjectOutputStream(bos);
+                out.writeObject(model);
+                out.flush();
+            } catch (IOException e) {
+                RoguelikeLogger.INSTANCE.log_error(e.getMessage());
+            } finally {
+                try {
+                    bos.close();
+                } catch (IOException ex) {
+                    // ignore close exception
+                }
+            }
+
+            responseBuilder.setModel(ByteString.copyFrom(bos.toByteArray()));
 
             ServerReply response = responseBuilder.build();
             for (StreamObserver<ServerReply> client: manager.getGameClients(sessionName)) {
@@ -75,7 +97,7 @@ public class RoguelikeServer {
             }
         }
 
-        private void sendErrosMessage(String errorMessage, StreamObserver<ServerReply> client) {
+        private void sendErrorsMessage(String errorMessage, StreamObserver<ServerReply> client) {
             ServerReply response = ServerReply.newBuilder().setErrorMessage(errorMessage).build();
             client.onNext(response);
         }
@@ -134,7 +156,7 @@ public class RoguelikeServer {
                             errorMessage = "Unexpected exception: " + e.message
                         }*/
                         if (errorMessage != null) {
-                            sendErrosMessage(errorMessage, responseObserver);
+                            sendErrorsMessage(errorMessage, responseObserver);
                         } else {
                             sendModelToAllPlayers(sessionName, null);
                         }

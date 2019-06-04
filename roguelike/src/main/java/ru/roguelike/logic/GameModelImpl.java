@@ -14,6 +14,7 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 

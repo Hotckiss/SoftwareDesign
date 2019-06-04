@@ -7,12 +7,13 @@ import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.movable.Player;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Aggressive strategy: attack player in next position
  */
-public class AggressiveStrategy extends AbstractStrategy {
+public class AggressiveStrategy extends AbstractStrategy implements Serializable {
     private AbstractStrategy defaultStrategy = new RandomStrategy();
 
     /**
