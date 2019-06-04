@@ -61,8 +61,11 @@ public class RoguelikeServer {
     }
 
     private class RoguelikeService extends ConnectionSetUpperGrpc.ConnectionSetUpperImplBase {
-        private void sendModelToAllPlayers(String sessionName) {
-            ServerReply.Builder responseBuilder = ServerReply.newBuilder();
+        private void sendModelToAllPlayers(String sessionName, ServerReply.Builder responseBuilder) {
+            if (responseBuilder == null) {
+                responseBuilder = ServerReply.newBuilder();
+            }
+
             GameModel model = manager.getGameById(sessionName);
             //responseBuilder.setModel(ByteString.copyFrom(model.toByteArray()));
 
@@ -85,9 +88,9 @@ public class RoguelikeServer {
 
                 @Override
                 public void onNext(PlayerRequest request) {
-                    System.out.println("sssssssssssssssss");
                     // player request to list all sessions list
                     if (request.getSessionName().equals("list")) {
+                        System.out.println("LIST");
                         Set<String> allGames = manager.getAllGames();
                         StringJoiner joiner = new StringJoiner("\n");
                         for (String id: allGames) {
@@ -101,35 +104,39 @@ public class RoguelikeServer {
                                 .build();
                         responseObserver.onNext(response);
                     } else if(sessionName == null) { // if no sessions was associated to this player
+                        System.out.println("NEW PLAYER CHOOSE SESSION");
                         ServerReply.Builder builder = ServerReply.newBuilder();
                         // get player input session
-                        String sessionName = request.getSessionName();
+                        sessionName = request.getSessionName();
                         // add to game or create
                         manager.addClientToGame(sessionName, responseObserver);
 
-                        // add player to game and return his identifier TODO
+                        // add player to game and return his identifier
                         GameModel model = manager.getGameById(sessionName);
-                        //Integer playerId = model.addPlayer();
+                        Integer playerId = model.addPlayerRandom();
                         builder.setPlayerId(playerId.toString());
+
+                        sendModelToAllPlayers(sessionName, builder);
                     } else if (!request.getAction().isEmpty()){
                         
                         GameModel model = manager.getGameById(sessionName);
-                        //if (playerId != model.getActivePlayer()) {
-                        //    return;
-                        //}
-
-                        String errorMessage = null;
-                        try {
-                            //Command.fromByteArray(request.getAction().toByteArray()).execute();
-                        } catch( Exception ex) {
-                            errorMessage = "Error occurred";
-                            ex.printStackTrace();
+                        if (!playerId.equals(model.getActivePlayerId())) {
+                            return;
                         }
 
+                        String errorMessage = null;
+                        /*try {
+                            Action.fromByteArray(value.action.toByteArray()).execute(model)
+                        } catch (e: FailedLoadException) {
+                            errorMessage = "Failed loading map of saved game. Probably you have no saved games.\n" +
+                                    "Exception message: " + e.message
+                        } catch (e: Exception) {
+                            errorMessage = "Unexpected exception: " + e.message
+                        }*/
                         if (errorMessage != null) {
                             sendErrosMessage(errorMessage, responseObserver);
                         } else {
-                            sendModelToAllPlayers(sessionName);
+                            sendModelToAllPlayers(sessionName, null);
                         }
                     }
 

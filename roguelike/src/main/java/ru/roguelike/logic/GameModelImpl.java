@@ -119,6 +119,14 @@ public class GameModelImpl implements GameModel {
         nextActivePlayer();
     }
 
+    public Player getPlayer() {
+        return players.get(getActivePlayerId());
+    }
+
+    public Integer getActivePlayerId() {
+        return new ArrayList<>(players.keySet()).get(activePlayerIndex);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -255,10 +263,6 @@ public class GameModelImpl implements GameModel {
                 (defender instanceof Player && attacker instanceof Mob)) {
             attacker.hit(defender);
         }
-    }
-
-    public Player getPlayer() {
-        return players.get(new ArrayList<>(players.keySet()).get(activePlayerIndex));
     }
 
     public FinalKey getKey() {

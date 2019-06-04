@@ -54,4 +54,5 @@ public interface GameModel {
     void nextActivePlayer();
     void removePlayer(Integer id);
     Integer addPlayerRandom();
+    Integer getActivePlayerId();
 }
