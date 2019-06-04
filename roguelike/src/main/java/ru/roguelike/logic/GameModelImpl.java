@@ -326,6 +326,10 @@ public class GameModelImpl implements GameModel {
             } else {
                 gameSituation.add("You lose!");
             }
+        } else {
+            if (!currentPlayer.isAlive()) {
+                gameSituation.add("You died!");
+            }
         }
 
         RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
