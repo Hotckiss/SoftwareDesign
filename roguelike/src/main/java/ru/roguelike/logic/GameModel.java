@@ -28,7 +28,7 @@ public interface GameModel extends Serializable {
     /**
      * @return a current log of the game
      */
-    List<String> getLog();
+    List<String> getLog(Integer playerId);
 
     /**
      * @return returns a field
@@ -56,4 +56,5 @@ public interface GameModel extends Serializable {
     void removePlayer(Integer id);
     Integer addPlayerRandom();
     Integer getActivePlayerId();
+    Player getPlayerById(Integer id);
 }

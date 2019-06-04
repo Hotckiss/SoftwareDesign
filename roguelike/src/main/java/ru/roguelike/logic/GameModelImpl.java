@@ -116,6 +116,10 @@ public class GameModelImpl implements GameModel {
         return players.get(getActivePlayerId());
     }
 
+    public Player getPlayerById(Integer id) {
+        return players.get(id);
+    }
+
     public Integer getActivePlayerId() {
         return new ArrayList<>(players.keySet()).get(activePlayerIndex);
     }
@@ -278,9 +282,9 @@ public class GameModelImpl implements GameModel {
      * {@inheritDoc}
      */
     @Override
-    public List<String> getLog() {
+    public List<String> getLog(Integer playerId) {
         List<String> gameSituation = new ArrayList<>();
-        Player currentPlayer = getActivePlayer();
+        Player currentPlayer = getPlayerById(playerId);
 
         gameSituation.add("Health: " + currentPlayer.getHealth() +
                 " Exp: " + currentPlayer.exp() + " Level: " +

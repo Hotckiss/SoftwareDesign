@@ -33,7 +33,7 @@ public class LoadMapCommand implements Command {
         }
         GameModel model = controller.getGame();
         view.clear();
-        List<String> gameLog = model.getLog();
+        List<String> gameLog = model.getLog(model.getActivePlayerId());
 
         if (errorLoadingMapMessage != null) {
             gameLog.add(errorLoadingMapMessage);

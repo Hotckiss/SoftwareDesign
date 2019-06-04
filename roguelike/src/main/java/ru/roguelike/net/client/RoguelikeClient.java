@@ -33,6 +33,7 @@ public class RoguelikeClient {
     private boolean isFinished = false;
     private final Object lock = new Object();
     private GameModel clientModel = null;
+    private Integer playerServerId;
 
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
@@ -87,6 +88,7 @@ public class RoguelikeClient {
                 Object o = in.readObject();
                 if (clientModel == null) {
                     isGameInitialized.set(true);
+                    playerServerId = Integer.parseInt(value.getPlayerId());
                 }
                 clientModel = (GameModel)o;
             } catch (IOException e) {
@@ -103,16 +105,10 @@ public class RoguelikeClient {
                 }
             }
 
-            if (clientModel == null) {
-                System.out.println("StartGame");
-                controller.setGame(clientModel);
-            } else {
-                System.out.println("ContinueGame");
-                controller.setGame(clientModel);
-            }
+            controller.setGame(clientModel);
 
             try {
-                controller.updateOnlineGame();
+                controller.updateOnlineGame(playerServerId);
             } catch (IOException e) {
                 e.printStackTrace();
             }

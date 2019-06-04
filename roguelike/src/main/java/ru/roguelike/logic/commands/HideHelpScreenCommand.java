@@ -20,6 +20,6 @@ public class HideHelpScreenCommand implements Command {
     @Override
     public void execute() throws IOException {
         view.clear();
-        view.draw(model.getField(), model.getInfo(), model.getLog());
+        view.draw(model.getField(), model.getInfo(), model.getLog(model.getActivePlayerId()));
     }
 }

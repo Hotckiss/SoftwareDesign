@@ -116,16 +116,16 @@ public class GameController {
         }
     }
 
-    public void updateOnlineGame() throws IOException {
+    public void updateOnlineGame(Integer playerId) throws IOException {
         //force redraw after selection
         view.clear();
-        view.draw(game.getField(), game.getInfo(), game.getLog());
+        view.draw(game.getField(), game.getInfo(), game.getLog(playerId));
     }
 
     private void runGame() throws IOException {
         //force redraw after selection
         view.clear();
-        view.draw(game.getField(), game.getInfo(), game.getLog());
+        view.draw(game.getField(), game.getInfo(), game.getLog(game.getActivePlayerId()));
 
         RoguelikeLogger.INSTANCE.log_info("Game started");
         Invoker invoker = new Invoker();

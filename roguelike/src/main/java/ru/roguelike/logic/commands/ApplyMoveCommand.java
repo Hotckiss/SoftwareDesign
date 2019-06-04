@@ -25,6 +25,6 @@ public class ApplyMoveCommand implements Command {
     public void execute() throws IOException {
         model.makeMove(provider);
         view.clear();
-        view.draw(model.getField(), model.getInfo(), model.getLog());
+        view.draw(model.getField(), model.getInfo(), model.getLog(model.getActivePlayerId()));
     }
 }
