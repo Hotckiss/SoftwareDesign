@@ -14,8 +14,7 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +22,9 @@ import java.util.stream.Collectors;
  */
 public class GameModelImpl implements GameModel {
     private List<List<AbstractGameObject>> fieldModel;
-    private Player player;
+    // all players are stored in map
+    private Map<Integer, Player> players;
+    private Integer activePlayerIndex = 0;
     private FinalKey key;
     private List<AbstractGameParticipant> mobs;
     private List<Artifact> artifacts;
@@ -34,11 +35,56 @@ public class GameModelImpl implements GameModel {
                          FinalKey key,
                          List<AbstractGameParticipant> mobs,
                          List<Artifact> artifacts) {
+        Map<Integer, Player> players = new HashMap<>();
+        players.put(0, player);
+
         this.fieldModel = fieldModel;
-        this.player = player;
+        this.players = players;
         this.key = key;
         this.mobs = mobs;
         this.artifacts = artifacts;
+    }
+
+    public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
+                         Map<Integer, Player> players,
+                         FinalKey key,
+                         List<AbstractGameParticipant> mobs,
+                         List<Artifact> artifacts) {
+        this.fieldModel = fieldModel;
+        this.players = players;
+        this.key = key;
+        this.mobs = mobs;
+        this.artifacts = artifacts;
+    }
+
+    /**
+     * Add player to game. Returns id
+     * @param newPlayer player to add
+     * @return player id
+     */
+    public Integer addPlayer(@NotNull Player newPlayer) {
+        Integer id = 0;
+        try {
+            id = Collections.max(players.keySet()) + 1;
+        } catch (NoSuchElementException e) {
+            RoguelikeLogger.INSTANCE.log_info(e.getMessage());
+        }
+
+        players.put(id, newPlayer);
+
+        return id;
+    }
+
+    public void nextActivePlayer() {
+        if (players.keySet().isEmpty()) {
+            activePlayerIndex = 0;
+        }
+        activePlayerIndex = (activePlayerIndex + 1) % players.keySet().size();
+    }
+
+    public void removePlayer(Integer id) {
+        players.remove(id);
+        nextActivePlayer();
     }
 
     /**
@@ -46,9 +92,10 @@ public class GameModelImpl implements GameModel {
      */
     @Override
     public void makeMove(@NotNull UserInputProvider provider) throws IOException {
-        Move playerMove = player.move(provider, this);
+        Player currentPlayer = getPlayer();
+        Move playerMove = currentPlayer.move(provider, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
-        applyMove(player, playerMove);
+        applyMove(currentPlayer, playerMove);
 
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
@@ -59,7 +106,7 @@ public class GameModelImpl implements GameModel {
             applyMove(mob, to);
         }
 
-        if (!player.isAlive()) {
+        if (!currentPlayer.isAlive()) {
             RoguelikeLogger.INSTANCE.log_info("Lose");
         }
 
@@ -72,13 +119,13 @@ public class GameModelImpl implements GameModel {
         //remove burned mobs
         mobs = mobs.stream().filter(AbstractGameParticipant::isAlive).collect(Collectors.toList());
 
-        player.fireStep();
+        currentPlayer.fireStep();
 
-        if (player.isAlive()) {
-            player.regenerate();
-            player.freezeStep();
+        if (currentPlayer.isAlive()) {
+            currentPlayer.regenerate();
+            currentPlayer.freezeStep();
         } else {
-            isFinished = true;
+            isFinished = isAllPlayersDied();
         }
     }
 
@@ -125,29 +172,30 @@ public class GameModelImpl implements GameModel {
             }
         }
 
+        Player currentPlayer = getPlayer();
         if (participant instanceof Player) {
             for (Artifact artifact : artifacts) {
                 if (to.equals(artifact.getPosition()) &&
                         !artifact.taken()) {
-                    player.addArtifact(artifact);
+                    currentPlayer.addArtifact(artifact);
                     artifact.take();
                     break;
                 }
             }
 
             if (to.equals(key.getPosition())) {
-                player.addArtifact(key);
+                currentPlayer.addArtifact(key);
                 isFinished = true;
             }
         }
 
 
-        if (to.equals(player.getPosition())) {
-            attack(participant, player);
-            if (player.isAlive()) {
+        if (to.equals(currentPlayer.getPosition())) {
+            attack(participant, currentPlayer);
+            if (currentPlayer.isAlive()) {
                 return;
             } else {
-                isFinished = true;
+                isFinished = isAllPlayersDied();
             }
         }
 
@@ -171,7 +219,7 @@ public class GameModelImpl implements GameModel {
     }
 
     public Player getPlayer() {
-        return player;
+        return players.get(new ArrayList<>(players.keySet()).get(activePlayerIndex));
     }
 
     public FinalKey getKey() {
@@ -192,10 +240,11 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<String> getLog() {
         List<String> gameSituation = new ArrayList<>();
+        Player currentPlayer = getPlayer();
 
-        gameSituation.add("Health: " + player.getHealth() +
-                " Exp: " + player.exp() + " Level: " +
-                player.getLevel() + " Items: " + player.getArtifactsLog());
+        gameSituation.add("Health: " + currentPlayer.getHealth() +
+                " Exp: " + currentPlayer.exp() + " Level: " +
+                currentPlayer.getLevel() + " Items: " + currentPlayer.getArtifactsLog());
 
         StringBuilder mobsHealth = new StringBuilder();
         mobsHealth.append("Mobs' health: ");
@@ -207,11 +256,11 @@ public class GameModelImpl implements GameModel {
 
         gameSituation.add(mobsHealth.toString());
 
-        if (!player.isAlive() && isFinished) {
+        if (!currentPlayer.isAlive() && isFinished) {
             gameSituation.add("You lose!");
         }
 
-        if (player.isAlive() && isFinished) {
+        if (currentPlayer.isAlive() && isFinished) {
             gameSituation.add("You win!");
         }
         RoguelikeLogger.INSTANCE.log_info(String.join(System.lineSeparator(), gameSituation));
@@ -248,5 +297,15 @@ public class GameModelImpl implements GameModel {
         info.add("");
 
         return info;
+    }
+
+    private boolean isAllPlayersDied() {
+        for (Map.Entry<Integer, Player> playerEntry: players.entrySet()) {
+            if (playerEntry.getValue().isAlive()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
