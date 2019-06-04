@@ -9,6 +9,8 @@ import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
+import ru.roguelike.logic.generators.RandomGenerator;
+import ru.roguelike.view.StringStreamInputProviderImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -135,27 +137,37 @@ public class RoguelikeServer {
 
                         // add player to game and return his identifier
                         GameModel model = manager.getGameById(sessionName);
-                        playerId = model.addPlayerRandom();
+                        if (model == null) {
+                            model = new RandomGenerator(15, 15, 0.15, 5, 5).generate();
+                            playerId = 0;
+                        } else {
+                            playerId = model.addPlayerRandom();
+                        }
+
+                        manager.setGameById(sessionName, model);
                         builder.setPlayerId(playerId.toString());
 
                         sendModelToAllPlayers(sessionName, builder);
                     } else if (!request.getAction().isEmpty()){
                         System.out.println(request.getAction());
                         GameModel model = manager.getGameById(sessionName);
+                        System.out.println(model.getPlayer().getPosition().getX());
+                        System.out.println("----------");
+                        System.out.println(playerId);
+                        System.out.println(model.getActivePlayerId());
+                        System.out.println("----------");
                         if (!playerId.equals(model.getActivePlayerId())) {
                             return;
                         }
 
                         String errorMessage = null;
-                        //model.makeMove();
-                        /*try {
-                            Action.fromByteArray(value.action.toByteArray()).execute(model)
-                        } catch (e: FailedLoadException) {
-                            errorMessage = "Failed loading map of saved game. Probably you have no saved games.\n" +
-                                    "Exception message: " + e.message
-                        } catch (e: Exception) {
-                            errorMessage = "Unexpected exception: " + e.message
-                        }*/
+                        try {
+                            model.makeMove(new StringStreamInputProviderImpl(request.getAction()));
+                        } catch (IOException e) {
+                            errorMessage = e.getMessage();
+                        }
+                        manager.setGameById(sessionName, model);
+                        System.out.println(model.getPlayer().getPosition().getX());
                         if (errorMessage != null) {
                             sendErrorsMessage(errorMessage, responseObserver);
                         } else {

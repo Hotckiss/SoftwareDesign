@@ -1,5 +1,6 @@
 package ru.roguelike.net.server;
 
+import com.sun.org.glassfish.gmbal.GmbalException;
 import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.ServerReply;
@@ -45,7 +46,11 @@ public class SessionsManager {
     }
 
     public GameModel getGameById(@NotNull String sessionId) {
-        return games.getOrDefault(sessionId, new RandomGenerator(15, 15, 0.15, 5, 5).generate());
+        return games.get(sessionId);
+    }
+
+    public void setGameById(@NotNull String sessionId, @NotNull GameModel gameModel) {
+        games.put(sessionId, gameModel);
     }
 
     public Set<String> getAllGames() {
