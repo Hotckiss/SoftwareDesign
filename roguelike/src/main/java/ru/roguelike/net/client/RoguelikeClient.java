@@ -111,6 +111,9 @@ public class RoguelikeClient {
 
             try {
                 controller.updateOnlineGame(playerServerId);
+                if (!clientModel.getPlayerById(playerServerId).isAlive()) {
+                    communicator.onCompleted();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
