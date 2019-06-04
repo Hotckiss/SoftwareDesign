@@ -23,9 +23,9 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
     compile group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.0.1'
-    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
-    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
-    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    compile "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    compile "io.grpc:grpc-protobuf:${grpcVersion}"
+    compile "io.grpc:grpc-stub:${grpcVersion}"
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
     compileOnly "javax.annotation:javax.annotation-api:1.2"
 }
@@ -54,6 +54,34 @@ task roguelikeClient(type: CreateStartScripts) {
     applicationName = 'roguelike-client'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = startScripts.classpath
+}
+
+task serverJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ru.hse.spb.server.RoguelikeServerApplicationKt'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+
+    baseName = 'roguelike-server'
+}
+
+task clientJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ru.hse.spb.client.RoguelikeClientApplicationKt'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+
+    baseName = 'roguelike-client'
 }
 
 applicationDistribution.into('bin') {

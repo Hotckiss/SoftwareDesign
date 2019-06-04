@@ -1,6 +1,5 @@
 package ru.roguelike.net.client;
 
-import com.googlecode.lanterna.screen.Screen;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -10,14 +9,11 @@ import ru.roguelike.RoguelikeServiceGrpc;
 import ru.roguelike.ServerReply;
 import ru.roguelike.controller.GameController;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.view.UserInputProvider;
-import ru.roguelike.view.UserInputProviderImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,7 +22,6 @@ public class RoguelikeClient {
     private ManagedChannel channel;
     private AtomicReference<StreamObserver<PlayerRequest>> communicatorRef = new AtomicReference<>();
     private StreamObserver<PlayerRequest> communicator;
-    private RoguelikeServiceGrpc.RoguelikeServiceStub stub;
     private boolean isListLastOperation = false;
     private final GameController controller;
     private AtomicBoolean isGameInitialized = new AtomicBoolean(false);
@@ -38,8 +33,7 @@ public class RoguelikeClient {
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
-        this.stub = RoguelikeServiceGrpc.newStub(channel);
-        this.communicator = stub.communicate(new ServerResponseHandler());
+        this.communicator = RoguelikeServiceGrpc.newStub(channel).communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
         this.controller = controller;
     }
