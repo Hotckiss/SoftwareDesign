@@ -102,7 +102,6 @@ public class GameController {
         }
 
         String turn = provider.getCharacter().toString();
-        System.out.println("GET");
         if ("wasd".contains(turn)) {
             observer.onNext(PlayerRequest.newBuilder().setAction(turn).build());
         }

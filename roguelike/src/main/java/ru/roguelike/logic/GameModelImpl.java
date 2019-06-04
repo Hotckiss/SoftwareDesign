@@ -133,6 +133,10 @@ public class GameModelImpl implements GameModel {
      */
     @Override
     public void makeMove(@NotNull UserInputProvider provider) throws IOException {
+        if (isFinished) {
+            return;
+        }
+
         Player currentPlayer = getPlayer();
         Move playerMove = currentPlayer.move(provider, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
