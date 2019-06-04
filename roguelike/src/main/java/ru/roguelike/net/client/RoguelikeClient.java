@@ -142,7 +142,7 @@ public class RoguelikeClient {
         boolean gameSelected = false;
         isListQuery = true;
         RoguelikeLogger.INSTANCE.log_info("Query list of sessions");
-        communicator.onNext(PlayerRequest.newBuilder().setSessionId("list").build());
+        communicator.onNext(PlayerRequest.newBuilder().build());
 
         while (!gameSelected) {
             //read input session name and connect

@@ -72,13 +72,15 @@ public class RoguelikeServer {
             return new StreamObserver<PlayerRequest>() {
                 private Integer playerId = null;
                 private String sessionId = null;
+                private boolean isHelloWasSaid = false;
 
                 @Override
                 public void onNext(PlayerRequest request) {
                     ServerReply.Builder response = ServerReply.newBuilder();
 
                     // player request to list all sessions list
-                    if (request.getSessionId().equals("list")) {
+                    if (!isHelloWasSaid) {
+                        isHelloWasSaid = true;
                         Set<String> allGames = manager.getAllGames();
 
                         StringJoiner joiner = new StringJoiner("\n");
