@@ -24,6 +24,10 @@ public class RoguelikeServer {
     private Server server;
     private SessionsManager manager = new SessionsManager();
 
+    /**
+     * Construct server with port
+     * @param port port number
+     */
     public RoguelikeServer(int port) {
         server = ServerBuilder.forPort(port)
                 .addService(new RoguelikeService())
@@ -45,43 +49,24 @@ public class RoguelikeServer {
         server.awaitTermination();
     }
 
+    /**
+     * Start server
+     */
     public void start() throws IOException {
         server.start();
     }
 
+    /**
+     * Await termination method
+     */
     public void awaitTermination() throws InterruptedException {
         server.awaitTermination();
     }
 
+    /**
+     * Service to manage clients
+     */
     private class RoguelikeService extends RoguelikeServiceGrpc.RoguelikeServiceImplBase {
-        private void updateClientsWithModel(@NotNull String sessionId,
-                                            @NotNull ServerReply.Builder response) {
-            GameModel model = manager.getGameById(sessionId);
-
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutput out;
-            try {
-                out = new ObjectOutputStream(bos);
-                out.writeObject(model);
-                out.flush();
-            } catch (IOException e) {
-                RoguelikeLogger.INSTANCE.log_error(e.getMessage());
-            } finally {
-                try {
-                    bos.close();
-                } catch (IOException ex) {
-                    RoguelikeLogger.INSTANCE.log_info(ex.getMessage());
-                }
-            }
-
-            response.setModel(ByteString.copyFrom(bos.toByteArray()));
-
-            ServerReply responseReady = response.build();
-            for (StreamObserver<ServerReply> client: manager.getGameClients(sessionId)) {
-                client.onNext(responseReady);
-            }
-        }
-
         @Override
         public StreamObserver<PlayerRequest> communicate(StreamObserver<ServerReply> responseObserver) {
             return new StreamObserver<PlayerRequest>() {
@@ -159,6 +144,34 @@ public class RoguelikeServer {
                     updateClientsWithModel(sessionId, ServerReply.newBuilder());
                 }
             };
+        }
+
+        private void updateClientsWithModel(@NotNull String sessionId,
+                                            @NotNull ServerReply.Builder response) {
+            GameModel model = manager.getGameById(sessionId);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutput out;
+            try {
+                out = new ObjectOutputStream(bos);
+                out.writeObject(model);
+                out.flush();
+            } catch (IOException e) {
+                RoguelikeLogger.INSTANCE.log_error(e.getMessage());
+            } finally {
+                try {
+                    bos.close();
+                } catch (IOException ex) {
+                    RoguelikeLogger.INSTANCE.log_info(ex.getMessage());
+                }
+            }
+
+            response.setModel(ByteString.copyFrom(bos.toByteArray()));
+
+            ServerReply responseReady = response.build();
+            for (StreamObserver<ServerReply> client: manager.getGameClients(sessionId)) {
+                client.onNext(responseReady);
+            }
         }
     }
 }
