@@ -102,7 +102,7 @@ public class GameController {
         }
 
         String turn = provider.getCharacter().toString();
-        if ("wasd".contains(turn)) {
+        if ("wasdqe".contains(turn)) {
             observer.onNext(PlayerRequest.newBuilder().setAction(turn).build());
         }
     }
