@@ -4,9 +4,9 @@ import com.google.protobuf.ByteString;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
+import ru.roguelike.RoguelikeServiceGrpc;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.generators.RandomGenerator;
@@ -67,7 +67,7 @@ public class RoguelikeServer {
         }
     }
 
-    private class RoguelikeService extends ConnectionSetUpperGrpc.ConnectionSetUpperImplBase {
+    private class RoguelikeService extends RoguelikeServiceGrpc.RoguelikeServiceImplBase {
         private void sendModelToAllPlayers(String sessionName, ServerReply.Builder responseBuilder) {
             if (responseBuilder == null) {
                 responseBuilder = ServerReply.newBuilder();
@@ -113,7 +113,7 @@ public class RoguelikeServer {
                 @Override
                 public void onNext(PlayerRequest request) {
                     // player request to list all sessions list
-                    if (request.getSessionName().equals("list")) {
+                    if (request.getSessionId().equals("list")) {
                         System.out.println("LIST");
                         Set<String> allGames = manager.getAllGames();
                         StringJoiner joiner = new StringJoiner("\n");
@@ -124,14 +124,14 @@ public class RoguelikeServer {
                         String list = joiner.toString();
                         ServerReply response = ServerReply
                                 .newBuilder()
-                                .setSessions(list)
+                                .setSessionsList(list)
                                 .build();
                         responseObserver.onNext(response);
                     } else if(sessionName == null) { // if no sessions was associated to this player
                         System.out.println("NEW PLAYER CHOOSE SESSION");
                         ServerReply.Builder builder = ServerReply.newBuilder();
                         // get player input session
-                        sessionName = request.getSessionName();
+                        sessionName = request.getSessionId();
                         // add to game or create
                         manager.addClientToGame(sessionName, responseObserver);
 

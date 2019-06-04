@@ -7,18 +7,18 @@ option objc_class_prefix = "RL";
 
 package roguelike;
 
-service ConnectionSetUpper {
+service RoguelikeService {
     rpc Communicate (stream PlayerRequest) returns (stream ServerReply) {}
 }
 
 message PlayerRequest {
-    string sessionName = 1;
+    string sessionId = 1;
     string action = 2;
 }
 
 message ServerReply {
     string playerId = 1;
-    string sessions = 2;
+    string sessionsList = 2;
     bytes model = 3;
     string errorMessage = 4;
 }

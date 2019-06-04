@@ -4,9 +4,9 @@ import com.googlecode.lanterna.screen.Screen;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
-import ru.roguelike.ConnectionSetUpperGrpc;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
+import ru.roguelike.RoguelikeServiceGrpc;
 import ru.roguelike.ServerReply;
 import ru.roguelike.controller.GameController;
 import ru.roguelike.logic.GameModel;
@@ -26,7 +26,7 @@ public class RoguelikeClient {
     private ManagedChannel channel;
     private AtomicReference<StreamObserver<PlayerRequest>> communicatorRef = new AtomicReference<>();
     private StreamObserver<PlayerRequest> communicator;
-    private ConnectionSetUpperGrpc.ConnectionSetUpperStub stub;
+    private RoguelikeServiceGrpc.RoguelikeServiceStub stub;
     private boolean isListLastOperation = false;
     private final GameController controller;
     private AtomicBoolean isGameInitialized = new AtomicBoolean(false);
@@ -38,7 +38,7 @@ public class RoguelikeClient {
     public RoguelikeClient(final String host, final Integer port, final GameController controller) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.channel = channel;
-        this.stub = ConnectionSetUpperGrpc.newStub(channel);
+        this.stub = RoguelikeServiceGrpc.newStub(channel);
         this.communicator = stub.communicate(new ServerResponseHandler());
         communicatorRef.set(this.communicator);
         this.controller = controller;
@@ -46,13 +46,13 @@ public class RoguelikeClient {
 
     private void connect(String name) {
         System.out.println("Will try to connect to {$name} session...");
-        PlayerRequest request = PlayerRequest.newBuilder().setSessionName(name).build();
+        PlayerRequest request = PlayerRequest.newBuilder().setSessionId(name).build();
         isListLastOperation = false;
         communicator.onNext(request);
     }
 
     private void list() {
-        PlayerRequest request = PlayerRequest.newBuilder().setSessionName("list").build();
+        PlayerRequest request = PlayerRequest.newBuilder().setSessionId("list").build();
         isListLastOperation = true;
         communicator.onNext(request);
     }
@@ -71,7 +71,7 @@ public class RoguelikeClient {
 
             if (isListLastOperation) {
                 try {
-                    controller.showSessionsList(value.getSessions());
+                    controller.showSessionsList(value.getSessionsList());
                 } catch (IOException e) {
                     RoguelikeLogger.INSTANCE.log_error(e.getMessage());
                 }
@@ -79,8 +79,6 @@ public class RoguelikeClient {
                 return;
             }
 
-
-            System.out.println("TRY TO READ MODEL");
             ByteArrayInputStream bis = new ByteArrayInputStream(value.getModel().toByteArray());
             ObjectInput in = null;
             try {

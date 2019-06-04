@@ -1,16 +1,12 @@
 package ru.roguelike.net.server;
 
-import com.sun.org.glassfish.gmbal.GmbalException;
 import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.GameModelImpl;
-import ru.roguelike.logic.generators.RandomGenerator;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SessionsManager {
