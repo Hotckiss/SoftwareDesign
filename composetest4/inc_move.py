@@ -5,7 +5,8 @@ import time
 sqs = None
 while True:
     try:
-        sqs = boto3.resource(service_name='sqs', endpoint_url='http://localstack:4576')
+        sqs = boto3.resource(service_name='sqs', endpoint_url='http://localstack:4576',
+                             aws_access_key_id="key", aws_secret_access_key="password")
         break
     except:
         time.sleep(1)
