@@ -2,7 +2,6 @@ import boto3
 import time
     
 sqs = None
-time.sleep(20)
 while True:
     try:
         sqs = boto3.resource(service_name='sqs', endpoint_url='http://localstack:4576',
