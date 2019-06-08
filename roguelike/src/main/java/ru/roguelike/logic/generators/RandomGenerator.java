@@ -82,20 +82,71 @@ public class RandomGenerator implements GameGenerator {
             totalArtifacts++;
         }
 
-        Position position = generateRandomPosition(random);
-        key = new FinalKey(position);
-        field.get(position.getX()).set(position.getY(), key);
+        Position positionKey = generateRandomPosition(random);
+        key = new FinalKey(positionKey);
+        field.get(positionKey.getX()).set(positionKey.getY(), key);
 
-        Position positionPlayer = generateRandomPosition(random);
-        // no same positions for player and key
-        while (positionPlayer.equals(position)) {
-            positionPlayer = generateRandomPosition(random);
+        removeBadItems(artifacts, positionKey);
+        removeBadItems(mobs, positionKey);
+
+        List<Position> availableForPlayer = GenerationUtils.connectedPositionsToKey(field, key);
+
+        // put player next to key if no positions
+        if (availableForPlayer.isEmpty()) {
+            Position keyPosition = key.getPosition();
+            Position left = keyPosition.left();
+            Position right = keyPosition.right();
+            Position bottom = keyPosition.bottom();
+            Position up = keyPosition.up();
+
+            Position positionPlayer = generateRandomPosition(random);
+
+            if (left.getY() >= 0) {
+                positionPlayer = left;
+            }
+
+            if (right.getY() < field.size()) {
+                positionPlayer = right;
+            }
+
+            if (bottom.getX() < field.get(0).size()) {
+                positionPlayer = bottom;
+            }
+
+            if (up.getX() >= 0 ) {
+                positionPlayer = up;
+            }
+
+            player = new Player(positionPlayer);
+            field.get(positionPlayer.getX()).set(positionPlayer.getY(), player);
+
+            // remove if player stands on artifact or mob
+            removeBadItems(artifacts, positionPlayer);
+            removeBadItems(mobs, positionPlayer);
+
+            return new GameModelImpl(field, player, key, mobs, artifacts);
         }
+
+        Position positionPlayer = availableForPlayer.get(random.nextInt(availableForPlayer.size()));
 
         player = new Player(positionPlayer);
         field.get(positionPlayer.getX()).set(positionPlayer.getY(), player);
 
         return new GameModelImpl(field, player, key, mobs, artifacts);
+    }
+
+    /**
+     * Removes artifact or mob that conflicts to player or key position
+     * @param items artifacts or mobs
+     * @param freePosition position to clear
+     */
+    private <T extends AbstractGameObject> void removeBadItems(List<T> items, Position freePosition) {
+        for (AbstractGameObject item: items) {
+            if (freePosition.equals(item.getPosition())) {
+                items.remove(item);
+                return;
+            }
+        }
     }
 
     /**
