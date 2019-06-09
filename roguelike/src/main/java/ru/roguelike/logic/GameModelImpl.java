@@ -2,6 +2,7 @@ package ru.roguelike.logic;
 
 import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
+import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.artifacts.Artifact;
@@ -58,15 +59,7 @@ public class GameModelImpl implements GameModel {
      */
     public Integer addPlayerRandom() {
         Integer id = generateId();
-        List<Position> available = new ArrayList<>();
-
-        for (List<AbstractGameObject> abstractGameObjects : fieldModel) {
-            for (AbstractGameObject abstractGameObject : abstractGameObjects) {
-                if (abstractGameObject instanceof FreePlace) {
-                    available.add(abstractGameObject.getPosition());
-                }
-            }
-        }
+        List<Position> available = GenerationUtils.connectedPositionsToKey(fieldModel, key);
 
         Position position = available.get(new Random().nextInt(available.size()));
         Player newPlayer = new Player(position);
