@@ -57,6 +57,7 @@ public class GameModelImpl implements GameModel {
      * Add random player to game. Returns id
      * @return player id
      */
+    @Override
     public Integer addPlayerRandom() {
         Integer id = generateId();
         List<Position> available = GenerationUtils.connectedPositionsToKey(fieldModel, key);
@@ -73,6 +74,7 @@ public class GameModelImpl implements GameModel {
     /**
      * Move turn to next player method
      */
+    @Override
     public void nextActivePlayer() {
         if (players.keySet().isEmpty()) {
             activePlayerIndex = 0;
@@ -84,6 +86,7 @@ public class GameModelImpl implements GameModel {
      * Method to remove player that left game
      * @param id player to remove
      */
+    @Override
     public void removePlayer(Integer id) {
         Player removedPlayer = players.get(id);
         if (removedPlayer == null) {
@@ -99,6 +102,7 @@ public class GameModelImpl implements GameModel {
      * Get player making turn
      * @return active player
      */
+    @Override
     public Player getActivePlayer() {
         return players.get(getActivePlayerId());
     }
@@ -107,6 +111,7 @@ public class GameModelImpl implements GameModel {
      * Get player by ID
      * @return player with this id or null of player does not exist
      */
+    @Override
     public Player getPlayerById(Integer id) {
         return players.get(id);
     }
@@ -115,6 +120,7 @@ public class GameModelImpl implements GameModel {
      * Get ID of player making turn
      * @return active player id
      */
+    @Override
     public Integer getActivePlayerId() {
         return new ArrayList<>(players.keySet()).get(activePlayerIndex);
     }
@@ -272,14 +278,17 @@ public class GameModelImpl implements GameModel {
         }
     }
 
+    @Override
     public FinalKey getKey() {
         return key;
     }
 
+    @Override
     public List<Artifact> getArtifacts() {
         return artifacts;
     }
 
+    @Override
     public List<AbstractGameParticipant> getMobs() {
         return mobs;
     }
