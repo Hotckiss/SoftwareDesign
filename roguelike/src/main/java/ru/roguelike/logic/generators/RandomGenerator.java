@@ -66,6 +66,12 @@ public class RandomGenerator implements GameGenerator {
 
         while (totalMobs < mobsCount) {
             Position position = generateRandomPosition(random);
+
+            AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
+            if (!curObject.getClass().equals(FreePlace.class)) {
+                continue;
+            }
+
             Character alias = mobsIds[random.nextInt(mobsIds.length)];
             AbstractGameParticipant mob = GenerationUtils.makeMob(alias, position);
             mobs.add(mob);
@@ -75,6 +81,12 @@ public class RandomGenerator implements GameGenerator {
 
         while (totalArtifacts < artifactsCount) {
             Position position = generateRandomPosition(random);
+
+            AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
+            if (!curObject.getClass().equals(FreePlace.class)) {
+                continue;
+            }
+
             Character alias = artifactsIds[random.nextInt(artifactsIds.length)];
             Artifact artifact = GenerationUtils.makeArtifact(alias, position);
             artifacts.add(artifact);

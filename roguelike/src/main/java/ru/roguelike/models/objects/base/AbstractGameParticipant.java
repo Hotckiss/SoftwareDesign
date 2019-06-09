@@ -243,10 +243,6 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
         this.fireValue = fireValue;
     }
 
-    public int exp() {
-        return experience;
-    }
-
     public void setExperience(int newExp) {
         experience = newExp;
     }

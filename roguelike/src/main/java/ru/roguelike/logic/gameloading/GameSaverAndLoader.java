@@ -20,7 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameSaverAndLoader {
-    private String savedGameFile = "game_checkpoint.txt";
+    private final static String DEFAULT_SAVED_GAME_FILENAME = "game_checkpoint.txt";
+    private String savedGameFile;
+
+    public GameSaverAndLoader() {
+        savedGameFile = DEFAULT_SAVED_GAME_FILENAME;
+    }
+
+    public GameSaverAndLoader(String savedGameFile) {
+        this.savedGameFile = savedGameFile;
+    }
 
     public void saveGame(GameModel game) throws FileNotFoundException {
         clearFile(savedGameFile);
@@ -47,7 +56,7 @@ public class GameSaverAndLoader {
         // PLAYER INFO
         Position position = player.getPosition();
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
-        appendToFile(savedGameFile,  player.exp() + "\n");
+        appendToFile(savedGameFile,  player.getExperience() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
         ArrayDeque<Player.ArtifactItem> artifactItems = player.getArtifacts();
         boolean isEquipped = false;
