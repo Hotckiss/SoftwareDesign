@@ -14,6 +14,12 @@ public class ApplyMoveCommand implements Command {
     private final GameModel model;
     private final ConsoleView view;
 
+    /**
+     * Constructs new command to apply move
+     * @param provider provider to read user move
+     * @param model current game state
+     * @param view view to output move
+     */
     public ApplyMoveCommand(UserInputProvider provider, GameModel
             model, ConsoleView view) {
         this.provider = provider;
@@ -21,6 +27,9 @@ public class ApplyMoveCommand implements Command {
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws IOException {
         model.makeMove(provider);

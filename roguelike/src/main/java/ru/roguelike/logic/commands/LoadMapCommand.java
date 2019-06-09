@@ -15,11 +15,19 @@ public class LoadMapCommand implements Command {
     private final GameController controller;
     private ConsoleView view;
 
+    /**
+     * Constructs new command to load map
+     * @param view view to output game model
+     * @param controller current game controller
+     */
     public LoadMapCommand(ConsoleView view, GameController controller) {
         this.view = view;
         this.controller = controller;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws IOException {
         String filename = view.getMapFileName();

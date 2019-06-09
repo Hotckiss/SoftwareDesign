@@ -12,11 +12,19 @@ public class HideHelpScreenCommand implements Command {
     private final GameModel model;
     private final ConsoleView view;
 
+    /**
+     * Constructs new command to hide help screen
+     * @param model current game state
+     * @param view view to output game model
+     */
     public HideHelpScreenCommand(GameModel model, ConsoleView view) {
         this.model = model;
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws IOException {
         view.clear();

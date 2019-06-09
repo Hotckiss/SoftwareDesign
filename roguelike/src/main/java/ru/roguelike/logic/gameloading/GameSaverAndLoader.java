@@ -19,18 +19,32 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that loads and saves game
+ */
 public class GameSaverAndLoader {
     private final static String DEFAULT_SAVED_GAME_FILENAME = "game_checkpoint.txt";
     private String savedGameFile;
 
+    /**
+     * Constructs new game loader with default path
+     */
     public GameSaverAndLoader() {
         savedGameFile = DEFAULT_SAVED_GAME_FILENAME;
     }
 
+    /**
+     * Constructs new game loader with specific path
+     */
     public GameSaverAndLoader(String savedGameFile) {
         this.savedGameFile = savedGameFile;
     }
 
+    /**
+     * Method that saves game model to file
+     * @param game game to save
+     * @throws FileNotFoundException if specified file does not exist
+     */
     public void saveGame(GameModel game) throws FileNotFoundException {
         clearFile(savedGameFile);
 
@@ -79,6 +93,10 @@ public class GameSaverAndLoader {
         }
     }
 
+    /**
+     * Method that loads game model from file
+     * @return  loaded game
+     */
     public GameModel loadGame() {
         File file = new File(savedGameFile);
         if (!file.exists()) {
@@ -214,6 +232,9 @@ public class GameSaverAndLoader {
         return gameModel;
     }
 
+    /**
+     * Method that deletes saved game
+     */
     public void deleteGame() {
         File file = new File(savedGameFile);
         file.delete();

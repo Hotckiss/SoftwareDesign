@@ -22,6 +22,12 @@ import java.util.List;
  * Common utils for objects generation
  */
 public class GenerationUtils {
+    /**
+     * Method thar returns free places connected to key
+     * @param field game field
+     * @param key final key
+     * @return list of available positions
+     */
     public static List<Position> connectedPositionsToKey(List<List<AbstractGameObject>> field, FinalKey key) {
         int h = field.size();
         if (h <= 0) {

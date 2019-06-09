@@ -11,10 +11,18 @@ import java.io.IOException;
 public class SaveGameCommand implements Command {
     private final GameModel model;
 
+
+    /**
+     * Constructs new command to save game
+     * @param model current game state
+     */
     public SaveGameCommand(GameModel model) {
         this.model = model;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws IOException {
         GameSaverAndLoader saverAndLoader = new GameSaverAndLoader();

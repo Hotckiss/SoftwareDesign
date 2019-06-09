@@ -29,6 +29,14 @@ public class RandomGenerator implements GameGenerator {
     private int width;
     private int height;
 
+    /**
+     * Constructs new random map generator
+     * @param width field width
+     * @param height field height
+     * @param wallsProbability walls density
+     * @param mobsCount mobs count
+     * @param artifactsCount artifacts count
+     */
     public RandomGenerator(int width, int height, double wallsProbability, int mobsCount, int artifactsCount) {
         this.wallsProbability = wallsProbability;
         this.mobsCount = mobsCount;

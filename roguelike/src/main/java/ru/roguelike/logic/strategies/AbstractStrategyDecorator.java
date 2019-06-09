@@ -12,10 +12,17 @@ import java.io.Serializable;
 public class AbstractStrategyDecorator extends AbstractStrategy implements Serializable {
     protected AbstractStrategy decoratee;
 
+    /**
+     * Constructs new decorator with strategy to decoratee
+     * @param decoratee strategy to decoratee
+     */
     public AbstractStrategyDecorator(AbstractStrategy decoratee) {
         this.decoratee = decoratee;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         return decoratee.preferredMove(position, model);
