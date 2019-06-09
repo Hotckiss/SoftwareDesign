@@ -298,4 +298,8 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
     public int getLevel() {
         return experience / 50 + 1;
     }
+
+    public int exp() {
+        return experience;
+    }
 }
