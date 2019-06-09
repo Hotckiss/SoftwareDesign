@@ -68,7 +68,7 @@ public class RandomGenerator implements GameGenerator {
             Position position = generateRandomPosition(random);
 
             AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
-            if (!curObject.getClass().equals(FreePlace.class)) {
+            if (!(curObject instanceof FreePlace)) {
                 continue;
             }
 
@@ -83,7 +83,7 @@ public class RandomGenerator implements GameGenerator {
             Position position = generateRandomPosition(random);
 
             AbstractGameObject curObject = field.get(position.getX()).get(position.getY());
-            if (!curObject.getClass().equals(FreePlace.class)) {
+            if (!(curObject instanceof FreePlace)) {
                 continue;
             }
 
@@ -95,11 +95,12 @@ public class RandomGenerator implements GameGenerator {
         }
 
         Position positionKey = generateRandomPosition(random);
+        while (!(field.get(positionKey.getX()).get(positionKey.getY()) instanceof FreePlace)) {
+            positionKey = generateRandomPosition(random);
+        }
+
         key = new FinalKey(positionKey);
         field.get(positionKey.getX()).set(positionKey.getY(), key);
-
-        removeBadItems(artifacts, positionKey);
-        removeBadItems(mobs, positionKey);
 
         List<Position> availableForPlayer = GenerationUtils.connectedPositionsToKey(field, key);
 
