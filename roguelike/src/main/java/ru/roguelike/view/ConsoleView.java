@@ -1,6 +1,5 @@
 package ru.roguelike.view;
 
-import com.googlecode.lanterna.screen.Screen;
 import ru.roguelike.logic.MenuOption;
 
 import java.io.IOException;
@@ -24,11 +23,6 @@ public interface ConsoleView {
      */
     <T extends Drawable> void draw(List<List<T>> figure, List<String> info, List<String> log)
             throws IOException;
-
-    /**
-     * @return a current screen.
-     */
-    Screen getScreen();
 
     /**
      * Shows menu and returns user selection in the menu

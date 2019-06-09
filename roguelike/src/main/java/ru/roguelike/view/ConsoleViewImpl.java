@@ -178,14 +178,6 @@ public class ConsoleViewImpl implements ConsoleView {
      * {@inheritDoc}
      */
     @Override
-    public Screen getScreen() {
-        return gameScreen;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void refreshScreen() {
         try {
             gameScreen.refresh();
