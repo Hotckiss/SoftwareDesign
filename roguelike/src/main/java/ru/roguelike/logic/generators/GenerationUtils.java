@@ -220,7 +220,7 @@ public class GenerationUtils {
                 return new Mob(position,
                         20,
                         40,
-                        0,
+                        5,
                         0,
                         1,
                         1,
