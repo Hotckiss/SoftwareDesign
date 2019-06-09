@@ -1,24 +1,22 @@
 package ru.roguelike.logic;
 
-import com.googlecode.lanterna.input.KeyStroke;
 import org.junit.Test;
 import ru.roguelike.logic.generators.FromFileGenerator;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.view.Drawable;
+import ru.roguelike.view.StringStreamInputProviderImpl;
 import ru.roguelike.view.UserInputProvider;
-import ru.roguelike.view.UserInputProviderImpl;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GameModelImplTest {
 
     @Test
     public void testMakeActionSimple() throws IOException {
-        KeyStroke keyStroke = new KeyStroke('a', false, false, false);
-        UserInputProvider provider = new UserInputProviderImpl(keyStroke);
+        UserInputProvider provider = new StringStreamInputProviderImpl("a");
 
         String fileName = "src/maps/map1.txt";
         int fieldWidth = 9;
@@ -42,11 +40,8 @@ public class GameModelImplTest {
 
     @Test
     public void testMakeActionTakeArtifact() throws IOException {
-        KeyStroke keyStrokeRight = new KeyStroke('d', false, false, false);
-        KeyStroke keyStrokeDown = new KeyStroke('s', false, false, false);
-
-        UserInputProvider providerRight = new UserInputProviderImpl(keyStrokeRight);
-        UserInputProvider providerDown = new UserInputProviderImpl(keyStrokeDown);
+        UserInputProvider providerRight = new StringStreamInputProviderImpl("d");
+        UserInputProvider providerDown = new StringStreamInputProviderImpl("s");
 
         String fileName = "src/maps/map2.txt";
         int fieldWidth = 14;
