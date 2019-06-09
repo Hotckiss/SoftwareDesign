@@ -13,7 +13,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Class for testing game load and save
+ */
 public class GameSaverAndLoaderTest {
+    /**
+     * Testing game save
+     * @throws IOException
+     */
     @Test
     public void testSavingGame() throws IOException {
         String loadGameFilename = "src/maps/map1.txt";
@@ -55,6 +62,10 @@ public class GameSaverAndLoaderTest {
         savedGameFile.delete();
     }
 
+    /**
+     * Testing game load
+     * @throws IOException
+     */
     @Test
     public void testLoadingGame() throws IOException {
         String loadGameFilename = "src/maps/map1.txt";

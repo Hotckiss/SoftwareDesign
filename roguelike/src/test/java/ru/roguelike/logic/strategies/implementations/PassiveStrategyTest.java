@@ -19,8 +19,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Check correctness of passive strategy
+ */
 public class PassiveStrategyTest {
-
+    /**
+     * Test correctness of move
+     * @throws IOException
+     */
     @Test
     public void preferredMove() throws IOException {
         FinalKey key = new FinalKey(new Position(0, 3));

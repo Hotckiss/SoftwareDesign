@@ -12,8 +12,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Testing game model
+ */
 public class GameModelImplTest {
 
+    /**
+     * Testing move step
+     * @throws IOException
+     */
     @Test
     public void testMakeActionSimple() throws IOException {
         UserInputProvider provider = new StringStreamInputProviderImpl("a");
@@ -38,6 +45,10 @@ public class GameModelImplTest {
         assertEquals('P', actualField.toString().charAt(2 * (fieldWidth + 1) + 2));
     }
 
+    /**
+     * Testing getting artifact step
+     * @throws IOException
+     */
     @Test
     public void testMakeActionTakeArtifact() throws IOException {
         UserInputProvider providerRight = new StringStreamInputProviderImpl("d");

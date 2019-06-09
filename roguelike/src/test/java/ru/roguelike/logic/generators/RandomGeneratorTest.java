@@ -9,10 +9,16 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for test correctness of creating game model randomly
+ */
 public class RandomGeneratorTest {
     private Set<Character> mobTypes = new HashSet<>(Arrays.asList('B', 'F', 'M', 'S', 'V', 'Y'));
     private Set<Character> artifactTypes = new HashSet<>(Arrays.asList('c', 'g', 'f', 'h', 'r', 's'));
 
+    /**
+     * Testing map generation
+     */
     @Test
     public void testCorrectness() {
         RandomGenerator randomGenerator = new

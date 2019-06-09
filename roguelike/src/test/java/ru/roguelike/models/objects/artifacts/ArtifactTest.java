@@ -8,7 +8,13 @@ import ru.roguelike.models.objects.movable.Player;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Class for testing artifacts
+ */
 public class ArtifactTest {
+    /**
+     * Testing health water
+     */
     @Test
     public void testHealthWater() {
         Artifact artifact = GenerationUtils.makeArtifact('h', new Position(0, 0));
@@ -26,6 +32,9 @@ public class ArtifactTest {
         assertEquals(70, player.getHealth());
     }
 
+    /**
+     * Testing regeneration potion
+     */
     @Test
     public void testRegenerationPotion() {
         Artifact artifact = GenerationUtils.makeArtifact('r', new Position(0, 0));
@@ -45,6 +54,9 @@ public class ArtifactTest {
         assertEquals(60, player.getHealth());
     }
 
+    /**
+     * Test applying artifact
+     */
     @Test
     public void testEnableArtifact() {
         Artifact artifact = GenerationUtils.makeArtifact('r', new Position(0, 0));
@@ -68,6 +80,9 @@ public class ArtifactTest {
         assertEquals(65, player.getHealth());
     }
 
+    /**
+     * Test disabling artifact
+     */
     @Test
     public void testDisableArtifact() {
         Artifact artifact = GenerationUtils.makeArtifact('r', new Position(0, 0));

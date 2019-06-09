@@ -15,7 +15,14 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Class for testing final key mechanics
+ */
 public class FinalKeyTest {
+    /**
+     * Testing final key taking
+     * @throws IOException
+     */
     @Test
     public void testFinalKey() throws IOException {
         FinalKey key = new FinalKey(new Position(0, 0));

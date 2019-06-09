@@ -19,7 +19,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Check correctness of coward strategy
+ */
 public class CowardStrategyTest {
+    /**
+     * Test correctness of move
+     * @throws IOException
+     */
     @Test
     public void preferredMove() throws IOException {
         FinalKey key = new FinalKey(new Position(0, 3));

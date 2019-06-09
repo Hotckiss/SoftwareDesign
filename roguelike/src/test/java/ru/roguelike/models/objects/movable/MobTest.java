@@ -8,7 +8,13 @@ import ru.roguelike.models.objects.base.AbstractGameParticipant;
 
 import static org.junit.Assert.*;
 
+/**
+ * Class for test mob properties
+ */
 public class MobTest {
+    /**
+     * Testing berserk
+     */
     @Test
     public void testBerserk() {
         //health=100
@@ -21,6 +27,9 @@ public class MobTest {
         assertEquals(20, player.getHealth());
     }
 
+    /**
+     * Testing simple mob
+     */
     @Test
     public void testSimpleMob() {
         //health=100
