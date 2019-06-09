@@ -18,7 +18,6 @@ public class CowardStrategy extends AbstractStrategy implements Serializable {
     @Override
     public Move preferredMove(Position position, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();
-        availableMoves.add(Move.NONE);
 
         List<List<AbstractGameObject>> field = model.getField();
         int x = position.getX();
@@ -38,6 +37,10 @@ public class CowardStrategy extends AbstractStrategy implements Serializable {
 
         if (y + 1 < field.get(x).size() && StrategiesUtils.availableForCowardMob(field, x, y + 1)) {
             availableMoves.add(Move.RIGHT);
+        }
+
+        if (availableMoves.isEmpty()) {
+            return Move.NONE;
         }
 
         Random random = new Random();
