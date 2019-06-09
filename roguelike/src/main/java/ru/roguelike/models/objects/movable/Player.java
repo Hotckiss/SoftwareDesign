@@ -135,36 +135,61 @@ public class Player extends AbstractGameParticipant implements Serializable {
         this.artifacts = artifacts;
     }
 
+    /**
+     * Wrapper for artifact
+     */
     public static class ArtifactItem implements Serializable {
         private Artifact item;
         private boolean isEquipped;
 
+        /**
+         * Constructor to wrap artifact
+         * @param artifact artifact to wrap
+         */
         public ArtifactItem(Artifact artifact) {
             item = artifact;
             isEquipped = false;
         }
 
+        /**
+         * Getter for real artifact
+         * @return real artifact
+         */
         public Artifact getItem() {
             return item;
+        }
+
+        /**
+         * Method for equipping artifact
+         */
+        public void equip() {
+            setEquipped(true);
+        }
+
+        /**
+         * Method for disabling artifact
+         */
+        public void disable() {
+            setEquipped(false);
+        }
+
+        /**
+         * Check that artifact equipped
+         * @return true if artifact is equipped false otherwise
+         */
+        public boolean equipped() {
+            return isEquipped;
         }
 
         private void setEquipped(boolean isEquipped) {
             this.isEquipped = isEquipped;
         }
-
-        public void equip() {
-            setEquipped(true);
-        }
-
-        public void disable() {
-            setEquipped(false);
-        }
-
-        public boolean equipped() {
-            return isEquipped;
-        }
     }
 
+    /**
+     * Get experience for killing player. Zero because mobs do not receive experience
+     * @return experience
+     */
     public int getExperience() {
         return 0;
     }

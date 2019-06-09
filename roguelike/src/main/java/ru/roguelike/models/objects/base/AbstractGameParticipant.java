@@ -290,15 +290,26 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
         return new RandomStrategy().preferredMove(position, model);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getExperience() {
         return experience;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getLevel() {
         return experience / 50 + 1;
     }
 
+    /**
+     * Get experience directly without overriding
+     * @return experience
+     */
     public int exp() {
         return experience;
     }

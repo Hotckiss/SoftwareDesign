@@ -22,6 +22,22 @@ public class Mob extends AbstractGameParticipant implements Serializable {
     private int experienceCostHit;
     private int experienceCostKill;
 
+    /**
+     * Constructs new mob
+     * @param position mob position
+     * @param fullHealth mob max health
+     * @param physicalDamage mob damage
+     * @param fireDamage mob fire damage
+     * @param freezeProbability mob freezeProbability
+     * @param fireProbability mob fireProbability
+     * @param physicalDamageMultiplier mob physicalDamageMultiplier
+     * @param fireDamageMultiplier mob fireDamageMultiplier mob
+     * @param regeneration mob regeneration
+     * @param experienceCostHit experience for hitting mob
+     * @param experienceCostKill experience for killing mob
+     * @param defaultStrategy mob defaultStrategy
+     * @param alias mob drawing alias
+     */
     public Mob(Position position,
                int fullHealth,
                int physicalDamage,
@@ -52,6 +68,9 @@ public class Mob extends AbstractGameParticipant implements Serializable {
         this.experienceCostKill = experienceCostKill;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move move(UserInputProvider provider, GameModel model) throws IOException {
         if (freezeCount > 0) {
@@ -61,6 +80,9 @@ public class Mob extends AbstractGameParticipant implements Serializable {
         return mobStrategy.preferredMove(position, model);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getExperience() {
         if (!isAlive()) {
@@ -70,14 +92,26 @@ public class Mob extends AbstractGameParticipant implements Serializable {
         return experienceCostHit;
     }
 
+    /**
+     * Getter for default mob strategy
+     * @return default mob strategy
+     */
     public AbstractStrategy getDefaultStrategy() {
         return defaultStrategy;
     }
 
+    /**
+     * Getter for current mob strategy
+     * @return current mob strategy
+     */
     public AbstractStrategy getMobStrategy() {
         return mobStrategy;
     }
 
+    /**
+     * Setter for current mob strategy. Used for confusing mobs
+     * @param mobStrategy new mob strategy
+     */
     public void setMobStrategy(AbstractStrategy mobStrategy) {
         this.mobStrategy = mobStrategy;
     }

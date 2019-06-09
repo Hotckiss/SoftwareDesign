@@ -86,15 +86,20 @@ public class Position implements Serializable {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Position && ((Position)obj).getX() == getX()
                 && ((Position)obj).getY() == getY();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
-        //TODO
         return super.hashCode();
     }
 }

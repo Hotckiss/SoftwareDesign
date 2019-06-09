@@ -13,11 +13,19 @@ import java.io.Serializable;
 public class ConfusedStrategyDecorator extends AbstractStrategyDecorator implements Serializable {
     private int confusedCount;
 
+    /**
+     * Construct new decorator for confising strategy
+     * @param decoratee strategy to decorate
+     * @param confusedCount count of confusing turns
+     */
     public ConfusedStrategyDecorator(AbstractStrategy decoratee, int confusedCount) {
         super(decoratee);
         this.confusedCount = confusedCount;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Move preferredMove(Position position, GameModel model) {
         if (confusedCount > 0) {
