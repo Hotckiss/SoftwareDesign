@@ -11,7 +11,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for test correctness of creating game model from file
+ */
 public class FromFileGeneratorTest {
+    /**
+     * Testing map generation
+     * @throws IOException
+     */
     @Test
     public void testLoadedMaps() throws IOException {
         String[] fileNames = {"src/maps/map1.txt", "src/maps/map2.txt"};
