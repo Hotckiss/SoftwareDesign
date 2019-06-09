@@ -61,4 +61,21 @@ public interface ConsoleView {
      * Draws help screen.
      */
     void drawHelpScreen();
+
+    /**
+     * Method for refreshing game screen
+     */
+    void refreshScreen();
+
+    /**
+     * Method for reading input from screen via input provider
+     */
+    UserInputProvider makeInputProvider() throws IOException;
+
+    /**
+     * Method for reading line from screen
+     * @return input string
+     * @throws IOException if any I/O error occurred
+     */
+    String readLineFromScreen() throws IOException;
 }

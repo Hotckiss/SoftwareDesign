@@ -93,7 +93,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-        return InputUtils.inputLine(cursorPosition, provider, gameScreen);
+        return InputUtils.inputLine(provider, gameScreen);
     }
 
     /**
@@ -143,7 +143,7 @@ public class ConsoleViewImpl implements ConsoleView {
 
         UserInputProvider provider = new UserInputProviderImpl(gameScreen.readInput());
 
-        return InputUtils.inputLine(gameScreen.getCursorPosition(), provider, gameScreen);
+        return InputUtils.inputLine(provider, gameScreen);
     }
 
     private void drawOnIthLine(int line, String text) {
@@ -180,6 +180,35 @@ public class ConsoleViewImpl implements ConsoleView {
     @Override
     public Screen getScreen() {
         return gameScreen;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void refreshScreen() {
+        try {
+            gameScreen.refresh();
+        } catch (IOException e) {
+            RoguelikeLogger.INSTANCE.log_error(e.getMessage());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserInputProvider makeInputProvider() throws IOException {
+        return new UserInputProviderImpl(gameScreen.readInput());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String readLineFromScreen() throws IOException {
+        UserInputProvider provider = makeInputProvider();
+        return InputUtils.inputLine(provider, gameScreen);
     }
 
     private void drawInner() {

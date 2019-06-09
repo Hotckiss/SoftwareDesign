@@ -1,10 +1,8 @@
 package ru.roguelike.controller;
 
-import com.googlecode.lanterna.screen.Screen;
 import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.roguelike.InputUtils;
 import ru.roguelike.PlayerRequest;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
@@ -16,7 +14,6 @@ import ru.roguelike.logic.generators.RandomGenerator;
 import ru.roguelike.net.client.RoguelikeClient;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
-import ru.roguelike.view.UserInputProviderImpl;
 
 import java.io.IOException;
 
@@ -58,8 +55,7 @@ public class GameController {
      * @throws IOException if any I/O error occurred
      */
     public String getLine() throws IOException {
-        UserInputProvider provider = new UserInputProviderImpl(view.getScreen().readInput());
-        return InputUtils.inputLine(view.getScreen().getCursorPosition(), provider, view.getScreen());
+        return view.readLineFromScreen();
     }
 
     /**
@@ -112,9 +108,8 @@ public class GameController {
      * @throws IOException if any I/O error occurred
      */
     public void makeOnlineTurn(StreamObserver<PlayerRequest> observer) throws IOException {
-        Screen screen = GameController.this.view.getScreen();
-        screen.refresh();
-        UserInputProvider provider = new UserInputProviderImpl(screen.readInput());
+        view.refreshScreen();
+        UserInputProvider provider = view.makeInputProvider();
 
         if (provider.isEscape()) {
             observer.onCompleted();
@@ -178,9 +173,8 @@ public class GameController {
          * @throws IOException if it occurs.
          */
         void makeAction() throws IOException {
-            Screen screen = GameController.this.view.getScreen();
-            screen.refresh();
-            UserInputProvider provider = new UserInputProviderImpl(screen.readInput());
+            view.refreshScreen();
+            UserInputProvider provider = view.makeInputProvider();
             RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
             Command command = createCommand(provider);
             if (command != null) {
