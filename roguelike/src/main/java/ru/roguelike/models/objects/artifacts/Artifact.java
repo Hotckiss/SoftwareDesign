@@ -119,6 +119,9 @@ public class Artifact extends AbstractGameObject implements Serializable {
         return fireDamageMultiplierBonus;
     }
 
+    /**
+     * Builder for artifacts
+     */
     public static class ArtifactBuilder {
         private Position position;
         private boolean isAvailable;
@@ -130,6 +133,11 @@ public class Artifact extends AbstractGameObject implements Serializable {
         private double physicalDamageMultiplierBonus = 0;
         private double fireDamageMultiplierBonus = 0;
 
+        /**
+         * Creates new builder with mandatory params
+         * @param position artifact position
+         * @param alias artifact alias
+         */
         public ArtifactBuilder(Position position,
                                boolean isAvailable,
                                Character alias) {
@@ -138,36 +146,64 @@ public class Artifact extends AbstractGameObject implements Serializable {
             this.alias = alias;
         }
 
+        /**
+         * Add artifact health restore
+         * @param restoringHealth artifact health restore
+         */
         public ArtifactBuilder restoringHealth(int restoringHealth) {
             this.restoringHealth = restoringHealth;
             return this;
         }
 
+        /**
+         * Add artifact regeneration bonus
+         * @param regenerationBonus artifact regeneration
+         */
         public ArtifactBuilder regenerationBonus(int regenerationBonus) {
             this.regenerationBonus = regenerationBonus;
             return this;
         }
 
+        /**
+         * Add artifact fire probability bonus
+         * @param fireProbabilityBonus artifact fire probability bonus
+         */
         public ArtifactBuilder fireProbabilityBonus(double fireProbabilityBonus) {
             this.fireProbabilityBonus = fireProbabilityBonus;
             return this;
         }
 
+        /**
+         * Add artifact freeze probability bonus
+         * @param freezeProbabilityBonus artifact freeze probability bonus
+         */
         public ArtifactBuilder freezeProbabilityBonus(double freezeProbabilityBonus) {
             this.freezeProbabilityBonus = freezeProbabilityBonus;
             return this;
         }
 
+        /**
+         * Add artifact physical damage multiplier bonus
+         * @param physicalDamageMultiplierBonus artifact physical damage multiplier bonus
+         */
         public ArtifactBuilder physicalDamageMultiplierBonus(double physicalDamageMultiplierBonus) {
             this.physicalDamageMultiplierBonus = physicalDamageMultiplierBonus;
             return this;
         }
 
+        /**
+         * Add artifact fire damage multiplier bonus
+         * @param fireDamageMultiplierBonus artifact fire damage multiplier bonus
+         */
         public ArtifactBuilder fireDamageMultiplierBonus(double fireDamageMultiplierBonus) {
             this.fireDamageMultiplierBonus = fireDamageMultiplierBonus;
             return this;
         }
 
+        /**
+         * Create artifact with current params
+         * @return new artifact
+         */
         public Artifact build() {
             return new Artifact(this);
         }

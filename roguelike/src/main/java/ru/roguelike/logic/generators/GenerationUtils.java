@@ -139,105 +139,70 @@ public class GenerationUtils {
      */
     @NotNull
     public static AbstractGameParticipant makeMob(@NotNull Character alias, Position position) {
+        Mob.MobBuilder builder = new Mob.MobBuilder(position, alias);
         switch (alias) {
             case 'B':
-                return new Mob(position,
-                        30,
-                        40,
-                        0,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        4,
-                        30,
-                        new AggressiveStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(30)
+                        .physicalDamage(40)
+                        .experienceCostHit(4)
+                        .experienceCostKill(30)
+                        .defaultStrategy(new AggressiveStrategy())
+                        .build();
             case 'F':
-                return new Mob(position,
-                        10,
-                        20,
-                        0,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        2,
-                        7,
-                        new CowardStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(10)
+                        .physicalDamage(20)
+                        .experienceCostHit(2)
+                        .experienceCostKill(7)
+                        .defaultStrategy(new CowardStrategy())
+                        .build();
             case 'M' :
-                return new Mob(position,
-                        20,
-                        40,
-                        5,
-                        0,
-                        1,
-                        1,
-                        1,
-                        15,
-                        6,
-                        30,
-                        new AggressiveStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(20)
+                        .physicalDamage(40)
+                        .fireDamage(5)
+                        .fireProbability(1)
+                        .regeneration(15)
+                        .experienceCostHit(6)
+                        .experienceCostKill(30)
+                        .defaultStrategy(new AggressiveStrategy())
+                        .build();
             case 'S':
-                return new Mob(position,
-                        50,
-                        20,
-                        0,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        3,
-                        18,
-                        new RandomStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(50)
+                        .physicalDamage(20)
+                        .experienceCostHit(3)
+                        .experienceCostKill(18)
+                        .defaultStrategy(new RandomStrategy())
+                        .build();
             case 'V':
-                return new Mob(position,
-                        40,
-                        10,
-                        0,
-                        0,
-                        0,
-                        1,
-                        1,
-                        10,
-                        1,
-                        10,
-                        new PassiveStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(40)
+                        .physicalDamage(10)
+                        .experienceCostHit(1)
+                        .experienceCostKill(10)
+                        .regeneration(10)
+                        .defaultStrategy(new PassiveStrategy())
+                        .build();
             case 'Y':
-                return new Mob(position,
-                        50,
-                        15,
-                        0,
-                        0.4,
-                        0,
-                        1,
-                        1,
-                        10,
-                        6,
-                        25,
-                        new AggressiveStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(50)
+                        .physicalDamage(15)
+                        .freezeProbability(0.4)
+                        .regeneration(10)
+                        .experienceCostHit(6)
+                        .experienceCostKill(25)
+                        .defaultStrategy(new AggressiveStrategy())
+                        .build();
             default:
-                return new Mob(position,
-                        50,
-                        20,
-                        0,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        3,
-                        18,
-                        new RandomStrategy(),
-                        alias);
+                return builder
+                        .fullHealth(50)
+                        .physicalDamage(20)
+                        .experienceCostHit(3)
+                        .experienceCostKill(18)
+                        .defaultStrategy(new RandomStrategy())
+                        .build();
         }
     }
 }
