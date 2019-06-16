@@ -13,6 +13,6 @@ public class FinalKey extends Artifact implements Serializable {
      * @param position artifact position
      */
     public FinalKey(Position position) {
-        super(position, false, 0, 0, 0, 0, 0, 0, 'k');
+        super(position, false, 'k');
     }
 }

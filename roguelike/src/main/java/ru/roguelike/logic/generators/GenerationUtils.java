@@ -111,77 +111,23 @@ public class GenerationUtils {
      */
     @NotNull
     public static Artifact makeArtifact(@NotNull Character alias, Position position) {
+        Artifact.ArtifactBuilder builder =
+                new Artifact.ArtifactBuilder(position,true, alias);
         switch (alias) {
             case 'c':
-                return new Artifact(position,
-                        true,
-                        0,
-                        0,
-                        0,
-                        0.2,
-                        0,
-                        0,
-                        alias);
+                return builder.freezeProbabilityBonus(0.2).build();
             case 'g':
-                return new Artifact(position,
-                        true,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1.0,
-                        alias);
+                return builder.fireDamageMultiplierBonus(1.0).build();
             case 'f':
-                return new Artifact(position,
-                        true,
-                        0,
-                        0,
-                        0.25,
-                        0,
-                        0,
-                        0,
-                        alias);
+                return builder.fireProbabilityBonus(0.25).build();
             case 'h':
-                return new Artifact(position,
-                        true,
-                        50,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        alias);
+                return builder.restoringHealth(50).build();
             case 'r':
-                return new Artifact(position,
-                        true,
-                        30,
-                        5,
-                        0,
-                        0,
-                        0,
-                        0,
-                        alias);
+                return builder.restoringHealth(30).regenerationBonus(5).build();
             case 's':
-                return new Artifact(position,
-                        true,
-                        30,
-                        5,
-                        0,
-                        0,
-                        0,
-                        0,
-                        alias);
+                return builder.regenerationBonus(10).build();
             default:
-                return new Artifact(position,
-                        true,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        alias);
+                return builder.build();
         }
     }
 

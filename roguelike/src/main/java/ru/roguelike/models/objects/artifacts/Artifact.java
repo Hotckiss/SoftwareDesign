@@ -40,24 +40,36 @@ public class Artifact extends AbstractGameObject implements Serializable {
      */
     private boolean isTaken = false;
 
+    /**
+     * Constructs new artifact with input params
+     */
     public Artifact(Position position,
                     boolean isAvailable,
-                    int restoringHealth,
-                    int regenerationBonus,
-                    double fireProbabilityBonus,
-                    double freezeProbabilityBonus,
-                    double physicalDamageMultiplierBonus,
-                    double fireDamageMultiplierBonus,
                     Character alias) {
         this.position = position;
         this.isAvailable = isAvailable;
-        this.restoringHealth = restoringHealth;
-        this.regenerationBonus = regenerationBonus;
-        this.fireProbabilityBonus = fireProbabilityBonus;
-        this.freezeProbabilityBonus = freezeProbabilityBonus;
-        this.physicalDamageMultiplierBonus = physicalDamageMultiplierBonus;
-        this.fireDamageMultiplierBonus = fireDamageMultiplierBonus;
+        this.restoringHealth = 0;
+        this.regenerationBonus = 0;
+        this.fireProbabilityBonus = 0;
+        this.freezeProbabilityBonus = 0;
+        this.physicalDamageMultiplierBonus = 0;
+        this.fireDamageMultiplierBonus = 0;
         this.alias = alias;
+    }
+
+    /**
+     * Constructs new artifact with input builder
+     */
+    public Artifact(ArtifactBuilder builder) {
+        this.position = builder.position;
+        this.isAvailable = builder.isAvailable;
+        this.restoringHealth = builder.restoringHealth;
+        this.regenerationBonus = builder.regenerationBonus;
+        this.fireProbabilityBonus = builder.fireProbabilityBonus;
+        this.freezeProbabilityBonus = builder.freezeProbabilityBonus;
+        this.physicalDamageMultiplierBonus = builder.physicalDamageMultiplierBonus;
+        this.fireDamageMultiplierBonus = builder.fireDamageMultiplierBonus;
+        this.alias = builder.alias;
     }
 
     /**
@@ -105,5 +117,59 @@ public class Artifact extends AbstractGameObject implements Serializable {
 
     public double getFireDamageMultiplierBonus() {
         return fireDamageMultiplierBonus;
+    }
+
+    public static class ArtifactBuilder {
+        private Position position;
+        private boolean isAvailable;
+        private Character alias;
+        private int restoringHealth = 0;
+        private int regenerationBonus = 0;
+        private double fireProbabilityBonus = 0;
+        private double freezeProbabilityBonus = 0;
+        private double physicalDamageMultiplierBonus = 0;
+        private double fireDamageMultiplierBonus = 0;
+
+        public ArtifactBuilder(Position position,
+                               boolean isAvailable,
+                               Character alias) {
+            this.position = position;
+            this.isAvailable = isAvailable;
+            this.alias = alias;
+        }
+
+        public ArtifactBuilder restoringHealth(int restoringHealth) {
+            this.restoringHealth = restoringHealth;
+            return this;
+        }
+
+        public ArtifactBuilder regenerationBonus(int regenerationBonus) {
+            this.regenerationBonus = regenerationBonus;
+            return this;
+        }
+
+        public ArtifactBuilder fireProbabilityBonus(double fireProbabilityBonus) {
+            this.fireProbabilityBonus = fireProbabilityBonus;
+            return this;
+        }
+
+        public ArtifactBuilder freezeProbabilityBonus(double freezeProbabilityBonus) {
+            this.freezeProbabilityBonus = freezeProbabilityBonus;
+            return this;
+        }
+
+        public ArtifactBuilder physicalDamageMultiplierBonus(double physicalDamageMultiplierBonus) {
+            this.physicalDamageMultiplierBonus = physicalDamageMultiplierBonus;
+            return this;
+        }
+
+        public ArtifactBuilder fireDamageMultiplierBonus(double fireDamageMultiplierBonus) {
+            this.fireDamageMultiplierBonus = fireDamageMultiplierBonus;
+            return this;
+        }
+
+        public Artifact build() {
+            return new Artifact(this);
+        }
     }
 }
