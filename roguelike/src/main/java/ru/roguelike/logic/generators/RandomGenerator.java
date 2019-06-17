@@ -110,7 +110,7 @@ public class RandomGenerator implements GameGenerator {
         key = new FinalKey(positionKey);
         field.get(positionKey.getX()).set(positionKey.getY(), key);
 
-        List<Position> availableForPlayer = GenerationUtils.connectedPositionsToKey(field, key);
+        List<Position> availableForPlayer = GenerationUtils.connectedPositions(field, key.getPosition());
 
         // put player next to key if no positions
         if (availableForPlayer.isEmpty()) {

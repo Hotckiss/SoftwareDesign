@@ -25,10 +25,10 @@ public class GenerationUtils {
     /**
      * Method thar returns free places connected to key
      * @param field game field
-     * @param key final key
+     * @param position position to start search
      * @return list of available positions
      */
-    public static List<Position> connectedPositionsToKey(List<List<AbstractGameObject>> field, FinalKey key) {
+    public static List<Position> connectedPositions(List<List<AbstractGameObject>> field, Position position) {
         int h = field.size();
         if (h <= 0) {
             return new ArrayList<>();
@@ -46,7 +46,7 @@ public class GenerationUtils {
         List<Position> result = new ArrayList<>();
 
         ArrayDeque<Position> bfsQueue = new ArrayDeque<>();
-        bfsQueue.addLast(key.getPosition());
+        bfsQueue.addLast(position);
 
         while (!bfsQueue.isEmpty()) {
             Position current = bfsQueue.pollFirst();
@@ -58,7 +58,7 @@ public class GenerationUtils {
                 continue;
             }
 
-            if (!current.equals(key.getPosition())) {
+            if (!current.equals(position)) {
                 result.add(current);
             }
 
@@ -89,9 +89,9 @@ public class GenerationUtils {
         // only Free Places
         List<Position> filteredResult = new ArrayList<>();
 
-        for (Position position: result) {
-            if (field.get(position.getX()).get(position.getY()) instanceof FreePlace) {
-                filteredResult.add(position);
+        for (Position pos: result) {
+            if (field.get(pos.getX()).get(pos.getY()) instanceof FreePlace) {
+                filteredResult.add(pos);
             }
         }
 

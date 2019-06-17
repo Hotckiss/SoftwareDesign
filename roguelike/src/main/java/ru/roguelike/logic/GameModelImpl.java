@@ -60,7 +60,7 @@ public class GameModelImpl implements GameModel {
     @Override
     public Integer addPlayerRandom() {
         Integer id = generateId();
-        List<Position> available = GenerationUtils.connectedPositionsToKey(fieldModel, key);
+        List<Position> available = GenerationUtils.connectedPositions(fieldModel, key.getPosition());
 
         Position position = available.get(new Random().nextInt(available.size()));
         Player newPlayer = new Player(position);
