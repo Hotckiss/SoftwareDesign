@@ -46,7 +46,7 @@ public class GameSaverAndLoaderTest {
                 "2 3\n" +
                 "0\n" +
                 "\n" +
-                "false\n" +
+                "\n" +
                 "100 100 20 5 0.0 0.0 1.0 1.0 5 0 0 0\n" +
                 "5 8\n" +
                 "3\n" +

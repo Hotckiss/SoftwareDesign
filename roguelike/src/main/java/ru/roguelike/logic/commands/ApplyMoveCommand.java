@@ -62,16 +62,26 @@ public class ApplyMoveCommand implements Command {
                     return (x + 1 < field.size() && !(field.get(x + 1).get(y) instanceof Wall)) ? Move.DOWN : Move.NONE;
                 case 'd':
                     return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
-                case 'e':
-                    if (!currentPlayer.getArtifacts().isEmpty() && !currentPlayer.getArtifacts().get(0).equipped()) {
-                        currentPlayer.getArtifacts().get(0).equip();
-                        currentPlayer.enableArtifact(currentPlayer.getArtifacts().get(0).getItem());
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    int index = provider.getCharacter() - '0' - 1;
+                    if (currentPlayer.getArtifacts().size() < index + 1) {
+                        break;
                     }
-                    break;
-                case 'q':
-                    if (!currentPlayer.getArtifacts().isEmpty() && currentPlayer.getArtifacts().get(0).equipped()) {
-                        currentPlayer.getArtifacts().get(0).disable();
-                        currentPlayer.disableArtifact(currentPlayer.getArtifacts().get(0).getItem());
+
+                    if (!currentPlayer.getArtifacts().get(index).equipped()) {
+                        currentPlayer.getArtifacts().get(index).equip();
+                        currentPlayer.enableArtifact(currentPlayer.getArtifacts().get(index).getItem());
+                    } else {
+                        currentPlayer.getArtifacts().get(index).disable();
+                        currentPlayer.disableArtifact(currentPlayer.getArtifacts().get(index).getItem());
                     }
                     break;
             }

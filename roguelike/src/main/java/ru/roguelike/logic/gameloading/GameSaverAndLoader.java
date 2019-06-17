@@ -74,11 +74,15 @@ public class GameSaverAndLoader {
         appendToFile(savedGameFile,  player.getExperience() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
         List<Player.ArtifactItem> artifactItems = player.getArtifacts();
-        boolean isEquipped = false;
-        if (!artifactItems.isEmpty() && artifactItems.get(0).equipped()) {
-            isEquipped = true;
+        for (int i = 0; i < artifactItems.size(); i++) {
+            appendToFile(savedGameFile, artifactItems.get(i).equipped() ? "true" : "false");
+            if (i != artifactItems.size() - 1) {
+                appendToFile(savedGameFile, " ");
+            }
         }
-        appendToFile(savedGameFile, isEquipped + "\n");
+
+        appendToFile(savedGameFile, "\n");
+
         appendToFile(savedGameFile, getFeaturesAsString(player) + "\n");
 
         // KEY INFO
@@ -168,13 +172,20 @@ public class GameSaverAndLoader {
             List<Player.ArtifactItem> artifactItems = new ArrayList<>();
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
+                if (c == ' ') {
+                    continue;
+                }
                 Artifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
                 artifactItems.add(new Player.ArtifactItem(artifact));
             }
 
             line = reader.readLine();
-            if (line.equals("true")) {
-                artifactItems.get(0).equip();
+            String[] equipFlags = line.split(" ");
+
+            for (int i = 0; i < equipFlags.length; i++) {
+                if (equipFlags[i].equals("true")) {
+                    artifactItems.get(i).equip();
+                }
             }
 
             player.setArtifacts(artifactItems);
