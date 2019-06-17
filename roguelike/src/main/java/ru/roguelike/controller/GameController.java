@@ -180,6 +180,13 @@ public class GameController {
         void makeAction() throws IOException {
             view.refreshScreen();
             UserInputProvider provider = view.makeInputProvider();
+
+            if (provider.isEscape()) {
+                RoguelikeLogger.INSTANCE.log_info("Game terminated by pressing Esc");
+                System.exit(0);
+                return;
+            }
+
             RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
             Command command = createCommand(provider);
             if (command != null) {
