@@ -104,7 +104,8 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
      * @param opponent opponent to hit
      */
     public void hit(AbstractGameParticipant opponent) {
-        opponent.health = (int) (Math.max(0, opponent.health - physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
+        opponent.health = (int) (Math.max(0, opponent.health -
+                physicalDamage * physicalDamageMultiplier * (1 + Math.abs(getLevel() - 1) * 0.5)));
         // opponent freeze
         if (Math.random() < freezeProbability) {
             opponent.freezeCount = 3;
