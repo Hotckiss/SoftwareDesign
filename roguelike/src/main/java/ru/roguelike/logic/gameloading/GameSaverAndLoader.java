@@ -1,5 +1,6 @@
 package ru.roguelike.logic.gameloading;
 
+import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.logic.generators.FromFileGenerator;
@@ -110,11 +111,8 @@ public class GameSaverAndLoader {
         List<Artifact> artifacts = new ArrayList<>();
 
         List<String> mapFromFile = new ArrayList<>();
-        FromFileGenerator generator = new FromFileGenerator();
 
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(savedGameFile));
+        try(BufferedReader reader = new BufferedReader(new FileReader(savedGameFile))) {
 
             // GETTING FIELD INFO
             String line = reader.readLine();
@@ -221,15 +219,11 @@ public class GameSaverAndLoader {
                 lineList.set(y, mob);
                 field.set(x, lineList);
             }
-
-            reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            RoguelikeLogger.INSTANCE.log_error("I/O error during loading game");
         }
 
-        GameModel gameModel = new GameModelImpl(field, player, key, mobs, artifacts);
-
-        return gameModel;
+        return new GameModelImpl(field, player, key, mobs, artifacts);
     }
 
     /**
@@ -271,27 +265,15 @@ public class GameSaverAndLoader {
         participant.setFireValue(Integer.parseInt(features[11]));
     }
 
-    public static void appendToFile(String filePath, String text) {
+    private static void appendToFile(String filePath, String text) {
         File file = new File(filePath);
-        FileWriter fr = null;
-        BufferedWriter br = null;
-        PrintWriter pr = null;
-        try {
-            // to append to file, you need to initialize FileWriter using below constructor
-            fr = new FileWriter(file, true);
-            br = new BufferedWriter(fr);
-            pr = new PrintWriter(br);
-            pr.print(text);
+
+        try (FileWriter fw = new FileWriter(file, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter pw = new PrintWriter(bw)) {
+            pw.print(text);
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                pr.close();
-                br.close();
-                fr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            RoguelikeLogger.INSTANCE.log_error("I/O error during saving game");
         }
     }
 
