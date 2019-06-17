@@ -28,49 +28,45 @@ public class AggressiveStrategy extends AbstractStrategy implements Serializable
     @Override
     public Move preferredMove(Mob mob, GameModel model) {
         List<List<AbstractGameObject>> field = model.getField();
-        Position playerPosition = model.getActivePlayer().getPosition();
         Position mobPosition = mob.getPosition();
-
         Predicate<AbstractGameObject> mobAvailableTest = abstractGameObject -> {
             Position position = abstractGameObject.getPosition();
             AbstractGameObject obj = field.get(position.getX()).get(position.getY());
             return !(obj instanceof Wall || obj instanceof Artifact || obj instanceof Mob);
         };
-
-        List<DistancedPosition> connectedToPlayer =
-                GenerationUtils.connectedPositions(field, playerPosition, mobAvailableTest, true, false);
         int minDistance = Integer.MAX_VALUE;
         Move bestMove = Move.NONE;
 
-        int noneIndex = connectedToPlayer.indexOf(mobPosition.none());
-        int leftIndex = connectedToPlayer.indexOf(mobPosition.left());
-        int rightIndex = connectedToPlayer.indexOf(mobPosition.right());
-        int bottomIndex = connectedToPlayer.indexOf(mobPosition.bottom());
-        int upIndex = connectedToPlayer.indexOf(mobPosition.up());
+        for (Player player: model.getAllPlayers()) {
+            Position playerPosition = player.getPosition();
+            List<DistancedPosition> connectedToPlayer =
+                    GenerationUtils.connectedPositions(field, playerPosition, mobAvailableTest, true, false);
 
-        if (upIndex >= 0 && connectedToPlayer.get(upIndex).getDistance() < minDistance) {
-            minDistance = connectedToPlayer.get(upIndex).getDistance();
-            bestMove = Move.UP;
-        }
 
-        if (bottomIndex >= 0 && connectedToPlayer.get(bottomIndex).getDistance() < minDistance) {
-            minDistance = connectedToPlayer.get(bottomIndex).getDistance();
-            bestMove = Move.DOWN;
-        }
+            int leftIndex = connectedToPlayer.indexOf(mobPosition.left());
+            int rightIndex = connectedToPlayer.indexOf(mobPosition.right());
+            int bottomIndex = connectedToPlayer.indexOf(mobPosition.bottom());
+            int upIndex = connectedToPlayer.indexOf(mobPosition.up());
 
-        if (rightIndex >= 0 && connectedToPlayer.get(rightIndex).getDistance() < minDistance) {
-            minDistance = connectedToPlayer.get(rightIndex).getDistance();
-            bestMove = Move.RIGHT;
-        }
+            if (upIndex >= 0 && connectedToPlayer.get(upIndex).getDistance() < minDistance) {
+                minDistance = connectedToPlayer.get(upIndex).getDistance();
+                bestMove = Move.UP;
+            }
 
-        if (leftIndex >= 0 && connectedToPlayer.get(leftIndex).getDistance() < minDistance) {
-            minDistance = connectedToPlayer.get(leftIndex).getDistance();
-            bestMove = Move.LEFT;
-        }
+            if (bottomIndex >= 0 && connectedToPlayer.get(bottomIndex).getDistance() < minDistance) {
+                minDistance = connectedToPlayer.get(bottomIndex).getDistance();
+                bestMove = Move.DOWN;
+            }
 
-        if (noneIndex >= 0 && connectedToPlayer.get(noneIndex).getDistance() < minDistance) {
-            minDistance = connectedToPlayer.get(noneIndex).getDistance();
-            bestMove = Move.NONE;
+            if (rightIndex >= 0 && connectedToPlayer.get(rightIndex).getDistance() < minDistance) {
+                minDistance = connectedToPlayer.get(rightIndex).getDistance();
+                bestMove = Move.RIGHT;
+            }
+
+            if (leftIndex >= 0 && connectedToPlayer.get(leftIndex).getDistance() < minDistance) {
+                minDistance = connectedToPlayer.get(leftIndex).getDistance();
+                bestMove = Move.LEFT;
+            }
         }
 
         if (minDistance <= OVERVIEW_RADIUS) {
