@@ -18,6 +18,7 @@ import ru.roguelike.models.objects.movable.Mob;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Common utils for objects generation
@@ -31,7 +32,9 @@ public class GenerationUtils {
      */
     public static List<DistancedPosition> connectedPositions(List<List<AbstractGameObject>> field,
                                                              Position position,
-                                                             boolean shouldAddInputPosition) {
+                                                             Predicate<AbstractGameObject> fieldAvailable,
+                                                             boolean shouldAddInputPosition,
+                                                             boolean shouldFilterFields) {
         int h = field.size();
         if (h <= 0) {
             return new ArrayList<>();
@@ -76,22 +79,30 @@ public class GenerationUtils {
             DistancedPosition bottom = new DistancedPosition(current.bottom(), current.getDistance() + 1);
             DistancedPosition up = new DistancedPosition(current.up(), current.getDistance() + 1);
 
-            if (left.getY() >= 0 && !(field.get(left.getX()).get(left.getY()) instanceof Wall) && !visited[left.getX()][left.getY()]) {
+            if (left.getY() >= 0 && fieldAvailable.test(field.get(left.getX()).get(left.getY()))
+                    && !visited[left.getX()][left.getY()]) {
                 bfsQueue.addLast(left);
             }
 
-            if (right.getY() < w && !(field.get(right.getX()).get(right.getY()) instanceof Wall) && !visited[right.getX()][right.getY()]) {
+            if (right.getY() < w && fieldAvailable.test(field.get(right.getX()).get(right.getY()))
+                    && !visited[right.getX()][right.getY()]) {
                 bfsQueue.addLast(right);
             }
 
-            if (bottom.getX() < h && !(field.get(bottom.getX()).get(bottom.getY()) instanceof Wall) && !visited[bottom.getX()][bottom.getY()]) {
+            if (bottom.getX() < h && fieldAvailable.test(field.get(bottom.getX()).get(bottom.getY()))
+                    && !visited[bottom.getX()][bottom.getY()]) {
                 bfsQueue.addLast(bottom);
             }
 
 
-            if (up.getX() >= 0 && !(field.get(up.getX()).get(up.getY()) instanceof Wall) && !visited[up.getX()][up.getY()]) {
+            if (up.getX() >= 0 && fieldAvailable.test(field.get(up.getX()).get(up.getY()))
+                    && !visited[up.getX()][up.getY()]) {
                 bfsQueue.addLast(up);
             }
+        }
+
+        if (!shouldFilterFields) {
+            return result;
         }
 
         // only Free Places

@@ -10,12 +10,14 @@ import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
+import ru.roguelike.models.objects.map.Wall;
 import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +63,10 @@ public class GameModelImpl implements GameModel {
     @Override
     public Integer addPlayerRandom() {
         Integer id = generateId();
-        List<DistancedPosition> available = GenerationUtils.connectedPositions(fieldModel, key.getPosition(), false);
+        Predicate<AbstractGameObject> wallTest = abstractGameObject -> !(abstractGameObject instanceof Wall);
+
+        List<DistancedPosition> available =
+                GenerationUtils.connectedPositions(fieldModel, key.getPosition(), wallTest,false, true);
 
         Position position = available.get(new Random().nextInt(available.size()));
         Player newPlayer = new Player(position);

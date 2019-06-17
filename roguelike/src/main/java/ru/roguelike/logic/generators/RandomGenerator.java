@@ -16,6 +16,7 @@ import ru.roguelike.models.objects.movable.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * Generates a random field for a new game.
@@ -111,7 +112,9 @@ public class RandomGenerator implements GameGenerator {
         key = new FinalKey(positionKey);
         field.get(positionKey.getX()).set(positionKey.getY(), key);
 
-        List<DistancedPosition> availableForPlayer = GenerationUtils.connectedPositions(field, key.getPosition(), false);
+        Predicate<AbstractGameObject> wallTest = abstractGameObject -> !(abstractGameObject instanceof Wall);
+        List<DistancedPosition> availableForPlayer =
+                GenerationUtils.connectedPositions(field, key.getPosition(), wallTest, false, true);
 
         // put player next to key if no positions
         if (availableForPlayer.isEmpty()) {
