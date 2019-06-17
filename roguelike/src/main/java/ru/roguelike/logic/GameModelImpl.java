@@ -320,7 +320,7 @@ public class GameModelImpl implements GameModel {
 
         gameSituation.add("Health: " + currentPlayer.getHealth() +
                 " Exp: " + currentPlayer.exp() + " Level: " +
-                currentPlayer.getLevel() + " Items: " + currentPlayer.getArtifactsLog());
+                currentPlayer.getLevel() + " Items: " + currentPlayer.getArtifactsLog(true));
 
         StringBuilder mobsHealth = new StringBuilder();
         mobsHealth.append("Mobs' health: ");

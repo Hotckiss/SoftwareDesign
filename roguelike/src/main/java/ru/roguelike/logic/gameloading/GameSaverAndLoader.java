@@ -72,7 +72,7 @@ public class GameSaverAndLoader {
         Position position = player.getPosition();
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
         appendToFile(savedGameFile,  player.getExperience() + "\n");
-        appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
+        appendToFile(savedGameFile, player.getArtifactsLog(false) + "\n");
         List<Player.ArtifactItem> artifactItems = player.getArtifacts();
         for (int i = 0; i < artifactItems.size(); i++) {
             appendToFile(savedGameFile, artifactItems.get(i).equipped() ? "true" : "false");

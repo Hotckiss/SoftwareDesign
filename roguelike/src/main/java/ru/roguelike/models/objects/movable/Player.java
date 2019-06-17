@@ -52,12 +52,12 @@ public class Player extends AbstractGameParticipant implements Serializable {
      * Gets view model of current player artifacts
      * @return view model of current player artifacts
      */
-    public String getArtifactsLog() {
+    public String getArtifactsLog(boolean showEnabled) {
         StringBuilder builder = new StringBuilder();
 
         for (ArtifactItem item : artifacts) {
             builder.append(item.getItem().getDrawingFigure());
-            builder.append(' ');
+            builder.append(showEnabled ? (item.equipped() ? "(+) " : "(-) ") : " ");
         }
 
         return builder.toString();
