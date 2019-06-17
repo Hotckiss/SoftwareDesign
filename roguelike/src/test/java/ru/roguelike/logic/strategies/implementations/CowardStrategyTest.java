@@ -3,6 +3,7 @@ package ru.roguelike.logic.strategies.implementations;
 import org.junit.Test;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
+import ru.roguelike.logic.commands.ApplyMoveCommand;
 import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
@@ -42,8 +43,7 @@ public class CowardStrategyTest {
 
         GameModel model = new GameModelImpl(field, player, key, Collections.singletonList(mob), new ArrayList<>());
 
-        model.makeMove(new StringStreamInputProviderImpl("a"));
-
+        model.makeMove(ApplyMoveCommand.applyPlayerAction(new StringStreamInputProviderImpl("a"), model));
         //mob moved right from player (0, 1) -> (0, 2)
         assertEquals(new Position(0, 2), mob.getPosition());
     }

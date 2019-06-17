@@ -3,6 +3,7 @@ package ru.roguelike.models.objects.artifacts;
 import org.junit.Test;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
+import ru.roguelike.logic.commands.ApplyMoveCommand;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.movable.Player;
@@ -39,7 +40,7 @@ public class FinalKeyTest {
         assertFalse(model.finished());
 
         //finish game
-        model.makeMove(new StringStreamInputProviderImpl("a"));
+        model.makeMove(ApplyMoveCommand.applyPlayerAction(new StringStreamInputProviderImpl("a"), model));
 
         assertTrue(model.finished());
     }
