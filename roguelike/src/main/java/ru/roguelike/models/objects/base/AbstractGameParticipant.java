@@ -283,11 +283,7 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
      */
     @Override
     public Move move(GameModel model) throws IOException {
-        if (freezeCount > 0) {
-            return Move.NONE;
-        }
-
-        return new RandomStrategy().preferredMove(position, model);
+        return Move.NONE;
     }
 
     /**

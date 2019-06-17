@@ -2,7 +2,7 @@ package ru.roguelike.logic.strategies;
 
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
-import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.movable.Mob;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ public class AbstractStrategyDecorator extends AbstractStrategy implements Seria
      * {@inheritDoc}
      */
     @Override
-    public Move preferredMove(Position position, GameModel model) {
-        return decoratee.preferredMove(position, model);
+    public Move preferredMove(Mob mob, GameModel model) {
+        return decoratee.preferredMove(mob, model);
     }
 }

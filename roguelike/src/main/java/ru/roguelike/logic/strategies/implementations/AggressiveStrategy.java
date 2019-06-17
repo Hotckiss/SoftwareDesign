@@ -5,6 +5,7 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 
 import java.io.Serializable;
@@ -20,8 +21,9 @@ public class AggressiveStrategy extends AbstractStrategy implements Serializable
      * {@inheritDoc}
      */
     @Override
-    public Move preferredMove(Position position, GameModel model) {
+    public Move preferredMove(Mob mob, GameModel model) {
         List<List<AbstractGameObject>> field = model.getField();
+        Position position = mob.getPosition();
         int x = position.getX();
         int y = position.getY();
 
@@ -41,6 +43,6 @@ public class AggressiveStrategy extends AbstractStrategy implements Serializable
             return Move.RIGHT;
         }
 
-        return defaultStrategy.preferredMove(position, model);
+        return defaultStrategy.preferredMove(mob, model);
     }
 }

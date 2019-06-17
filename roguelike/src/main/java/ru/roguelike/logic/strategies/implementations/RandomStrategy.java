@@ -5,6 +5,7 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.AbstractStrategy;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.movable.Mob;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,10 +21,11 @@ public class RandomStrategy extends AbstractStrategy implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public Move preferredMove(Position position, GameModel model) {
+    public Move preferredMove(Mob mob, GameModel model) {
         List<Move> availableMoves = new ArrayList<>();
         availableMoves.add(Move.NONE);
 
+        Position position = mob.getPosition();
         List<List<AbstractGameObject>> field = model.getField();
         int x = position.getX();
         int y = position.getY();

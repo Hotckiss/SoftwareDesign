@@ -3,7 +3,7 @@ package ru.roguelike.logic.strategies;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
-import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.movable.Mob;
 
 import java.io.Serializable;
 
@@ -27,12 +27,12 @@ public class ConfusedStrategyDecorator extends AbstractStrategyDecorator impleme
      * {@inheritDoc}
      */
     @Override
-    public Move preferredMove(Position position, GameModel model) {
+    public Move preferredMove(Mob mob, GameModel model) {
         if (confusedCount > 0) {
             confusedCount--;
-            return new RandomStrategy().preferredMove(position, model);
+            return new RandomStrategy().preferredMove(mob, model);
         }
 
-        return decoratee.preferredMove(position, model);
+        return decoratee.preferredMove(mob, model);
     }
 }

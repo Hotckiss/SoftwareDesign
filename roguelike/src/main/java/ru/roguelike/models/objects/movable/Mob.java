@@ -54,7 +54,7 @@ public class Mob extends AbstractGameParticipant implements Serializable {
             return Move.NONE;
         }
 
-        return mobStrategy.preferredMove(position, model);
+        return mobStrategy.preferredMove(this, model);
     }
 
     /**

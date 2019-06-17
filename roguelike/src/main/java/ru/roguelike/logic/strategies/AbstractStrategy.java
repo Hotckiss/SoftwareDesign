@@ -2,7 +2,7 @@ package ru.roguelike.logic.strategies;
 
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.Move;
-import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.movable.Mob;
 
 import java.io.Serializable;
 
@@ -12,9 +12,9 @@ import java.io.Serializable;
 public abstract class AbstractStrategy implements Serializable {
     /**
      * Generate preferred movement
-     * @param position current position
+     * @param mob current mob
      * @param model game situation
      * @return preferred movement
      */
-    public abstract Move preferredMove(Position position, GameModel model);
+    public abstract Move preferredMove(Mob mob, GameModel model);
 }
