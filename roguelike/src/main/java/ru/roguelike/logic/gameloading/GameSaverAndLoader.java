@@ -73,9 +73,9 @@ public class GameSaverAndLoader {
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
         appendToFile(savedGameFile,  player.getExperience() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog() + "\n");
-        ArrayDeque<Player.ArtifactItem> artifactItems = player.getArtifacts();
+        List<Player.ArtifactItem> artifactItems = player.getArtifacts();
         boolean isEquipped = false;
-        if (!artifactItems.isEmpty() && artifactItems.getFirst().equipped()) {
+        if (!artifactItems.isEmpty() && artifactItems.get(0).equipped()) {
             isEquipped = true;
         }
         appendToFile(savedGameFile, isEquipped + "\n");
@@ -165,7 +165,7 @@ public class GameSaverAndLoader {
             player.setExperience(exp);
 
             line = reader.readLine();
-            ArrayDeque<Player.ArtifactItem> artifactItems = new ArrayDeque<>();
+            List<Player.ArtifactItem> artifactItems = new ArrayList<>();
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
                 Artifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
@@ -174,7 +174,7 @@ public class GameSaverAndLoader {
 
             line = reader.readLine();
             if (line.equals("true")) {
-                artifactItems.getFirst().equip();
+                artifactItems.get(0).equip();
             }
 
             player.setArtifacts(artifactItems);

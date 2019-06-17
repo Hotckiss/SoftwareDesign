@@ -5,7 +5,6 @@ import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.map.Wall;
-import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
@@ -64,15 +63,15 @@ public class ApplyMoveCommand implements Command {
                 case 'd':
                     return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
                 case 'e':
-                    if (!currentPlayer.getArtifacts().isEmpty() && !currentPlayer.getArtifacts().getFirst().equipped()) {
-                        currentPlayer.getArtifacts().getFirst().equip();
-                        currentPlayer.enableArtifact(currentPlayer.getArtifacts().getFirst().getItem());
+                    if (!currentPlayer.getArtifacts().isEmpty() && !currentPlayer.getArtifacts().get(0).equipped()) {
+                        currentPlayer.getArtifacts().get(0).equip();
+                        currentPlayer.enableArtifact(currentPlayer.getArtifacts().get(0).getItem());
                     }
                     break;
                 case 'q':
-                    if (!currentPlayer.getArtifacts().isEmpty() && currentPlayer.getArtifacts().getFirst().equipped()) {
-                        currentPlayer.getArtifacts().getFirst().disable();
-                        currentPlayer.disableArtifact(currentPlayer.getArtifacts().getFirst().getItem());
+                    if (!currentPlayer.getArtifacts().isEmpty() && currentPlayer.getArtifacts().get(0).equipped()) {
+                        currentPlayer.getArtifacts().get(0).disable();
+                        currentPlayer.disableArtifact(currentPlayer.getArtifacts().get(0).getItem());
                     }
                     break;
             }

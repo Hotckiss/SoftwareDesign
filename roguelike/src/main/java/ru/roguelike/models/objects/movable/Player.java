@@ -13,13 +13,14 @@ import ru.roguelike.view.UserInputProvider;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents a player.
  */
 public class Player extends AbstractGameParticipant implements Serializable {
-    private ArrayDeque<ArtifactItem> artifacts = new ArrayDeque<>();
+    private List<ArtifactItem> artifacts = new ArrayList<>();
 
     /**
      * Constructs new Player on specified position
@@ -44,7 +45,7 @@ public class Player extends AbstractGameParticipant implements Serializable {
      * @param artifact artifact to add
      */
     public void addArtifact(Artifact artifact) {
-        artifacts.addFirst(new ArtifactItem(artifact));
+        artifacts.add(0, new ArtifactItem(artifact));
     }
 
     /**
@@ -70,11 +71,11 @@ public class Player extends AbstractGameParticipant implements Serializable {
         return 'P';
     }
 
-    public ArrayDeque<ArtifactItem> getArtifacts() {
+    public List<ArtifactItem> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(ArrayDeque<ArtifactItem> artifacts) {
+    public void setArtifacts(List<ArtifactItem> artifacts) {
         this.artifacts = artifacts;
     }
 
