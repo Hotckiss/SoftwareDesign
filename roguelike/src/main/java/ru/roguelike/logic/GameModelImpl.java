@@ -132,6 +132,15 @@ public class GameModelImpl implements GameModel {
     }
 
     /**
+     * Get all players
+     * @return all players
+     */
+    @Override
+    public List<Player> getAllPlayers() {
+        return new ArrayList<>(players.values());
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

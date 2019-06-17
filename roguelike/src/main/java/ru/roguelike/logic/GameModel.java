@@ -9,6 +9,7 @@ import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,4 +96,10 @@ public interface GameModel extends Serializable {
      * @return player with this id or null of player does not exist
      */
     Player getPlayerById(Integer id);
+
+    /**
+     * Get all players
+     * @return all players
+     */
+    List<Player> getAllPlayers();
 }
