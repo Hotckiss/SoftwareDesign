@@ -158,7 +158,10 @@ public class GameController {
         RoguelikeLogger.INSTANCE.log_info("Game started");
         Invoker invoker = new Invoker();
         while (!game.finished()) {
-            invoker.makeAction();
+            Command playerCommand = invoker.makeAction();
+            if (playerCommand != null) {
+                playerCommand.execute();
+            }
         }
 
         if (game.finished() && !game.getActivePlayer().isAlive()) {
@@ -177,21 +180,18 @@ public class GameController {
          *
          * @throws IOException if it occurs.
          */
-        void makeAction() throws IOException {
+        Command makeAction() throws IOException {
             view.refreshScreen();
             UserInputProvider provider = view.makeInputProvider();
 
             if (provider.isEscape()) {
                 RoguelikeLogger.INSTANCE.log_info("Game terminated by pressing Esc");
                 System.exit(0);
-                return;
+                return null;
             }
 
             RoguelikeLogger.INSTANCE.log_info("Input from user: " + provider.getCharacter());
-            Command command = createCommand(provider);
-            if (command != null) {
-                command.execute();
-            }
+            return createCommand(provider);
         }
 
         /**
@@ -205,19 +205,15 @@ public class GameController {
             }
             switch (provider.getCharacter()) {
                 case 'l':
-                    return new LoadMapCommand(GameController.this.view,
-                            GameController.this);
+                    return new LoadMapCommand(view, GameController.this);
                 case 'h':
-                    return new ShowHelpScreenCommand(GameController.this.view);
+                    return new ShowHelpScreenCommand(view);
                 case 'r':
-                    return new HideHelpScreenCommand(GameController.this.game,
-                            GameController.this.view);
+                    return new HideHelpScreenCommand(game, view);
                 case 'v':
-                    return new SaveGameCommand(GameController.this.game);
+                    return new SaveGameCommand(game);
                 default:
-                    return new ApplyMoveCommand(provider,
-                            GameController.this.game,
-                            GameController.this.view);
+                    return new ApplyMoveCommand(provider, game, view);
             }
         }
     }

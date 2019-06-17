@@ -3,7 +3,6 @@ package ru.roguelike.logic.gameloading;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
-import ru.roguelike.logic.generators.FromFileGenerator;
 import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
@@ -16,7 +15,6 @@ import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.Drawable;
 
 import java.io.*;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +71,10 @@ public class GameSaverAndLoader {
         appendToFile(savedGameFile, position.getX() + " " + position.getY() + "\n");
         appendToFile(savedGameFile,  player.getExperience() + "\n");
         appendToFile(savedGameFile, player.getArtifactsLog(false) + "\n");
-        List<Player.ArtifactItem> artifactItems = player.getArtifacts();
-        for (int i = 0; i < artifactItems.size(); i++) {
-            appendToFile(savedGameFile, artifactItems.get(i).equipped() ? "true" : "false");
-            if (i != artifactItems.size() - 1) {
+        List<Player.ArtifactInInventory> artifactInInventories = player.getArtifacts();
+        for (int i = 0; i < artifactInInventories.size(); i++) {
+            appendToFile(savedGameFile, artifactInInventories.get(i).equipped() ? "true" : "false");
+            if (i != artifactInInventories.size() - 1) {
                 appendToFile(savedGameFile, " ");
             }
         }
@@ -169,14 +167,14 @@ public class GameSaverAndLoader {
             player.setExperience(exp);
 
             line = reader.readLine();
-            List<Player.ArtifactItem> artifactItems = new ArrayList<>();
+            List<Player.ArtifactInInventory> artifactInInventories = new ArrayList<>();
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
                 if (c == ' ') {
                     continue;
                 }
                 Artifact artifact = GenerationUtils.makeArtifact(c, new Position(-1, -1));
-                artifactItems.add(new Player.ArtifactItem(artifact));
+                artifactInInventories.add(new Player.ArtifactInInventory(artifact));
             }
 
             line = reader.readLine();
@@ -184,11 +182,11 @@ public class GameSaverAndLoader {
 
             for (int i = 0; i < equipFlags.length; i++) {
                 if (equipFlags[i].equals("true")) {
-                    artifactItems.get(i).equip();
+                    artifactInInventories.get(i).equip();
                 }
             }
 
-            player.setArtifacts(artifactItems);
+            player.setArtifacts(artifactInInventories);
 
             line = reader.readLine();
             setFeatures(player, line);

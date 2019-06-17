@@ -1,18 +1,10 @@
 package ru.roguelike.models.objects.movable;
 
-import org.jetbrains.annotations.NotNull;
-import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.Move;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.Artifact;
-import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
-import ru.roguelike.models.objects.map.Wall;
-import ru.roguelike.view.UserInputProvider;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +12,7 @@ import java.util.List;
  * Represents a player.
  */
 public class Player extends AbstractGameParticipant implements Serializable {
-    private List<ArtifactItem> artifacts = new ArrayList<>();
+    private List<ArtifactInInventory> artifacts = new ArrayList<>();
 
     /**
      * Constructs new Player on specified position
@@ -45,7 +37,7 @@ public class Player extends AbstractGameParticipant implements Serializable {
      * @param artifact artifact to add
      */
     public void addArtifact(Artifact artifact) {
-        artifacts.add(0, new ArtifactItem(artifact));
+        artifacts.add(0, new ArtifactInInventory(artifact));
     }
 
     /**
@@ -55,7 +47,7 @@ public class Player extends AbstractGameParticipant implements Serializable {
     public String getArtifactsLog(boolean showEnabled) {
         StringBuilder builder = new StringBuilder();
 
-        for (ArtifactItem item : artifacts) {
+        for (ArtifactInInventory item : artifacts) {
             builder.append(item.getItem().getDrawingFigure());
             builder.append(showEnabled ? (item.equipped() ? "(+) " : "(-) ") : " ");
         }
@@ -71,18 +63,18 @@ public class Player extends AbstractGameParticipant implements Serializable {
         return 'P';
     }
 
-    public List<ArtifactItem> getArtifacts() {
+    public List<ArtifactInInventory> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(List<ArtifactItem> artifacts) {
+    public void setArtifacts(List<ArtifactInInventory> artifacts) {
         this.artifacts = artifacts;
     }
 
     /**
      * Wrapper for artifact
      */
-    public static class ArtifactItem implements Serializable {
+    public static class ArtifactInInventory implements Serializable {
         private Artifact item;
         private boolean isEquipped;
 
@@ -90,7 +82,7 @@ public class Player extends AbstractGameParticipant implements Serializable {
          * Constructor to wrap artifact
          * @param artifact artifact to wrap
          */
-        public ArtifactItem(Artifact artifact) {
+        public ArtifactInInventory(Artifact artifact) {
             item = artifact;
             isEquipped = false;
         }

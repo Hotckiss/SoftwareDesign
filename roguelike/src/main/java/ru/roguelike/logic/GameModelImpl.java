@@ -13,7 +13,6 @@ import ru.roguelike.models.objects.map.FreePlace;
 import ru.roguelike.models.objects.map.Wall;
 import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
-import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
 import java.util.*;
@@ -334,7 +333,7 @@ public class GameModelImpl implements GameModel {
 
         if (isFinished) {
             boolean hasKey = false;
-            for (Player.ArtifactItem artifact: currentPlayer.getArtifacts()) {
+            for (Player.ArtifactInInventory artifact: currentPlayer.getArtifacts()) {
                 if (artifact.getItem() instanceof FinalKey) {
                     hasKey = true;
                 }
