@@ -160,6 +160,11 @@ public class GameController {
         while (!game.finished()) {
             invoker.makeAction();
         }
+
+        if (game.finished() && !game.getActivePlayer().isAlive()) {
+            GameSaverAndLoader.deleteGame();
+        }
+
         RoguelikeLogger.INSTANCE.log_info("Game finished");
     }
 

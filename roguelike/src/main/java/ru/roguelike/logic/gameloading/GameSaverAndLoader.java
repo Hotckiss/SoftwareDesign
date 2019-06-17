@@ -235,8 +235,8 @@ public class GameSaverAndLoader {
     /**
      * Method that deletes saved game
      */
-    public void deleteGame() {
-        File file = new File(savedGameFile);
+    public static void deleteGame() {
+        File file = new File(DEFAULT_SAVED_GAME_FILENAME);
         file.delete();
     }
 
