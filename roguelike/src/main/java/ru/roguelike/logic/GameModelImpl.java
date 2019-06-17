@@ -83,8 +83,11 @@ public class GameModelImpl implements GameModel {
     @Override
     public void nextActivePlayer() {
         if (players.keySet().isEmpty()) {
+            isFinished = true;
             activePlayerIndex = 0;
+            return;
         }
+
         activePlayerIndex = (activePlayerIndex + 1) % players.keySet().size();
     }
 
