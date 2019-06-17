@@ -70,63 +70,6 @@ public class Player extends AbstractGameParticipant implements Serializable {
         return 'P';
     }
 
-    /**
-     * The moves can be (relevant keys are given):
-     * w - up,
-     * a - left,
-     * s - down,
-     * d - right,
-     * e - enable artifact,
-     * q - disable artifact.
-     *
-     * @param model -- is a current game state
-     * @return a move corresponding to the user's action.
-     * @throws IOException if it occurs
-     */
-    @Override
-    @NotNull
-    public Move move(@NotNull UserInputProvider provider, GameModel model) throws
-            IOException {
-        if (freezeCount > 0) {
-            return Move.NONE;
-        }
-
-        List<List<AbstractGameObject>> field = model.getField();
-        int x = position.getX();
-        int y = position.getY();
-
-        if (provider.getCharacter() == null) {
-            return Move.NONE;
-        }
-
-        switch (provider.getCharacter()) {
-            case 'w':
-                return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.UP : Move.NONE;
-            case 'a':
-                return (y > 0 && !(field.get(x).get(y - 1) instanceof Wall)) ? Move.LEFT : Move.NONE;
-            case 's':
-                return (x + 1 < field.size() && !(field.get(x + 1).get(y) instanceof Wall)) ? Move.DOWN : Move.NONE;
-            case 'd':
-                return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
-            case 'e':
-                if (!artifacts.isEmpty() && !artifacts.getFirst().equipped()) {
-                    artifacts.getFirst().equip();
-                    enableArtifact(artifacts.getFirst().getItem());
-                }
-
-                return Move.NONE;
-            case 'q':
-                if (!artifacts.isEmpty() && artifacts.getFirst().equipped()) {
-                    artifacts.getFirst().disable();
-                    disableArtifact(artifacts.getFirst().getItem());
-                }
-
-                return Move.NONE;
-        }
-
-        return Move.NONE;
-    }
-
     public ArrayDeque<ArtifactItem> getArtifacts() {
         return artifacts;
     }

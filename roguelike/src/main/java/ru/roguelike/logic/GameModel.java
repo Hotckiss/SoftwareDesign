@@ -38,10 +38,10 @@ public interface GameModel extends Serializable {
     /**
      * Takes an input from user and makes a corresponding move.
      *
-     * @param provider is
+     * @param playerMove player action
      * @throws IOException if it occurs
      */
-    void makeMove(UserInputProvider provider) throws IOException;
+    void makeMove(Move playerMove) throws IOException;
 
     /**
      * Get list of alive mobs

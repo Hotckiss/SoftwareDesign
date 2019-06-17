@@ -129,13 +129,12 @@ public class GameModelImpl implements GameModel {
      * {@inheritDoc}
      */
     @Override
-    public void makeMove(@NotNull UserInputProvider provider) throws IOException {
+    public void makeMove(Move playerMove) throws IOException {
         if (isFinished) {
             return;
         }
 
         Player currentPlayer = getActivePlayer();
-        Move playerMove = currentPlayer.move(provider, this);
         RoguelikeLogger.INSTANCE.log_info("Move " + playerMove);
         applyMove(currentPlayer, playerMove);
 
@@ -145,7 +144,7 @@ public class GameModelImpl implements GameModel {
         // mobs move each round
         if (activePlayerIndex == players.keySet().size() - 1) {
             for (AbstractGameParticipant mob : mobs) {
-                Move to = mob.move(provider, this);
+                Move to = mob.move(this);
                 RoguelikeLogger.INSTANCE.log_info("Mob move " + to + " from position " + mob.getPosition().getX()
                         + " " + mob.getPosition().getY());
                 applyMove(mob, to);

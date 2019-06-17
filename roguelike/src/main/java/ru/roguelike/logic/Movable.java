@@ -9,10 +9,9 @@ import java.io.IOException;
  */
 public interface Movable {
     /**
-     * @param provider an input from user
-     * @param model     a current game model
+     * @param model current game model
      * @return corresponding move
      * @throws IOException if it occurs
      */
-    Move move(UserInputProvider provider, GameModel model) throws IOException;
+    Move move(GameModel model) throws IOException;
 }

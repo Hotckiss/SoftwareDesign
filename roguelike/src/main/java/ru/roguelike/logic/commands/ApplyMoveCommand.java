@@ -1,10 +1,17 @@
 package ru.roguelike.logic.commands;
 
 import ru.roguelike.logic.GameModel;
+import ru.roguelike.logic.Move;
+import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.base.AbstractGameObject;
+import ru.roguelike.models.objects.map.Wall;
+import ru.roguelike.models.objects.movable.Mob;
+import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.ConsoleView;
 import ru.roguelike.view.UserInputProvider;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Applies player's move and redraws a field.
@@ -32,8 +39,45 @@ public class ApplyMoveCommand implements Command {
      */
     @Override
     public void execute() throws IOException {
-        model.makeMove(provider);
+        model.makeMove(ApplyMoveCommand.applyPlayerAction(provider, model));
         view.clear();
         view.draw(model.getField(), model.getInfo(), model.getLog(model.getActivePlayerId()));
+    }
+
+    public static Move applyPlayerAction(UserInputProvider provider, GameModel model) {
+        Player currentPlayer = model.getActivePlayer();
+        Position playerPosition = currentPlayer.getPosition();
+
+        List<List<AbstractGameObject>> field = model.getField();
+
+        int x = playerPosition.getX();
+        int y = playerPosition.getY();
+
+        if (currentPlayer.getFreezeCount() == 0) {
+            switch (provider.getCharacter()) {
+                case 'w':
+                    return (x > 0 && !(field.get(x - 1).get(y) instanceof Wall)) ? Move.UP : Move.NONE;
+                case 'a':
+                    return (y > 0 && !(field.get(x).get(y - 1) instanceof Wall)) ? Move.LEFT : Move.NONE;
+                case 's':
+                    return (x + 1 < field.size() && !(field.get(x + 1).get(y) instanceof Wall)) ? Move.DOWN : Move.NONE;
+                case 'd':
+                    return (y + 1 < field.get(0).size() && !(field.get(x).get(y + 1) instanceof Wall)) ? Move.RIGHT : Move.NONE;
+                case 'e':
+                    if (!currentPlayer.getArtifacts().isEmpty() && !currentPlayer.getArtifacts().getFirst().equipped()) {
+                        currentPlayer.getArtifacts().getFirst().equip();
+                        currentPlayer.enableArtifact(currentPlayer.getArtifacts().getFirst().getItem());
+                    }
+                    break;
+                case 'q':
+                    if (!currentPlayer.getArtifacts().isEmpty() && currentPlayer.getArtifacts().getFirst().equipped()) {
+                        currentPlayer.getArtifacts().getFirst().disable();
+                        currentPlayer.disableArtifact(currentPlayer.getArtifacts().getFirst().getItem());
+                    }
+                    break;
+            }
+        }
+
+        return Move.NONE;
     }
 }

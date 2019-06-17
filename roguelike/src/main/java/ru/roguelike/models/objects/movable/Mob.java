@@ -49,7 +49,7 @@ public class Mob extends AbstractGameParticipant implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public Move move(UserInputProvider provider, GameModel model) throws IOException {
+    public Move move(GameModel model) throws IOException {
         if (freezeCount > 0) {
             return Move.NONE;
         }

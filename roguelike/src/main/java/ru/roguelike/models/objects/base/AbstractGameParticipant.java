@@ -277,13 +277,12 @@ public class AbstractGameParticipant extends AbstractGameObject implements Movab
 
     /**
      * Returns preferred move for participant
-     * @param provider an input from user
      * @param model a current game model
      * @return preferred move
      * @throws IOException if can not read move from input
      */
     @Override
-    public Move move(UserInputProvider provider, GameModel model) throws IOException {
+    public Move move(GameModel model) throws IOException {
         if (freezeCount > 0) {
             return Move.NONE;
         }
