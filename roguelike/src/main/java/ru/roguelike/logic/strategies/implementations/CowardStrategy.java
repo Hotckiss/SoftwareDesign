@@ -34,15 +34,16 @@ public class CowardStrategy extends AbstractStrategy implements Serializable {
         Predicate<AbstractGameObject> mobAvailableTest = abstractGameObject -> {
             Position position = abstractGameObject.getPosition();
             AbstractGameObject obj = field.get(position.getX()).get(position.getY());
-            return !(obj instanceof Wall || obj instanceof Artifact || obj instanceof Mob);
+            return !(obj instanceof Wall || obj instanceof Artifact || obj instanceof Mob) || position.equals(mobPosition);
         };
+
         int maxDistance = Integer.MIN_VALUE;
         Move bestMove = Move.NONE;
 
         for (Player player: model.getAllPlayers()) {
             Position playerPosition = player.getPosition();
             List<DistancedPosition> connectedToPlayer =
-                    GenerationUtils.connectedPositions(field, playerPosition, mobAvailableTest, true, false);
+                    GenerationUtils.connectedPositions(field, playerPosition, mobAvailableTest, false, false);
 
 
             int leftIndex = connectedToPlayer.indexOf(mobPosition.left());
@@ -72,7 +73,7 @@ public class CowardStrategy extends AbstractStrategy implements Serializable {
         }
 
         //apply only near player
-        if (maxDistance <= OVERVIEW_RADIUS) {
+        if (maxDistance != Integer.MIN_VALUE && maxDistance <= OVERVIEW_RADIUS) {
             return bestMove;
         }
 

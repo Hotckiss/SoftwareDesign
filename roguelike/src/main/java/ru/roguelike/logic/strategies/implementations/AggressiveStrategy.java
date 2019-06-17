@@ -32,7 +32,7 @@ public class AggressiveStrategy extends AbstractStrategy implements Serializable
         Predicate<AbstractGameObject> mobAvailableTest = abstractGameObject -> {
             Position position = abstractGameObject.getPosition();
             AbstractGameObject obj = field.get(position.getX()).get(position.getY());
-            return !(obj instanceof Wall || obj instanceof Artifact || obj instanceof Mob);
+            return !(obj instanceof Wall || obj instanceof Artifact || obj instanceof Mob) || position.equals(mobPosition);
         };
         int minDistance = Integer.MAX_VALUE;
         Move bestMove = Move.NONE;
