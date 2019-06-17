@@ -20,6 +20,15 @@ public class DistancedPosition extends Position {
     }
 
     /**
+     * Constructs new position
+     * @param position point
+     * @param distance dist to some point
+     */
+    public DistancedPosition(Position position, int distance) {
+        this(position.getX(), position.getY(), distance);
+    }
+
+    /**
      * Getter for distance field
      * @return distance
      */

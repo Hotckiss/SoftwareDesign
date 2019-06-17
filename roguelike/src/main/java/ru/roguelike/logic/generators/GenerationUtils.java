@@ -6,6 +6,7 @@ import ru.roguelike.logic.strategies.implementations.CowardStrategy;
 import ru.roguelike.logic.strategies.implementations.PassiveStrategy;
 import ru.roguelike.logic.strategies.implementations.RandomStrategy;
 import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.DistancedPosition;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractGameObject;
@@ -28,7 +29,9 @@ public class GenerationUtils {
      * @param position position to start search
      * @return list of available positions
      */
-    public static List<Position> connectedPositions(List<List<AbstractGameObject>> field, Position position) {
+    public static List<DistancedPosition> connectedPositions(List<List<AbstractGameObject>> field,
+                                                             Position position,
+                                                             boolean shouldAddInputPosition) {
         int h = field.size();
         if (h <= 0) {
             return new ArrayList<>();
@@ -43,13 +46,18 @@ public class GenerationUtils {
             }
         }
 
-        List<Position> result = new ArrayList<>();
+        List<DistancedPosition> result = new ArrayList<>();
 
-        ArrayDeque<Position> bfsQueue = new ArrayDeque<>();
-        bfsQueue.addLast(position);
+        ArrayDeque<DistancedPosition> bfsQueue = new ArrayDeque<>();
+        DistancedPosition start = new DistancedPosition(position, 0);
+        bfsQueue.addLast(start);
+
+        if (shouldAddInputPosition) {
+            result.add(start);
+        }
 
         while (!bfsQueue.isEmpty()) {
-            Position current = bfsQueue.pollFirst();
+            DistancedPosition current = bfsQueue.pollFirst();
             if (current == null) {
                 break;
             }
@@ -63,10 +71,10 @@ public class GenerationUtils {
             }
 
             visited[current.getX()][current.getY()] = true;
-            Position left = current.left();
-            Position right = current.right();
-            Position bottom = current.bottom();
-            Position up = current.up();
+            DistancedPosition left = new DistancedPosition(current.left(), current.getDistance() + 1);
+            DistancedPosition right = new DistancedPosition(current.right(), current.getDistance() + 1);
+            DistancedPosition bottom = new DistancedPosition(current.bottom(), current.getDistance() + 1);
+            DistancedPosition up = new DistancedPosition(current.up(), current.getDistance() + 1);
 
             if (left.getY() >= 0 && !(field.get(left.getX()).get(left.getY()) instanceof Wall) && !visited[left.getX()][left.getY()]) {
                 bfsQueue.addLast(left);
@@ -87,9 +95,9 @@ public class GenerationUtils {
         }
 
         // only Free Places
-        List<Position> filteredResult = new ArrayList<>();
+        List<DistancedPosition> filteredResult = new ArrayList<>();
 
-        for (Position pos: result) {
+        for (DistancedPosition pos: result) {
             if (field.get(pos.getX()).get(pos.getY()) instanceof FreePlace) {
                 filteredResult.add(pos);
             }

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
 import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.DistancedPosition;
 import ru.roguelike.models.objects.artifacts.*;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
@@ -110,7 +111,7 @@ public class RandomGenerator implements GameGenerator {
         key = new FinalKey(positionKey);
         field.get(positionKey.getX()).set(positionKey.getY(), key);
 
-        List<Position> availableForPlayer = GenerationUtils.connectedPositions(field, key.getPosition());
+        List<DistancedPosition> availableForPlayer = GenerationUtils.connectedPositions(field, key.getPosition(), false);
 
         // put player next to key if no positions
         if (availableForPlayer.isEmpty()) {

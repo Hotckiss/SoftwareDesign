@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.models.Position;
+import ru.roguelike.models.objects.DistancedPosition;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.base.AbstractGameObject;
@@ -60,7 +61,7 @@ public class GameModelImpl implements GameModel {
     @Override
     public Integer addPlayerRandom() {
         Integer id = generateId();
-        List<Position> available = GenerationUtils.connectedPositions(fieldModel, key.getPosition());
+        List<DistancedPosition> available = GenerationUtils.connectedPositions(fieldModel, key.getPosition(), false);
 
         Position position = available.get(new Random().nextInt(available.size()));
         Player newPlayer = new Player(position);
