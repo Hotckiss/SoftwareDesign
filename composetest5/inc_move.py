@@ -13,6 +13,8 @@ while triesCount < timeoutCount:
         break
     except:
         triesCount += 1
+        if (triesCount + 1) == timeoutCount:
+            print("Timeout was reached!")
         time.sleep(1)
         continue
 
@@ -26,6 +28,8 @@ while triesCount < timeoutCount:
         break
     except:
         triesCount += 1
+        if (triesCount + 1) == timeoutCount:
+            print("Timeout was reached!")
         time.sleep(1)
         continue
 
