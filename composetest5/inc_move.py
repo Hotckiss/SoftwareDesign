@@ -2,6 +2,7 @@ import boto3
 import sys
 import time
 
+time.sleep(20)
 sqs = None
 while True:
     try:
