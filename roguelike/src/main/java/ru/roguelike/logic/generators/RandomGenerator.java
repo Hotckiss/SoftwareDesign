@@ -55,7 +55,7 @@ public class RandomGenerator implements GameGenerator {
         List<List<AbstractGameObject>> field = new ArrayList<>();
         Player player;
         FinalKey key;
-        List<AbstractGameParticipant> mobs = new ArrayList<>();
+        List<Mob> mobs = new ArrayList<>();
         List<Artifact> artifacts = new ArrayList<>();
 
         Random random = new Random();
@@ -83,7 +83,7 @@ public class RandomGenerator implements GameGenerator {
             }
 
             Character alias = mobsIds[random.nextInt(mobsIds.length)];
-            AbstractGameParticipant mob = GenerationUtils.makeMob(alias, position);
+            Mob mob = GenerationUtils.makeMob(alias, position);
             mobs.add(mob);
             field.get(position.getX()).set(position.getY(), mob);
             totalMobs++;

@@ -1,7 +1,7 @@
 package ru.roguelike.logic;
 
 import org.junit.Test;
-import ru.roguelike.logic.commands.ApplyMoveCommand;
+import ru.roguelike.logic.commands.ApplyTurnCommand;
 import ru.roguelike.logic.generators.FromFileGenerator;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.view.Drawable;
@@ -32,7 +32,7 @@ public class GameModelImplTest {
         FromFileGenerator generator = new FromFileGenerator(fileName);
         GameModel model = generator.generate();
 
-        model.makeMove(ApplyMoveCommand.applyPlayerAction(provider, model));
+        model.makeMove(ApplyTurnCommand.applyPlayerAction(provider, model));
 
         StringBuilder actualField = new StringBuilder();
         for (List<AbstractGameObject> drawableList : model.getField()) {
@@ -61,8 +61,8 @@ public class GameModelImplTest {
         FromFileGenerator generator = new FromFileGenerator(fileName);
         GameModel model = generator.generate();
 
-        model.makeMove(ApplyMoveCommand.applyPlayerAction(providerRight, model));
-        model.makeMove(ApplyMoveCommand.applyPlayerAction(providerDown, model));
+        model.makeMove(ApplyTurnCommand.applyPlayerAction(providerRight, model));
+        model.makeMove(ApplyTurnCommand.applyPlayerAction(providerDown, model));
 
         StringBuilder actualField = new StringBuilder();
         for (List<AbstractGameObject> drawableList : model.getField()) {

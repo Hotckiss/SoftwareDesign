@@ -157,7 +157,7 @@ public class GenerationUtils {
      * @return mob
      */
     @NotNull
-    public static AbstractGameParticipant makeMob(@NotNull Character alias, Position position) {
+    public static Mob makeMob(@NotNull Character alias, Position position) {
         Mob.MobBuilder builder = new Mob.MobBuilder(position, alias);
         switch (alias) {
             case 'B':

@@ -11,6 +11,7 @@ import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
 import ru.roguelike.models.objects.map.Wall;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.Drawable;
 
@@ -50,7 +51,7 @@ public class GameSaverAndLoader {
         List<List<AbstractGameObject>> fieldModel = game.getField();
         Player player = game.getActivePlayer();
         FinalKey key = game.getKey();
-        List<AbstractGameParticipant> mobs = game.getMobs();
+        List<Mob> mobs = game.getMobs();
 
         // FIELD INFO
         int n = fieldModel.size();
@@ -109,7 +110,7 @@ public class GameSaverAndLoader {
         List<List<AbstractGameObject>> field = new ArrayList<>();
         Player player = null;
         FinalKey key = null;
-        List<AbstractGameParticipant> mobs = new ArrayList<>();
+        List<Mob> mobs = new ArrayList<>();
         List<Artifact> artifacts = new ArrayList<>();
 
         List<String> mapFromFile = new ArrayList<>();
@@ -217,7 +218,7 @@ public class GameSaverAndLoader {
                 y = Integer.parseInt(coords[1]);
 
                 char c = mapFromFile.get(x).charAt(y);
-                AbstractGameParticipant mob = GenerationUtils.makeMob(c, new Position(x, y));
+                Mob mob = GenerationUtils.makeMob(c, new Position(x, y));
 
                 line = reader.readLine();
                 setFeatures(mob, line);

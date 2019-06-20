@@ -66,7 +66,7 @@ public class FromFileGenerator implements GameGenerator {
         List<List<AbstractGameObject>> field = new ArrayList<>();
         Player player = null;
         FinalKey key = null;
-        List<AbstractGameParticipant> mobs = new ArrayList<>();
+        List<Mob> mobs = new ArrayList<>();
         List<Artifact> artifacts = new ArrayList<>();
 
         int n = mapFromFile.size();
@@ -117,7 +117,7 @@ public class FromFileGenerator implements GameGenerator {
                     case 'S':
                     case 'V':
                     case 'Y':
-                        AbstractGameParticipant mob = GenerationUtils.makeMob(c, new Position(i, j));
+                        Mob mob = GenerationUtils.makeMob(c, new Position(i, j));
                         mobs.add(mob);
                         field.get(i).add(mob);
                         break;

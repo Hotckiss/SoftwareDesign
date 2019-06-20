@@ -4,6 +4,7 @@ import ru.roguelike.models.objects.artifacts.Artifact;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.UserInputProvider;
 
@@ -48,7 +49,7 @@ public interface GameModel extends Serializable {
      * Get list of alive mobs
      * @return list of alive mobs
      */
-    List<AbstractGameParticipant> getMobs();
+    List<Mob> getMobs();
 
     /**
      * Get list of untaken artifacts

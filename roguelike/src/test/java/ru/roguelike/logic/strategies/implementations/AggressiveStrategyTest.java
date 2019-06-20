@@ -9,6 +9,7 @@ import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.StringStreamInputProviderImpl;
 
@@ -31,7 +32,7 @@ public class AggressiveStrategyTest {
     public void preferredMove() throws IOException {
         FinalKey key = new FinalKey(new Position(0, 2));
         Player player = new Player(new Position(0, 0));
-        AbstractGameParticipant mob = GenerationUtils.makeMob('B', new Position(0 ,1));
+        Mob mob = GenerationUtils.makeMob('B', new Position(0 ,1));
 
         List<List<AbstractGameObject>> field = new ArrayList<>();
         field.add(new ArrayList<>());

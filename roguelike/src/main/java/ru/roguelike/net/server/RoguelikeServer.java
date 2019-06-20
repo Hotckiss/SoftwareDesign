@@ -10,7 +10,7 @@ import ru.roguelike.RoguelikeLogger;
 import ru.roguelike.RoguelikeServiceGrpc;
 import ru.roguelike.ServerReply;
 import ru.roguelike.logic.GameModel;
-import ru.roguelike.logic.commands.ApplyMoveCommand;
+import ru.roguelike.logic.commands.ApplyTurnCommand;
 import ru.roguelike.logic.generators.RandomGenerator;
 import ru.roguelike.view.StringStreamInputProviderImpl;
 
@@ -122,7 +122,7 @@ public class RoguelikeServer {
                         }
 
                         try {
-                            model.makeMove(ApplyMoveCommand.applyPlayerAction(new StringStreamInputProviderImpl(request.getAction()), model));
+                            model.makeMove(ApplyTurnCommand.applyPlayerAction(new StringStreamInputProviderImpl(request.getAction()), model));
                         } catch (IOException e) {
                             responseObserver.onNext(ServerReply.newBuilder().setErrorMessage(e.getMessage()).build());
                             return;

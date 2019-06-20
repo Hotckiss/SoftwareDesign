@@ -28,7 +28,7 @@ public class GameModelImpl implements GameModel {
     private Map<Integer, Player> players;
     private Integer activePlayerIndex = 0;
     private FinalKey key;
-    private List<AbstractGameParticipant> mobs;
+    private List<Mob> mobs;
     private List<Artifact> artifacts;
     private boolean isFinished = false;
 
@@ -43,7 +43,7 @@ public class GameModelImpl implements GameModel {
     public GameModelImpl(List<List<AbstractGameObject>> fieldModel,
                          Player player,
                          FinalKey key,
-                         List<AbstractGameParticipant> mobs,
+                         List<Mob> mobs,
                          List<Artifact> artifacts) {
         Map<Integer, Player> players = new HashMap<>();
         players.put(0, player);
@@ -305,7 +305,7 @@ public class GameModelImpl implements GameModel {
     }
 
     @Override
-    public List<AbstractGameParticipant> getMobs() {
+    public List<Mob> getMobs() {
         return mobs;
     }
 

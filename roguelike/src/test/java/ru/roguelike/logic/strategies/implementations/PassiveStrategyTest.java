@@ -3,13 +3,14 @@ package ru.roguelike.logic.strategies.implementations;
 import org.junit.Test;
 import ru.roguelike.logic.GameModel;
 import ru.roguelike.logic.GameModelImpl;
-import ru.roguelike.logic.commands.ApplyMoveCommand;
+import ru.roguelike.logic.commands.ApplyTurnCommand;
 import ru.roguelike.logic.generators.GenerationUtils;
 import ru.roguelike.models.Position;
 import ru.roguelike.models.objects.artifacts.FinalKey;
 import ru.roguelike.models.objects.base.AbstractGameObject;
 import ru.roguelike.models.objects.base.AbstractGameParticipant;
 import ru.roguelike.models.objects.map.FreePlace;
+import ru.roguelike.models.objects.movable.Mob;
 import ru.roguelike.models.objects.movable.Player;
 import ru.roguelike.view.StringStreamInputProviderImpl;
 
@@ -32,7 +33,7 @@ public class PassiveStrategyTest {
     public void preferredMove() throws IOException {
         FinalKey key = new FinalKey(new Position(0, 3));
         Player player = new Player(new Position(0, 0));
-        AbstractGameParticipant mob = GenerationUtils.makeMob('V', new Position(0 ,1));
+        Mob mob = GenerationUtils.makeMob('V', new Position(0 ,1));
 
         List<List<AbstractGameObject>> field = new ArrayList<>();
         field.add(new ArrayList<>());
@@ -43,7 +44,7 @@ public class PassiveStrategyTest {
 
         GameModel model = new GameModelImpl(field, player, key, Collections.singletonList(mob), new ArrayList<>());
 
-        model.makeMove(ApplyMoveCommand.applyPlayerAction(new StringStreamInputProviderImpl("a"), model));
+        model.makeMove(ApplyTurnCommand.applyPlayerAction(new StringStreamInputProviderImpl("a"), model));
 
         //mob not moved
         assertEquals(new Position(0, 1), mob.getPosition());
