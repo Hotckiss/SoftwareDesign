@@ -40,8 +40,7 @@ public class GameInfo {
     private static List<String> getControlInfo() {
         List<String> info = new ArrayList<>();
         info.add("w, a, s, d - move up, left, down, right respectively.");
-        info.add("e - equip the player with the latest artifact.");
-        info.add("q - remove the artifact from the player.");
+        info.add("1...9 - equip/remove the player with artifact.");
 
         return info;
     }

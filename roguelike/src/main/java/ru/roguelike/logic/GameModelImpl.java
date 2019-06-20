@@ -380,7 +380,7 @@ public class GameModelImpl implements GameModel {
         info.add("Game INFO:");
         info.add("P - player, k - key to win");
         info.add("Press h for more info");
-        info.add("Press l for loading map from file, v for saving game");
+        info.add("Press l for loading map from file, v for saving game(not for multiplayer)");
         info.add("");
 
         return info;
