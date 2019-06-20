@@ -12,6 +12,7 @@ import java.util.List;
  * Represents a player.
  */
 public class Player extends AbstractGameParticipant implements Serializable {
+    private static final int MAX_ITEMS = 5;
     private List<ArtifactInInventory> artifacts = new ArrayList<>();
 
     /**
@@ -38,6 +39,29 @@ public class Player extends AbstractGameParticipant implements Serializable {
      */
     public void addArtifact(Artifact artifact) {
         artifacts.add(0, new ArtifactInInventory(artifact));
+        if (artifacts.size() > MAX_ITEMS) {
+            if (artifacts.get(MAX_ITEMS).equipped()) {
+                artifacts.get(MAX_ITEMS).disable();
+                disableArtifact(artifacts.get(MAX_ITEMS).getItem());
+            }
+            artifacts.remove(MAX_ITEMS);
+        }
+    }
+
+    /**
+     * Method to remove artifact from player equipment
+     * @param index artifact to remove
+     */
+    public void removeArtifact(int index) {
+        if (index >= artifacts.size()) {
+            return;
+        }
+
+        if (artifacts.get(index).equipped()) {
+            artifacts.get(index).disable();
+            disableArtifact(artifacts.get(index).getItem());
+        }
+        artifacts.remove(index);
     }
 
     /**

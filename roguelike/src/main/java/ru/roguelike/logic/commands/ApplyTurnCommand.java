@@ -67,10 +67,6 @@ public class ApplyTurnCommand implements Command {
                 case '3':
                 case '4':
                 case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
                     int index = provider.getCharacter() - '0' - 1;
                     if (currentPlayer.getArtifacts().size() < index + 1) {
                         break;
@@ -83,6 +79,14 @@ public class ApplyTurnCommand implements Command {
                         currentPlayer.getArtifacts().get(index).disable();
                         currentPlayer.disableArtifact(currentPlayer.getArtifacts().get(index).getItem());
                     }
+                    break;
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                    int idx = provider.getCharacter() - '0' - 6;
+                    currentPlayer.removeArtifact(idx);
                     break;
             }
         }

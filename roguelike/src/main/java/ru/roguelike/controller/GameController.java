@@ -21,7 +21,7 @@ import java.io.IOException;
  * Controls the game process.
  */
 public class GameController {
-    private static final String AVAILABLE_ONLINE_ACTIONS = "wasd123456789";
+    private static final String AVAILABLE_ONLINE_ACTIONS = "wasd1234567890";
     private GameModel game = null;
     private ConsoleView view;
 
