@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Applies player's move and redraws a field.
  */
-public class ApplyMoveCommand implements Command {
+public class ApplyTurnCommand implements Command {
     private final UserInputProvider provider;
     private final GameModel model;
     private final ConsoleView view;
@@ -26,7 +26,7 @@ public class ApplyMoveCommand implements Command {
      * @param model current game state
      * @param view view to output move
      */
-    public ApplyMoveCommand(UserInputProvider provider, GameModel
+    public ApplyTurnCommand(UserInputProvider provider, GameModel
             model, ConsoleView view) {
         this.provider = provider;
         this.model = model;
@@ -38,7 +38,7 @@ public class ApplyMoveCommand implements Command {
      */
     @Override
     public void execute() throws IOException {
-        model.makeMove(ApplyMoveCommand.applyPlayerAction(provider, model));
+        model.makeMove(ApplyTurnCommand.applyPlayerAction(provider, model));
         view.clear();
         view.draw(model.getField(), model.getInfo(), model.getLog(model.getActivePlayerId()));
     }

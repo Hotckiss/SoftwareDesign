@@ -143,6 +143,10 @@ public class GameController {
     private void processOnlineGame() throws IOException, InterruptedException {
         String serverInfo = view.showOnlineMenu();
         String[] parts = serverInfo.split(" ");
+        if (parts.length != 2) {
+            return;
+        }
+
         String host = parts[0];
         Integer port = Integer.parseInt(parts[1]);
 
@@ -213,7 +217,7 @@ public class GameController {
                 case 'v':
                     return new SaveGameCommand(game);
                 default:
-                    return new ApplyMoveCommand(provider, game, view);
+                    return new ApplyTurnCommand(provider, game, view);
             }
         }
     }
