@@ -86,6 +86,9 @@ public class ApplyTurnCommand implements Command {
                 case '9':
                 case '0':
                     int idx = provider.getCharacter() - '0' - 6;
+                    if (idx == -6) {
+                        idx = 4;
+                    }
                     currentPlayer.removeArtifact(idx);
                     break;
             }
