@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  localstack:
+    image: localstack/localstack:0.9.4
+    ports:
+      - "4576:4576"
+    environment:
+      - SERVICES=sqs
+  init:
+    build: .
+    command: ["python", "init.py"]
+    depends_on:
+      - localstack
+    links:
+      - localstack
+  a_b:
+    build: .
+    command: ["python", "inc_move.py", "A", "B"]
+    depends_on:
+      - init
+    links:
+      - localstack
+  b_a:
+    build: .
+    command: ["python", "inc_move.py", "B", "A"]
+    depends_on:
+      - init
+    links:
+      - localstack
